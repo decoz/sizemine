@@ -1,0 +1,64 @@
+<html>
+
+<body>
+<center>
+<div id = main>
+  <button id = btn_start >
+    start sizemine
+  </buttn>
+
+  <button id = btn_start2 >
+    start match
+  </buttn>
+</div>
+
+<d-popup id = app
+  title = 'popup test'
+  showframe = false
+  css = '
+    width:500px;
+    height:900px;
+  '
+> </d-popup>
+
+</center>
+</body>
+
+<style>
+:root {
+--color1:#ce1844;
+--color2:white;
+}
+#main {
+  vertical-align: middle;
+  height:100%;
+}
+button {
+  position:relative;
+  background:var(--color1);
+  color:var(--color2);
+  top:50%;
+  height:2em;
+  font-size:1.5em;
+  padding:0.3em;
+  border-radius:0.5em;
+  border:none;
+  margin:3em;
+}
+
+</style>
+
+<script type = 'module'>
+import dPopup from '/js/dpopup.js'
+customElements.define("d-popup", dPopup)
+
+btn_start.onclick = e=>{
+  app.open('app_sizemine.htm')
+}
+
+btn_start2.onclick = e=>{
+  app.open('app_matchmine.htm')
+  app.setInitData("")
+}
+
+</script>

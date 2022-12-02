@@ -1,0 +1,50 @@
+
+#page8 .content {
+  display:grid;
+  height:100%;
+  width:90vw;
+  gap:3%;
+  justify-self: center;
+  align-content: center;
+  grid-template: 1fr 1fr 1fr / 1fr 1fr;
+}
+
+#page8 .top {
+  font-size:2.1rem;
+  display:block;
+  padding-left:10%;
+  text-align: left;
+}
+
+#page8 .main {
+  display:grid;
+}
+
+#sel_fit {
+  display:grid;
+  height:100%;
+  width:90vw;
+  gap:3%;
+  justify-self: center;
+  align-content: center;
+  grid-template: 1fr 1fr 1fr / 1fr 1fr;
+}
+
+#page8 .dv_fit {
+  max-height:100%;
+  background:#F5F5F5;
+  border-radius:10%;
+}
+
+#page8 .dv_fit > div {
+  font-size:1.8rem;
+}
+
+#page8 .dv_fit[selected] {
+  background:#BBB;
+}
+
+
+#page8 .dv_fit > img{
+  height:80%
+}

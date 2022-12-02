@@ -1,0 +1,28 @@
+
+
+
+#page1 .content {
+  padding-left:10%;
+  padding-right:10%;
+  display:grid;
+  height:100%;
+  grid-template-rows:15% 20% 20% 45%;
+}
+
+#msg1 {
+  text-align: left;
+  grid-row:2/3;
+}
+
+#msg2 {
+  color:#d4145A;
+  text-align: left;
+  grid-row:3/4;
+}
+
+#img_info {
+  align-self: center;
+  height:100%;
+  width:auto;
+  grid-row:4/5;
+}

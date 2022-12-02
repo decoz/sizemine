@@ -1,0 +1,463 @@
+<table id = tbl_screen >
+<tr id = scroller >
+<td id = section_bestmatch class = td_section >
+  <div id = dv_recommend >
+    이 상품과 나는 <br>
+    <div id = rect_best >
+      M
+      </div> <br>
+    <div id = dv_best >
+
+      </div>
+    <div id = dv_other >
+      <center>
+      <table id = tbl_other > </table>
+
+      </div>
+    </div>
+  </td>
+
+<td id = section_showfit class = td_section >
+
+  <img-marker
+    id = 'match_avatar'
+    src = 'body_gpos.png'
+    fontsize = '9'>
+
+  </td>
+
+<td id = section_match class = td_section >
+  <center>
+  <div id = dv_table>
+    상품 상세사이즈
+
+    <div id = dv_recommand > </div>
+
+    <center>
+
+    <d-table id = matchtable use_colheader = true use_header = true
+      vertical = true
+      css = "
+      <style>
+      table {
+        border-spacing:0 0px;
+        border-top : 2px solid #e0e0e0;
+        font-size:10pt;
+        width:90%;
+      }
+      th, td {
+        color:#5f5f5e;
+        padding:10px;
+        border:1px solid #f0efef
+      }
+      td.emp {
+        background-color:#f9d4ed;
+        color:#b70765
+      }
+      th{
+
+        background-color:#F7F7F7
+      }
+      td {
+        text-align:center;
+        width:auto;
+      }
+
+      </style>
+      ">  </d-table> `</div>   </center>
+  </td>
+
+<td id = section_tpl class = td_section >
+  <div>
+
+    <div id = dv_tplname> </div>
+    <center>
+    <img-marker
+      id = 'tpl_img'
+      fontsize = '9'>
+    </div>
+  </td>
+
+    </tr></table>
+
+<div id = dv_move >
+    <button id = btn_prev onclick = 'move_prev()'> back </button>
+    <button id = btn_next onclick = 'move_next()' > continue > </button>
+</div>
+
+<script type = 'module'>
+import imgMarker from '/js/imgmarker.js'
+import * as SM from '/js/sizemine.js'
+import * as MI from '/js/mineif.js'
+import dTable from '/js/dtable.js'
+
+import dot from '/js/dot.js'
+
+customElements.define("d-table", dTable)
+customElements.define("img-marker", imgMarker)
+let mysize = `
+  ar.56
+  ch.92
+  he.96
+  le.92
+  ne.34
+  sh.44
+  wa.79
+`
+let marker_pos = '(shoulder(0&d575,0&d20041753653444677),sleeve(0&d6275,0&d4321503131524008),chest(0&d205,0&d25052192066805845),outseam(0&d6225,0&d31315240083507306),waist(0&d225,0&d3444676409185804),rise(0&d1725,0&d4279749478079332))'
+
+var gid = 1297
+let dsize = dot.tabParse(mysize)
+
+function setAvatar(score, gsize, sizelabel){
+  console.log("best_gsize:",gsize)
+  let color_fit = '#40dd77', color_small = '#3b6df7', color_big = '#ef2d71'
+  let markers = dot.parse(marker_pos).Arr()
+  let gmark = {}, gvalue = {}, colors = {}
+
+  for(let k in markers )
+    if(score[k]) {
+      let txt, txt1, txt2
+      gmark[k] = markers[k]
+      if( Math.abs(score[k]) < 2) {
+        txt = '잘 맞아요'
+        colors[k] = color_fit
+      } else if( score[k] > 0 ) {
+        txt = '커요'
+        colors[k] = color_big
+      } else {
+        txt = '작아요'
+        colors[k] = color_small
+      }
+
+      txt1 = ( sizelabel[k]?sizelabel[k]:k ) + ' ' + gsize[k] + 'cm'
+      txt2 = '내 사이즈보다' + score[k] + 'cm'
+      gvalue[k] = txt + '\n' + txt1 + '\n' + txt2
+    }
+
+
+  console.log('markers:',gmark)
+  match_avatar.setMarkers(gmark)
+  match_avatar.redrawMarkers()
+  match_avatar.setValues(gvalue)
+
+  for(let k in gmark){
+    let marker = match_avatar.getMarker(k)
+    marker.style.color = colors[k]
+  }
+
+}
+
+function setTableColor(scorearr, sizelabel){
+  let table = matchtable.table
+  let tr_h = table.children[0]
+  let col_index = {}, best_size = {}
+
+  for(let i in tr_h.children)  col_index[ tr_h.children[i].innerText ] = i
+  for(let k in scorearr[0] ){
+    if(k == 'sname' || k == 'fit') continue
+    let min = null, best_sname
+    for(let score of scorearr){
+      let v = Math.abs(score[k])
+      if( !min || min > v){
+        min = v
+        best_sname = score['sname']
+      }
+    }
+    let label = sizelabel[k]? sizelabel[k] : k
+    best_size[label] = best_sname
+  }
+
+  //console.log('col_index:',col_index, ' best_size:', best_size)
+
+  let trlist = table.children
+  for(let i=1; i < trlist.length; i++){
+    let tr = trlist[i]
+    let k = trlist[i].children[0].innerText
+
+    if( best_size[k] ){
+      let idx = col_index[ best_size[k] ]
+      tr.children[idx].className = 'emp'
+    }
+  }
+}
+
+
+function bestPos(score, reverse = false){
+  let bpos, posbest = null
+  for(let k in score){
+    if( k == 'fit' || k == 'sname' ) continue
+    let v = Math.abs(score[k])
+    if( posbest == null ||
+        (!reverse && v < posbest ) ||
+        (reverse && v > posbest )){
+      bpos = k
+      posbest = v
+    }
+  }
+  return bpos
+}
+
+
+async function init(e){
+  console.log("***from parent:",document['msg'])
+  //console.log("dsize:",dsize)
+
+  await SM.loadGood(gid,true)
+  let scorearr = await SM.createMatchScores(SM.dgsizes, dsize, SM.dtpl)
+  scorearr = SM.sortScores(scorearr)
+  //console.log("scorearr:",scorearr)
+
+  let sizelabel = SM.dlabels.Get("goodsize.").Arr()
+  let bestpos = bestPos(scorearr[0])
+  if( sizelabel[bestpos] ) bestpos = sizelabel[bestpos]
+
+
+  for(let i=1;i<scorearr.length;i++){
+    let score = scorearr[i]
+    let wpos = bestPos(score, true)
+    if( sizelabel[wpos] ) wpos = sizelabel[wpos]
+
+    //console.log("---",tbl_other)
+    let tr = document.createElement('tr')
+
+    let html = "<td> <div class = 'rect_size'>" + score['sname'] + "</td> <td>" +
+            ( score[wpos]>0? wpos + '가 너무 커요' : wpos + '가 너무 작아요' )  + "</td>"
+    tr.innerHTML = html
+    tbl_other.appendChild(tr)
+  }
+
+  rect_best.innerText = scorearr[0]['sname']
+  dv_best.innerText = bestpos + "가 제일 잘 맞아요"
+
+  let gsizes = SM.dgsizes.Arr(), best_gsize
+  for(let size of gsizes)
+    if(size.sname == scorearr[0].sname) best_gsize = size
+  setAvatar(scorearr[0], best_gsize, sizelabel)
+
+
+  dv_recommand.innerHTML = "고객님께 추천하는 사이즈는 <span class = 'span_bsize'> " +
+                  scorearr[0]['sname']  + " </span> 입니다. "
+
+  matchtable.labels = sizelabel
+  matchtable.Put(SM.dgsizes, true)
+  setTableColor(scorearr, sizelabel)
+
+  let dtpl = SM.dtpl
+  dv_tplname.innerText = SM.tpl_name
+  tpl_img.setImg(dtpl.Get('image.').V())
+  tpl_img.labels = sizelabel
+  tpl_img.setMarkers(dtpl.Get('sizes.').Arr())
+  console.log(dtpl)
+
+}
+
+document.body.onload = init
+
+</script>
+
+
+
+<script>
+var pages = scroller.children.length
+var page = 0
+tbl_screen.style.width = pages * 100 + 'vw'
+console.log("page count:",pages)
+
+window.addEventListener("message", e => {
+  console.log("%%%",e)
+})
+
+
+function check_page(p){
+
+  switch(p){
+  case 0 :
+
+    break
+  case 1 :
+
+    break
+  }
+}
+
+var allow_next = [false, false, false, true]
+var txt_next = ['','상세페이지 보기','사이즈 측정기준 보기','']
+
+function init_page() {
+    if( txt_next[page] != '' ) btn_next.innerText = txt_next[page]
+    if( allow_next[page] ) btn_next.disabled = true
+    else btn_next.disabled = false
+}
+
+function move_prev() {
+  if(page > 0){
+    let n = parseInt(scroller.style.left)
+    if(!n) n = 0
+    scroller.style.left =  n + window.innerWidth
+    page--
+  }
+
+  init_page()
+  //console.log( scroller.style.left)
+
+}
+function move_next() {
+  if(page < pages - 1) {
+    let n = parseInt(scroller.style.left)
+    if(!n) n = 0
+    scroller.style.left =  n - window.innerWidth
+    if(page < pages ) page++
+    init_page()
+  }
+  //console.log( scroller.style.left)
+}
+</script>
+
+
+<style>
+
+body {
+  overflow:hidden;
+  background:white;
+}
+
+.td_section {
+  text-align:center;
+  align-content: center;
+  font-size:1.3em;
+}
+
+span.span_bsize {
+  padding:0.2em;
+  padding-left:0.3em;
+  padding-right:0.3em;
+  margin:0.1em;
+  text-align: center;
+  background:#d2145a;
+  color:white;
+}
+
+#dv_tplname {
+  margin-bottom:3em;
+}
+
+#tpl_img {
+  width:70vw;
+}
+
+#dv_recommand {
+  color:#d2145a;
+  font-weight:bold;
+  margin-top:3em;
+  margin-bottom:1.5em;
+  font-size:0.8em;
+}
+
+#dv_table {
+  position:relative;
+  text-align: center;
+  width:80%
+}
+
+#matchtable {
+  margin-top:1em;
+}
+
+#dv_other {
+  align:center;
+  margin-top:2em;
+  font-size:0.8em;
+}
+
+#tbl_other  {
+  width:70%;
+}
+
+#tbl_other td {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.rect_size {
+  padding-top:0.3em;
+  display:inline-block;
+  color:white;
+  width:2.3em;
+  height:2em;
+  font-size:1.2em;
+  background-color:gray;
+}
+
+
+#dv_best {
+  font-size:0.8em;
+}
+
+#rect_best {
+  display:inline-block;
+  margin-top:50px;
+  margin-bottom:40px;
+  color:white;
+  width:50px;
+  font-size:30pt;
+  background-color:#d2145a;
+}
+
+
+.p_title {
+  display:block;
+  width:70vw;
+  margin: auto;
+
+}
+
+#td_size {
+  text-align: left;
+  vertical-align: top;
+
+}
+
+.td_section > div {
+  margin-top : 2em;
+}
+
+#dv_move {
+  padding-left:2em;
+  padding-right:2em;
+}
+
+#dv_move button {
+  margin:1em;
+  font-size:1em;
+  padding:0.5em;
+  background:#EEE;
+  border:none;
+}
+
+#btn_prev {
+  float:left;
+}
+
+#btn_next {
+  float:right;
+}
+
+#scroller {
+  position:relative;
+}
+
+
+#tbl_screen td {
+  text-align: center;
+  width:100vw;
+  background:white;
+}
+#tbl_screen img {
+  width:60%;
+
+}
+
+
+
+</style>

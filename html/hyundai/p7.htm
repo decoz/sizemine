@@ -1,0 +1,59 @@
+
+<div class = "top title" >
+  수선하고자 하는 <br>
+  <span id = span_type1 > 티셔츠/멘투맨 </span> 디자인을 선택해주세요 </div>
+<div class = main>
+  <div class = content >
+    <div id = dv_typesize class = r1>
+      <img src = './images/typesize/sz_tshirt.png'>
+    </div>
+
+    <div id = dv_inputgsize class = 'r2 font_b3' >
+      <div class = 'r1 c1'> 총장 </div>
+      <div class = 'r1 c2'>
+        <img src = './images/marker/mn.png' class = 'right'
+          onclick = 'minus_item()'
+        >
+        <input type = number id = input_outseam value = 0 > </input>
+        <img src = './images/marker/pl.png' class = 'left'
+          onclick = 'plus_item()'
+        > </div>
+
+      <div class = 'r2 c1'> 가슴단면 </div>
+      <div class = 'r2 c2'>
+        <img src = './images/marker/mn.png' class = 'right'
+          onclick = 'minus_item()'
+         >
+        <input type = number id = input_chest value = 0 > </input>
+        <img src = './images/marker/pl.png' class = 'left'
+          onclick = 'plus_item()'
+        > </div>
+
+      <div class = 'r3 c1'> 소매길이 </div>
+      <div class = 'r3 c2'>
+        <img src = './images/marker/mn.png' class = 'right'
+          onclick = 'minus_item()'
+        >
+        <input type = number id = input_sleeve value = 0 > </input>
+        <img src = './images/marker/pl.png' class = 'left'
+          onclick = 'plus_item()'
+        > </div>
+
+      <div class = 'r4 c1'> 어깨너비 </div>
+      <div class = 'r4 c2'>
+        <img src = './images/marker/mn.png' class = 'right'
+          onclick = 'minus_item()'
+        >
+        <input type = number id = input_shoulder value = 0 > </input>
+        <img src = './images/marker/pl.png' class = 'left'
+          onclick = 'plus_item()'
+        > </div>
+
+    </div>
+  </div content>
+</div main>
+<div class = footer>
+  <button class = 'btn_next' onclick = "next()"> 다음 </button>
+
+</div>
+<script src = './js/p7.js' > </script>

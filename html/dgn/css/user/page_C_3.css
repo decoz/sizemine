@@ -1,0 +1,55 @@
+.large-size-icon-image-wrapper {
+    width: 75px;
+    height: 75px;
+}
+
+.medium-size-icon-image-wrapper {
+    width: 40px;
+    height: 40px;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.size-primary-btn {
+    width: 164px;
+    height: 40px;
+    border-radius: 16px;
+    background: #d4145A;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.size-grey-btn {
+    width: 164px;
+    height: 40px;
+    border-radius: 16px;
+    background: #efefef;
+    color: #4D4D4D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.size-black-btn {
+    width: 164px;
+    height: 40px;
+    border-radius: 16px;
+    background: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+}

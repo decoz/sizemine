@@ -1,0 +1,113 @@
+.container {
+  width:95vw;
+  height:90vh;
+  display:grid;
+  grid-template-rows: 20% 70% 10%;
+}
+
+.main {
+  display:grid;
+  grid-template-columns: 1fr;
+  text-align: center;
+  justify-content:center;
+}
+
+.content {
+  justify-self:center;
+  display:grid;
+  height:95vw;
+  width:80%;
+  grid-template: 50% 30% 20% / 1fr;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+
+}
+
+.content > * {
+  width:100%;
+  align-self: center;
+}
+
+.content > .r1 {
+  display:grid;
+  justify-content: center;
+}
+
+.content > .r1 > * {
+  justify-self:center;
+  align-self:center;
+}
+
+
+
+.top {
+  justify-content:center;
+  display:grid;
+  gap:2%;
+  grid-template: 1fr / 40% 60%;
+}
+
+.top > .c1 {
+  justify-self: end;
+  align-self:center;
+}
+
+.top > .c2 {
+  justify-self: start;
+  align-self:center;
+}
+
+#dv_sizeimg img{
+  height:100%;
+  object-fit: contain;
+}
+
+#dv_recommand {
+  font-size:0.9rem;
+}
+
+#dv_recommand span {
+  margin-top:0.5em;
+  display:inline-block;
+  height:1.5em;
+  width:1.5em;
+  font-size:1em;
+  color:white;
+  border-radius: 0.3em;
+  background: #d4145A;
+}
+
+.redmsize  {
+  display:inline-block;
+  font-size:1em;
+  color:white;
+  height:1.5em;
+  width:1.5em;
+  border-radius: 0.2em;
+  background: #d4145A;
+  justify-content: center;
+  align-content: center;
+  margin-bottom: 0.2em;
+}
+
+#dv_othersizes {
+  overflow-x:scroll;
+  width:100%;
+}
+#dv_othersizes div {
+  text-align: right;
+}
+#dv_othersizes table {
+  justify-self:center;
+  background:#efefef;
+  width:100%;
+}
+
+#dv_othersizes td, th {
+  text-align: center;
+  justify-self:center;
+  background:#efefef;
+  width:25%;
+  border:1px solid #e3e3e3;
+}

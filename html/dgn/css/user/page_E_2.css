@@ -1,0 +1,30 @@
+.human-image-wrapper {
+    width: 190px;
+    height: 390px;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.standard-image-wrapper {
+    width: 15px;
+    height: 15px;
+}
+
+.standard-label {
+    color: #4d4d4d;
+    font-size: 11px;
+}
+
+.save-result-btn {
+    width: 164px;
+    height: 40px;
+    border-radius: 24px;
+    background: #d4145A;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+}

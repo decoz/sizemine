@@ -1,0 +1,24 @@
+#page2 .content {
+  padding-left:10%;
+  padding-right:10%;
+  display:grid;
+  height:100%;
+  grid-template:50% 50% / 1fr;
+}
+
+.content > p, .content > div, .content > input {
+  align-self: center;
+}
+
+#page2 .title > img {
+  height:3rem;
+}
+
+#dv_desc {
+  text-align:left;
+  font-size: 3vw
+}
+
+#page2 .content > .r1 > img {
+  height:100%;
+}

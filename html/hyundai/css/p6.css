@@ -1,0 +1,44 @@
+
+#page6 .content {
+  display:grid;
+  height:100%;
+  width:90vw;
+  gap:3%;
+  justify-self: center;
+  align-content: center;
+  grid-template: 1fr / 1fr;
+}
+
+#page6 .top {
+  font-size:2.1rem;
+  display:block;
+  padding-left:10%;
+  text-align: left;
+}
+
+#page6 .main {
+  display:grid;
+}
+
+#sel_gtype {
+  height:100%;
+  width:90vw;
+  display:grid;
+  justify-items: center;
+  grid-template: 1fr 1fr 1fr / 1fr 1fr;
+}
+
+#page6 .content  img {
+  max-height:100%;
+  background:#F5F5F5;
+  padding:10%;
+  border-radius:10%;
+}
+
+#page6 .content  img[selected] {
+  max-height:100%;
+  background:#DDD;
+  padding:10%;
+  border:2px solid #CCC;
+  border-radius:10%;
+}

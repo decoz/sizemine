@@ -1,0 +1,71 @@
+#page9 {
+  grid-template-rows: 20% 55% 25%;
+}
+
+#page9 .content {
+  display:grid;
+  height:80%;
+  width:90vw;
+  justify-self: center;
+  align-content: center;
+  grid-template: 1fr 1fr / 1fr;
+}
+
+#page9 .top {
+  font-size:2.1rem;
+  display:block;
+  padding-left:10%;
+}
+
+#page9 .btn_next {
+  height:1.5em;
+}
+
+
+
+#page9 .footer {
+  height:20vh;
+  background:#EEE;
+}
+
+#page9 .main {
+  display:grid;
+  overflow-y:hidden;
+}
+
+#dv_typesize {
+  height:100%;
+}
+
+#dv_typesize img {
+  width:80%;
+}
+
+#dv_recsize {
+  display:grid;
+  font-weight: bold;
+  grid-row-gap: 10%;
+  grid-template: 1fr 1fr / repeat(4,1fr);
+}
+
+#dv_recsize input {
+  display:inline-block;
+  text-align:center;
+  justify-self:center;
+  font-size:2rem;
+  width:4em;
+  height:1.5em;
+  padding:0.2em;
+  background:#EEE;
+  border:1px solid #EEE;
+  border-radius:0.2em;
+}
+
+#dv_offerinfo {
+  text-align: left;
+  font-size : 1rem;
+}
+
+#dv_offerinfo .title {
+  font-size:2rem;
+}

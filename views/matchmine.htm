@@ -1,0 +1,231 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/matchmine.css" rel="stylesheet" />
+<link href="/css/mm1.css" rel="stylesheet" />
+<link href="/css/mm2a.css" rel="stylesheet" />
+<link href="/css/mm2b.css" rel="stylesheet" />
+
+<div id = pageview class = container>
+  <div id = pageslide class = slider >
+    <div id = page1 class = 'page c1'> <%- include('mm1.htm') %> </div>
+    <div id = page2a class = 'page c2'> <%- include('mm2a.htm') %> </div>
+    <div id = page2b class = 'page c2'> <%- include('mm2b.htm') %> </div>
+
+  </div slider>
+</div container>
+
+<script>
+let page = 0
+function next(pn){
+  let list = ['2a','2b']
+  if( list.includes(pn) )
+    for(let p of list){
+      //console.log(p)
+      if( p != pn )  document.getElementById('page'+p)?.classList.add('hidden')
+      else document.getElementById('page'+p)?.classList.remove('hidden')
+    }
+  page++
+  pageview.scrollLeft = pageview.clientWidth * page
+  //console.log( pageslide.style.left )
+}
+
+function prev(){
+  page--
+  pageview.scrollLeft = pageview.clientWidth * page
+  //console.log( pageslide.style.left )
+}
+</script>
+
+
+<script  type = 'module'>
+
+import imgMarker from '/js/imgmarker.js'
+import * as SM from '/js/sizemine.js'
+import dot from '/js/dot.js'
+
+let vid = '<%=vendor_id%>'
+let uid = '<%=uid%>'
+let gid = '<%=gid%>'
+
+let gsizes, //상품 사이즈
+    sorted, // 정렬된 매칭 스코어
+    sizelabel // 치수 명칭
+
+let marker_pos = '(outseam(0&d11,0&d305),chest(0&d705,0&d25),waist(0&d6875,0&d4925),sleeve(0&d1325,0&d475),shoulder(0&d6425,0&d115),rise(0&d71,0&d3775))'
+
+
+gid = 'IM001'
+console.log('matchmine:',vid, uid, gid)
+customElements.define("img-marker", imgMarker)
+
+await init(uid,gid,vid)
+
+async function init(uid, gid, vid){
+  let [dsize, _] = await Promise.all([
+    SM.loadUser(uid, vid),
+    SM.loadGood(gid, vid, true)
+  ])
+  //console.log("-----------------------", SM.dsize)
+
+  setBodysize(dsize.Arr())
+  const scorearr = SM.createMatchScores(SM.dgsizes, dsize, SM.dtpl)
+
+
+  //console.log('score arr:', scorearr)
+  sorted = SM.sortScores(scorearr)
+
+  const matchs = sorted[0]['sname']
+  if( matchs.length > 2 )  matchsize.style.fontSize = '2rem'
+  matchsize.innerText = matchs
+
+  sizelabel = SM.dlabels.Get("goodsize.").Arr()
+  let bestpos = sizelabel[bestPos(scorearr[0])]
+
+  span_bestpos.innerText = asSubject( bestpos )
+
+  dv_others.innerHTML = ''
+  for(let i=1;i<scorearr.length;i++){
+    let score = scorearr[i]
+    let wpos = bestPos(score, true)
+    if( sizelabel[wpos] ) wpos = sizelabel[wpos]
+
+    const desc = score[wpos] > 0 ? '가 너무 커요' : '가 너무 작아요'
+
+    let html = `
+      <div class = 'r${i} c1 graysize'> ${score['sname']} </div>
+      <div class = 'r${i} c2'> ${asSubject(wpos)} 작아요 </div>
+    `
+    dv_others.innerHTML += html
+  }
+
+  gsizes = SM.dgsizes.Arr()
+  span_recsize.innerText = matchs
+  setDetail(matchs, sorted)
+
+  let html = '<th> 사이즈 </th>'
+  for(let score of scorearr)
+    html += `<td> ${score.sname} </td> `
+  tr_sizes.innerHTML = html
+  tr_sizes.querySelectorAll('td').forEach( td => {
+    td.addEventListener('click', e => {
+      const td = e.srcElement
+      //console.log('add event listen:',td.innerText)
+      setDetail(td.innerText, scorearr)
+    })
+  })
+}
+
+function setBodysize(sizearr){
+  console.log(sizearr, SM.dsize)
+  let bodytype = SM.getType(sizearr)
+  let sizelabels = SM.dlabels.Get('bodysize.').Arr()
+  let typelabels = SM.dlabels.Get('bodytype.').Arr()
+
+  span_bodytype.innerText = typelabels[bodytype]
+  /*
+  sizetable.innerHTML = ''
+  */
+
+  for(let key in sizearr){
+    let id = "sz_" + key
+    let obj = document.getElementById(id)
+    if( obj ) obj.innerText = sizearr[key] + 'cm'
+  }
+
+}
+
+function setDetail(sname, scorearr ){
+  //console.log('setDetail:',sname, scorearr)
+
+  dv_size.innerText = sname
+  let score, gsize
+
+  for(let s of scorearr)  if( s.sname == sname ) score = s
+  for(let g of gsizes)  if( g.sname == sname ) gsize = g
+
+  //console.log(score, gsize, sizelabel)
+  setAvatar(score, gsize, sizelabel)
+
+}
+
+
+
+function asSubject(word){ // 주격조사를 붙여줌
+  if( korBottom(word.at(-1)) ) return word + '이'
+  else return word + '가'
+}
+
+function korBottom(last) { // 받침여부 검사
+  var uni = last.charCodeAt(0);
+  if (uni < 44032 || uni > 55203) return null;
+  return (uni - 44032) % 28 != 0;
+}
+
+
+function bestPos(score, reverse = false){
+  let bpos, posbest = null
+  for(let k in score){
+    if( k == 'fit' || k == 'sname' ) continue
+    let v = Math.abs(score[k])
+    if( posbest == null ||
+        (!reverse && v < posbest ) ||
+        (reverse && v > posbest )){
+      bpos = k
+      posbest = v
+    }
+  }
+  return bpos
+}
+
+
+function setAvatar(score, gsize, sizelabel){
+  //console.log("best_gsize:",gsize)
+  let color_fit = '#40dd77', color_small = '#3b6df7', color_big = '#ef2d71'
+  let markers = dot.parse(marker_pos).Arr()
+  let gmark = {}, gvalue = {}, colors = {}
+
+  for(let k in markers )
+    if(score[k]) {
+      let txt, txt1, txt2
+      gmark[k] = markers[k]
+      if( Math.abs(score[k]) < 2) {
+        txt = '잘 맞아요'
+        colors[k] = color_fit
+      } else if( score[k] > 0 ) {
+        txt = '커요'
+        colors[k] = color_big
+      } else {
+        txt = '작아요'
+        colors[k] = color_small
+      }
+
+      txt1 = ( sizelabel[k]?sizelabel[k]:k ) + ' ' + gsize[k] + 'cm'
+      txt2 = '내 사이즈보다' + score[k] + 'cm'
+      gvalue[k] = txt + '\n' + txt1 + '\n' + txt2
+    }
+
+  //console.log('avatar markers:',gmark)
+  match_avatar.setMarkers(gmark)
+  match_avatar.redrawMarkers()
+  match_avatar.setValues(gvalue)
+  if(match_avatar.pending)
+    match_avatar.onload = function(){
+      //console.log('now set colors')
+      for(let k in gmark){
+        let marker = match_avatar.getMarker(k)
+        marker.style.color = colors[k]
+      }
+    }
+  else for(let k in gmark){
+      let marker = match_avatar.getMarker(k)
+      marker.style.color = colors[k]
+    }
+
+}
+
+
+</script>
+
+<style>
+
+
+</style>

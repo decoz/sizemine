@@ -1,0 +1,25 @@
+goodsize
+  sname.사이즈
+  shoulder.어깨길이
+  sleeve.소매길이
+  chest.가슴둘레
+  outseam.총장
+  waist.허리단면
+  rise.밑위
+  thigh.허벅지단면
+  legop.밑단단면
+bodysize
+  sh.어깨
+  wa.허리
+  ne.목
+  ar.팔길이
+  ch.가슴둘레
+  he.골반
+  le.다리길이
+bodytype
+  0.삼각형
+  1.모래시계형
+  2.역삼각형
+  3.직사각형
+  4.둥근형
+  5.마른체형

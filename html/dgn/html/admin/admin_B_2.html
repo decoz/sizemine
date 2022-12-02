@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <!-- Common css  -->
+        <link href="../../css/user/common.css" rel="stylesheet" />
+        <link href="../../css/user/page_D_1.css" rel="stylesheet" />
+        <link href="../../css/admin/common.css" rel="stylesheet" />
+        <link href="../../css/admin/admin_B_2.css" rel="stylesheet" />
+
+        <!-- Chart js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- https://chartjs-plugin-datalabels.netlify.app/guide/ -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js" integrity="sha512-Tfw6etYMUhL4RTki37niav99C6OHwMDB2iBT5S5piyHO+ltK2YX8Hjy9TXxhE1Gm/TmAV0uaykSpnHKFIAif/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <!-- Modal -->
+        <div class="modal-wrapper">
+            <!-- Modal header -->
+            <div class="modal-header">
+                <div class="modal-header-logo">
+                    <img src="../../static/images/logo/logo.png" width="145px" height="25px" />
+                </div>
+
+                <div class="modal-header-close">
+                    <img src="../../static/images/icons/modal/close.png" width="17px" height="17px" />
+                </div>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body-with-footer">
+                <!-- Sidebar -->
+                <div class="modal-sidebar-with-footer">
+                    <div class="modal-sidebar-child">
+                        <p class="clean-margin">
+                            실측 치수 입력
+                        </p>
+                    </div>
+
+                    <div class="modal-sidebar-child selected">
+                        <p class="clean-margin">
+                            사이즈마인 통계
+                        </p>
+                    </div>
+                </div>
+
+                <!-- modal body gap -->
+                <div class="modal-gap-with-footer"></div>
+
+                <!-- Content -->
+                <div class="modal-content-with-footer">
+                    <!-- Template start -->
+                    <div class="graph-wrapper" style="margin-bottom: 27px;">
+                        <div class="graph-header">
+                            <p class="clean-margin font-size-m-1">
+                                사이즈마인 이용 수
+                            </p>
+                        </div>
+
+                        <div class="graph-body">
+                            <div class="graph-body-child">
+                                <canvas id="pie-chart-1"></canvas>
+
+                                <p style="margin-top: 20px;" class="clean-margin font-size-s-2 text-align-center">
+                                    상품 클릭 후 사이즈마인을<br/>
+                                    이용한 고객님의 비율입니다.
+                                </p>
+                            </div>
+
+                            <div class="graph-body-child">
+                                <canvas id="pie-chart-2"></canvas>
+
+                                <p style="margin-top: 20px;" class="clean-margin font-size-s-2 text-align-center">
+                                    사이즈마인 사용 후 구매한<br/>
+                                    고객님의 비율입니다.
+                                </p>
+                            </div>
+
+                            <div class="graph-body-child">
+                                <canvas id="pie-chart-3"></canvas>
+
+                                <p style="margin-top: 20px;" class="clean-margin font-size-s-2 text-align-center">
+                                    추천받은 사이즈로 구매한<br/>
+                                    고객님의 비율입니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Template end -->
+                    <!-- Template start -->
+                    <div class="graph-wrapper">
+                        <div class="graph-header">
+                            <p class="clean-margin font-size-m-1">
+                                체형 비율
+                            </p>
+                        </div>
+
+                        <div class="bar-graph-body">
+                            <div class="bar-graph-body-child">
+                                <canvas id="bar-chart-1"></canvas>
+                            </div>
+
+                            <div>
+                                <p class="clean-margin font-size-m-2" style="margin-bottom: 7px;">
+                                    둥근형 42% (102명)
+                                </p>
+
+                                <p class="clean-margin font-size-m-2" style="margin-bottom: 7px;">
+                                    사각형 38% (76명)
+                                </p>
+
+                                <p class="clean-margin font-size-m-2" style="margin-bottom: 7px;">
+                                    모래시계형 23% (55명)
+                                </p>
+
+                                <p class="clean-margin font-size-m-2" style="margin-bottom: 7px;">
+                                    삼각형 15% (49명)
+                                </p>
+
+                                <p class="clean-margin font-size-m-2" style="margin-bottom: 7px;">
+                                    역삼각형 3% (12명)
+                                </p>
+                            </div>
+
+                            <div class="size-image">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Template end -->
+                    
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                
+            </div>
+        </div>
+    </body>
+
+    <script>
+        let contextA = ["SizeMine", "상품 클릭"]
+
+        const ctxA = document.getElementById('pie-chart-1').getContext('2d');
+
+        const chartA = new Chart(ctxA, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [42, 58],
+                    backgroundColor: [
+                        '#4D4D4D',
+                        '#E6E6E6'
+                    ]
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        }
+                    }]
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: function(value, context) {
+                            return `${contextA[context.dataIndex]}\n\n${value}%`
+                        },
+                        textAlign: "center",
+                        labels: {
+                            title: {
+                                font: {
+                                    size: "10px",
+                                },
+                                color: [
+                                    '#E6E6E6',
+                                    '#4D4D4D'
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        let contextB = ["추천사이즈로\n구매", "SizeMine\n추천 사이즈"]
+
+        const ctxB = document.getElementById('pie-chart-2').getContext('2d');
+
+        const chartB = new Chart(ctxB, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [42, 58],
+                    backgroundColor: [
+                        '#4D4D4D',
+                        '#E6E6E6'
+                    ]
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        }
+                    }]
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: function(value, context) {
+                            return `${contextB[context.dataIndex]}\n\n${value}%`
+                        },
+                        textAlign: "center",
+                        labels: {
+                            title: {
+                                font: {
+                                    size: "10px",
+                                },
+                                color: [
+                                    '#E6E6E6',
+                                    '#4D4D4D'
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        let contextC = ["구매", "SizeMine\n사용"]
+
+        const ctxC = document.getElementById('pie-chart-3').getContext('2d');
+
+        const chartC = new Chart(ctxC, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [42, 58],
+                    backgroundColor: [
+                        '#4D4D4D',
+                        '#E6E6E6'
+                    ]
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        }
+                    }]
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: function(value, context) {
+                            return `${contextC[context.dataIndex]}\n\n${value}%`
+                        },
+                        textAlign: "center",
+                        labels: {
+                            title: {
+                                font: {
+                                    size: "11px",
+                                },
+                                color: [
+                                    '#E6E6E6',
+                                    '#4D4D4D'
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+<script>
+    let contextD = ["역삼각", "사각", "둥근", "삼각", "모래시계"]
+
+    const ctxD = document.getElementById('bar-chart-1').getContext('2d');
+
+    const chartD = new Chart(ctxD, {
+        
+        type: 'bar',
+        data: {
+            labels: contextD,
+            datasets: [{
+                data: [3, 38, 42, 15, 23],
+                backgroundColor: [
+                    '#CCC',
+                    '#E6E6E6',
+                    '#E6E6E6',
+                    '#CCC',
+                    '#CCC'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                },
+                y: {
+                    display: false,
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+            },
+        }
+    });
+</script>
+</html>

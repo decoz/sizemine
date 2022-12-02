@@ -1,0 +1,196 @@
+<html>
+<header>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/goodmine.css" rel="stylesheet" />
+  <link href="/css/common.css" rel="stylesheet" />
+
+</header>
+
+<body>
+<div id = container >
+  <div class = 'top r1 c12'>
+    <img src = '/images/sizemine_logov1.png'>
+
+    </div top>
+  <div class = 'c1 r2'>
+    <t-select id = sel_menu select >
+      <div opt > 사이즈마인 치수입력 </div>
+      <div opt > 통계 </div>
+    </t-select>
+  </div>
+
+  <div id = 'div_editgood' class = 'r2 c2'>
+    <div id =  dv_select class = 'r1 c1' >
+
+      <div class = dv_header>
+        <div class = headerbox> </div> 템플릿 선택  </div> <br>
+
+      <t-dbselect selsize = 1 id = sel_tpl url = '/template/list?field=tpl_name' >
+      </t-dbselect>
+      <img-marker id = img_tpl> </img-marker>
+
+    </div>
+
+    <d-view id = dv_size class = 'r2 c12' >
+      <div class = dv_header>
+        <div class = headerbox> </div> 사이즈 입력  </div> <br>
+      <table id = tbl_size >
+        <tbody id = tbody_size dot = 'gsize' iter = 'tr[dot]' replace>
+
+        </tbody>
+      </table>
+      <div class = flex>
+        <button onclick = 'addRow(sizearr)'> 사이즈 추가 </button>
+        <button onclick = 'removeRow()'> 사이즈 삭제 </button>
+      </div>
+    </d-view>
+  </div edit_good>
+
+  <div id = dv_save class = 'r3 c12' >
+    <button id = btn_cancel> 취소 </button>
+    <button id = btn_save> 저장하기 </button>
+
+  </div>
+</div container>
+</body>
+</html>
+
+<script>
+let gsize_labels, sizearr
+
+
+function addRow(sizearr = sizearr) {
+  const tbody = tbl_size.children[0]
+  const tr = document.createElement('tr')
+  tr.setAttribute('dot','')
+  let rows = `<th class = 'headcolumn'> <input dot = 'sname'> </th>`
+  for(let k in sizearr) {
+    rows += `<td> <input type = number dot = '${k}'> </input> </td> \n`
+  }
+  tr.innerHTML += `${rows}`
+  tbody.appendChild(tr)
+}
+
+function removeRow() {
+  const tbody = tbl_size.children[0]
+  const arr = tbody.children
+  console.log(arr)
+  if(arr.length > 1) tbody.removeChild( arr[arr.length-1 ] )
+
+}
+
+
+
+</script>
+
+
+<script type = 'module'>
+import selector from '/js/selector.js'
+import dbSelect from '/js/dbselect.js'
+import imgMarker from '/js/imgmarker.js'
+import dot from '/js/dot.js'
+import dTable from '/js/dtable.js'
+import dView from '/js/dview3.js'
+import * as SM from '/js/sizemine.js'
+import * as MI from '/js/mineif.js'
+
+customElements.define('t-select', selector)
+customElements.define('t-dbselect', dbSelect)
+customElements.define('d-table', dTable)
+customElements.define('img-marker', imgMarker)
+customElements.define('d-view', dView)
+
+
+let vid = '<%=vendor_id%>'
+let gid = '<%=gid%>'
+let tpl_name
+gid = 'T0002'
+
+await init(gid, vid)
+async function init(gid, vid){
+  console.log(`matchmine - gid:${gid} , vid:${vid}`)
+
+  let [garr]  = await Promise.all( [ SM.loadGood(gid, vid, true) ] )
+  console.log("garr:",SM.dgsizes.Str())
+  gsize_labels = SM.dlabels.Get('goodsize').Arr()
+
+
+  tpl_name = SM.tpl_name
+  //console.log( SM.dtpl.Get('name').V() )
+
+  const sizes = SM.dtpl.Get("sizes.").Arr()
+  sizearr = sizes
+  img_tpl.setMarkers(sizes)
+  img_tpl.setImg(SM.dtpl.Get("image.").V())
+  setDview(sizes)
+
+  dv_size.Put(SM.dgsizes)
+  dv_size.style.visibility = 'visible'
+
+
+}
+
+btn_save.onclick = async function(e){
+  console.log(dv_size.Get().Arr())
+  const d = dv_size.Get()
+  const putarr = {
+    'gid':gid,
+    'vid':vid,
+    'sizes':d.Str(),
+    'tpl_name':tpl_name
+  }
+
+  const res = await MI.postJson('/good/put', putarr)
+}
+
+
+sel_menu.onselect = (value) => {
+  console.log(value)
+}
+
+sel_tpl.filter = function(data) {
+  let arr = JSON.parse(data)
+  return JSON.stringify( arr.map(d => d.tpl_name) )
+}
+
+sel_tpl.sync()
+if( tpl_name != undefined ) sel_tpl.select( tpl_name )
+
+sel_tpl.onselect = async function(v) {
+
+  await SM.loadTpl(v)
+  const sizes = SM.dtpl.Get("sizes.").Arr()
+  img_tpl.setMarkers(sizes)
+  img_tpl.setImg(SM.dtpl.Get("image.").V())
+
+  setDview(sizes)
+  sizearr = sizes
+  dv_size.style.visibility = 'visible'
+  console.log()
+
+}
+
+
+function setHeader(tbody, sizearr = sizearr){
+  let cols = '<th> 사이즈 </th>'
+  for(let k in sizearr)
+    cols += `<th> ${ gsize_labels[k]? gsize_labels[k] : k} </th> \n`
+  tbody.innerHTML = `<tr> ${cols} <tr>`
+}
+
+
+function setDview(sizearr){
+
+  console.log('setTable:',sizearr)
+  const tbl = tbl_size
+  setHeader(tbody_size, sizearr)
+  addRow(sizearr)
+  console.log(tbl, sizearr)
+
+
+}
+
+
+
+
+</script>

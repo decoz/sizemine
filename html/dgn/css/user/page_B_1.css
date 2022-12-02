@@ -1,0 +1,39 @@
+.header-text {
+    color: black;
+}
+
+.top-cloth-wrapper {
+    width: 117px;
+    height: 104px;
+}
+
+.bottom-cloth-wrapper {
+    width: 117px;
+    height: 140px;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+input[type="checkbox"]+label {
+    top: 0;
+    position: absolute;
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url('../../static/images/checkbox/default.jpg') no-repeat 0 0px / contain;
+}
+
+input[type='checkbox']:checked+label {
+    top: -5px;
+    width: 20px;
+    height: 20px;
+    background: url('../../static/images/checkbox/checked.jpg') no-repeat 0 1px / contain;
+}
+
+input[type="checkbox"] {
+    display: none;
+}

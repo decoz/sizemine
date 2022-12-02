@@ -1,0 +1,376 @@
+<table id = tbl_screen >
+<tr id = scroller >
+<td id = section_start class = td_section >
+  <img class = logo src = "/images/sizemine_logov1.png">
+
+    <div id = input_sex >
+      성별
+       <input id = "r_male" type="radio" name="sex" value="male" onclick = 'check_page(0)'>
+       <label for = "r_male" > 남성</label>
+
+       <input id = "r_female" type="radio" name="sex" value="female" onclick = 'check_page(0)' >
+       <label for = "r_female"> 여성 </label>
+     </div>
+     <div id = div_height >
+       키
+        <input id = "input_height" type="number" onchange = 'check_page(0)'>
+        <span> cm </span>
+
+        </div>
+        </td>
+<td>
+  <div id = input_fit >
+    선호하는 핏을 선택해주세요
+    <table id = tbl_fit1 class = tbl_fit > <tr>
+      <td>
+        <img src = 'fit1-1.png' > <br>
+        <input type = 'radio' name = 'fit1' id = 'fit_radio1-1' value = 'fit_slim' onchange = 'check_page(1)'>
+        <label for = 'fit_radio1-1'> 슬림핏 </label>
+        </td>
+      <td>
+        <img src = 'fit1-1.png'> <br>
+        <input type = 'radio' name = 'fit1' id = 'fit_radio1-2' value = 'fit_normal' onchange = 'check_page(1)' >
+        <label for = 'fit_radio1-2'> 기본핏 </label>
+        </td>
+      <td>
+        <img src = 'fit1-1.png'> <br>
+        <input type = 'radio' name = 'fit1' id = 'fit_radio1-3' value = 'fit_over' onchange = 'check_page(1)'>
+        <label for = 'fit_radio1-3'> 오버핏 </label>
+        </td>
+      </tr> </table>
+
+    <table id = tbl_fit2  class = tbl_fit >
+      <tr>
+        <td>
+          <img src = 'fit2-1.png' > <br>
+          <input type = 'radio' name = 'fit2' id = 'fit_radio2-1' value = 'fit_slim' onchange = 'check_page(1)'>
+          <label for = 'fit_radio2-1'> 허리사이즈 </label>
+
+          </td>
+        <td>
+          <img src = 'fit2-2.png'> <br>
+          <input type = 'radio' name = 'fit2' id = 'fit_radio2-2' value = 'fit_normal' onchange = 'check_page(1)'>
+          <label for = 'fit_radio2-2'> 엉덩이 사이즈 </label>
+          </td>
+      <tr>
+        <td>
+          <span> 허리가 잘 맞는게 중요해요 </span> </td>
+        <td>
+          <span> 엉덩이가 잘 맞는게 중요해요 </span> </td>
+        </tr> </table>
+
+    </div>
+  </td>
+
+<td>
+  <img src = "howto.png">
+
+
+  </td>
+
+<td id = section_imgup class = td_section >
+  <div>
+    <p class = p_title>
+      사이즈마인은 사진 단 한장으로 신체 치수를 측정해드립니다.
+      </p>
+    </div>  <br>
+
+  <drag-upload id = mydrag showupimg = true >
+    <div>
+      <img src = '/images/camera.png' width = 50px >
+      <br>
+      사진첨부
+    </div>
+    </drag-upload>  <br>
+
+  <button id = btn_reup onclick = 'mydrag.reset()'> 새로 올리기 </button>
+  </td>
+
+<td id = section_showsize class = td_section >
+  <div>
+    나의 신체사이즈는? <br>
+
+    <table> <tr>
+      <td>
+        <img src = 'bodytype0.png' id = img_bodytype >
+        </td>
+      <td id = td_size>
+        <div id = 'txt_bodytype'> </div>
+
+        <table id = 'sizetable'> <tr> <td> </td> </tr> </table>
+        </td>
+      </tr> </table>
+
+
+    <button id = btn_save > 사이즈 저장하기 </button>
+
+    </div>
+  </td>
+  </tr></table>
+
+  <div id = dv_move >
+      <button id = btn_prev onclick = 'move_prev()'> back </button>
+      <button id = btn_next onclick = 'move_next()' disabled > continue > </button>
+  </div>
+
+<script type = 'module'>
+import imgMarker from '/js/imgmarker.js'
+import * as SM from '/js/sizemine.js'
+import dragUpload from '/js/dragupload.js'
+import dot from '/js/dot.js'
+
+customElements.define("img-marker", imgMarker)
+customElements.define("drag-upload", dragUpload)
+
+mydrag.onFileDrop = e => {
+  console.log("onfiledrop")
+  SM.upload(mydrag.files[0], sizearr => {
+    console.log(sizearr, SM.dsize)
+    let bodytype = SM.getType()
+    let sizelabels = SM.dlabels.Get('bodysize.').Arr()
+    let typelabels = SM.dlabels.Get('bodytype.').Arr()
+
+    img_bodytype.src = 'bodytype' + bodytype + '.png'
+    txt_bodytype.innerText = '나의 체형은 ' + typelabels[bodytype]
+
+    sizetable.innerHTML = ''
+    for(let key in sizearr){
+      let sizename = sizelabels[key], size = sizearr[key]
+      let tr = document.createElement('tr')
+      tr.innerHTML = '<th>' + sizename + '</th>' +
+                    '<td>' + size + 'cm </td>'
+      sizetable.appendChild(tr)
+    }
+
+    btn_next.disabled = false
+    console.log("bodytype:",SM.getType())
+
+
+  })
+
+
+}
+
+</script>
+
+
+
+<script>
+var pages = scroller.children.length
+var page = 0
+tbl_screen.style.width = pages * 100 + 'vw'
+console.log(pages)
+
+function check_page(p){
+
+  switch(p){
+  case 0 :
+    let sex = document.querySelector('input[name="sex"]:checked')
+    let height = input_height.value
+    console.log(sex.value, height)
+    if(sex && height ) btn_next.disabled = false
+    break
+  case 1 :
+    let fit1 = document.querySelector('input[name="fit1"]:checked')
+    let fit2 = document.querySelector('input[name="fit2"]:checked')
+    if(fit1 && fit2) btn_next.disabled = false
+    break
+
+
+
+  }
+
+
+}
+
+function move_prev() {
+  //let newleft = parseInt(scroller.style.left) + window.innerWidth
+  //scroller.style.left =  newleft
+  let n = parseInt(scroller.style.left)
+  if(!n) n = 0
+  scroller.style.left =  n + window.innerWidth
+  page--
+  console.log( scroller.style.left)
+
+}
+function move_next() {
+  //let newleft = parseInt(scroller.style.left + "") - window.innerWidth
+  //scroller.style.left =  newleft
+  let n = parseInt(scroller.style.left)
+  if(!n) n = 0
+  scroller.style.left =  n - window.innerWidth
+  page++
+  console.log( scroller.style.left)
+  if(page != 2 ) btn_next.disabled = true
+}
+</script>
+
+
+<style>
+
+body {
+  overflow:hidden;
+  background:white;
+}
+
+.td_section {
+  text-align:center;
+  align-content: center;
+  font-size:1.3em;
+}
+
+
+.p_title {
+  display:block;
+  width:70vw;
+  margin: auto;
+
+}
+
+#td_size {
+  text-align: left;
+  vertical-align: top;
+
+}
+
+#txt_bodytype {
+  text-align: left;
+  position:relative;
+  margin-bottom:2em;
+  font-size:1.2em;
+}
+
+#sizetable th{
+  text-align: left;
+  width:12em;
+}
+
+#sizetable td{
+  text-align: left;
+  width:10em;
+}
+
+#size_avatar {
+  margin-top:2em;
+  width:auto;
+}
+
+#scroller {
+  position:relative;
+}
+
+#tbl_screen{
+  width:auto;
+  overflow-x:hidden;
+  height:70%;
+  border-spacing: 0;
+}
+
+
+#btn_reup {
+  font-size:0.7em;
+  padding:0.7em;
+  background:#EEE;
+  border-radius:0.5em;
+  border:none;
+}
+
+#dv_move button {
+  margin:1em;
+  font-size:1em;
+  padding:0.5em;
+  background:#EEE;
+  border:none;
+}
+
+#btn_prev {
+  float:left
+}
+
+#btn_next {
+  float:right
+}
+
+
+td {
+  width:100%;
+}
+
+
+#input_fit {
+  font-size: 1.3em;
+}
+
+#input_fit span {
+  font-size: 0.8em;
+}
+
+.tbl_fit {
+  margin-top:1em;
+  border-bottom:1px solid #EEE;
+  padding:2em;
+}
+.tbl_fit img {
+  width:auto;
+  margin-bottom:1em;
+}
+
+td > div {
+  margin-top : 3em;
+}
+
+
+drag-upload {
+  width:50%;
+  margin-bottom:2em;
+  margin-top:2em;
+
+}
+
+#input_sex {
+  margin-top:3em;
+  font-size:1.2em;
+}
+
+
+#input_sex input {
+  display:none;
+}
+
+input[type='number'] {
+  width:8em;
+  font-size:1.2em;
+  margin-left:2em;
+  border:1px solid #CCC;
+}
+
+
+#input_sex input[type='radio'] + label {
+  margin-left:0.5em;
+  font-size:1em;
+  background:#EEE;
+  color:#555;
+  border-radius: 0.3em;
+  padding:0.5em;
+}
+
+
+#input_sex input[type='radio']:checked + label {
+  color:white;
+  background:#888;
+  border:2px solid gray;
+
+}
+
+
+#tbl_screen td {
+  text-align: center;
+  width:100vw;
+  background:white;
+}
+#tbl_screen img {
+  width:60%;
+
+}
+
+</style>
