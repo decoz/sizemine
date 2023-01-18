@@ -10,8 +10,6 @@
   align-self: center;
 }
 
-
-
 #dv_sex {
   margin-top:4em;
   text-align: left;
@@ -45,8 +43,8 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   background-color: white;
   color: white;
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   border-radius:2em;
   box-shadow: 3px 3px 3px gray, 1px 1px 1px red;
 }

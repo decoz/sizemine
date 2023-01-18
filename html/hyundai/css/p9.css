@@ -1,14 +1,14 @@
 #page9 {
-  grid-template-rows: 20% 55% 25%;
+  grid-template-rows: 15% 60% 25%;
 }
 
 #page9 .content {
   display:grid;
-  height:80%;
+  height:50vh;
   width:90vw;
   justify-self: center;
   align-content: center;
-  grid-template: 1fr 1fr / 1fr;
+  grid-template: 60% 40% / 1fr;
 }
 
 #page9 .top {
@@ -38,14 +38,13 @@
 }
 
 #dv_typesize img {
-  width:80%;
+  height:100%;
 }
 
 #dv_recsize {
   display:grid;
   font-weight: bold;
   grid-row-gap: 10%;
-  grid-template: 1fr 1fr / repeat(4,1fr);
 }
 
 #dv_recsize input {

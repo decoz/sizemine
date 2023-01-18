@@ -1,0 +1,82 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/sizemine/common.css" rel="stylesheet" />
+<link href="/css/sizemine/a1.css" rel="stylesheet" />
+<link href="/css/sizemine/a2.css" rel="stylesheet" />
+<link href="/css/sizemine/a3.css" rel="stylesheet" />
+<link href="/css/sizemine/a4.css" rel="stylesheet" />
+<link href="/css/sizemine/a5.css" rel="stylesheet" />
+<link href="/css/sizemine/a6.css" rel="stylesheet" />
+
+<div id = pageview class = container>
+  <div id = pageslide class = slider >
+    <div id = page1 class = 'page c1'> <%- include('sizemine/a1.htm') %> </div>
+    <div id = page2 class = 'page c2'> <%- include('sizemine/a2.htm') %> </div>
+    <div id = page3 class = 'page c3'> <%- include('sizemine/a3.htm') %> </div>
+    <div id = page4 class = 'page c4'> <%- include('sizemine/a4.htm') %> </div>
+    <div id = page5 class = 'page c5'> <%- include('sizemine/a5.htm') %> </div>
+    <div id = page6 class = 'page c6'> <%- include('sizemine/a6.htm') %> </div>
+
+  </div slider>
+</div container>
+
+<script>
+let page = 0
+function next(url){
+  //document.location.href = url
+  page++
+  const nleft = pageview.clientWidth * page
+  pageview.scrollLeft = nleft
+  console.log( 'slide' , page,  pageview.scrollLeft , nleft )
+}
+
+function prev(){
+  page--
+  pageview.scrollLeft = pageview.clientWidth * page
+  console.log( pageslide.style.left )
+}
+
+</script>
+
+<script  type = 'module'>
+
+import imgMarker from '/js/imgmarker.js'
+import * as SM from '/js/sizemine.js'
+import dragUpload from '/js/dragupload.js'
+import dot from '/js/dot.js'
+
+customElements.define("img-marker", imgMarker)
+customElements.define("drag-upload", dragUpload)
+
+mydrag.onFileDrop = e => {
+  console.log("onfiledrop")
+  SM.upload(mydrag.files[0], sizearr => {
+    console.log(sizearr, SM.dsize)
+    let bodytype = SM.getType()
+    let sizelabels = SM.dlabels.Get('bodysize.').Arr()
+    let typelabels = SM.dlabels.Get('bodytype.').Arr()
+
+    span_bodytype.innerText = typelabels[bodytype]
+    /*
+    sizetable.innerHTML = ''
+    */
+
+    for(let key in sizearr){
+      let id = "sz_" + key
+      let obj = document.getElementById(id)
+      if( obj ) obj.innerText = sizearr[key] + 'cm'
+    }
+
+    //console.log("bodytype:",SM.getType())
+    next()
+
+  })
+
+
+}
+
+</script>
+
+<style>
+
+
+</style>

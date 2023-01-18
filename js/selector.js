@@ -1,16 +1,9 @@
 export default class selector extends HTMLElement {
   selectname = null
   selected = null
+  onselect = null
 
-  connectedCallback(){
-
-    if( this.hasAttribute('select') )
-      this.selectname = this.getAttribute('select')
-
-    if( this.hasAttribute('onselect') )
-        this.onselect = this.getAttribute('onselect')
-
-
+  init(){
     console.log(this.selectname)
     this.querySelectorAll(`[opt='${this.selectname}']`).forEach( elm => {
       console.log(elm)
@@ -31,5 +24,15 @@ export default class selector extends HTMLElement {
         }
       })
     })
+  }
+
+  connectedCallback(){
+
+    if( this.hasAttribute('select') )
+      this.selectname = this.getAttribute('select')
+
+    if( this.hasAttribute('onselect') )
+        this.onselect = this.getAttribute('onselect')
+    this.init()
   }
 }

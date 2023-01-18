@@ -1,0 +1,43 @@
+
+
+
+#page4 .content {
+  padding-left:5%;
+  padding-right:5%;
+  display:grid;
+  height:100%;
+  width:90%
+  justify-content: center;
+  grid-template-rows:70% 20% 10%;
+}
+
+.font_red {
+  font-size:2.5vmax;
+  font-weight:700;
+  color:#d4145A;
+}
+
+
+#page4 .content > img {
+  justify-self: center;
+  width:90%;
+  max-height:90%;
+  object-fit:contain;
+}
+
+#div_info {
+  display: grid;
+  justify-self:center;
+  text-align:left;
+  column-gap:5%;
+  width:100%;
+  grid-template: 1fr 1fr 1fr / 30% 70% ;
+}
+
+#div_info .c1 {
+  text-align: right;
+}
+
+#div_info .c2 {
+  justify-content: flex-start;
+}

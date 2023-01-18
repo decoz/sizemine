@@ -11,8 +11,7 @@
 }
 
 #mydrag {
-  width:40%;
-  max-height:100%;
+  width:40vw;
   justify-self:center;
   align-self:end;
   border:none;

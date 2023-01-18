@@ -8,6 +8,7 @@ goodsize
   rise.밑위
   thigh.허벅지단면
   legop.밑단단면
+  heap.엉덩이단면
 bodysize
   sh.어깨
   wa.허리

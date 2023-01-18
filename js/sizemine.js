@@ -3,7 +3,7 @@ import dot from '/js/dot.js'
 import * as MI from '/js/mineif.js'
 var label_url = '/labels.txt'
 
-var sizemine_url = 'http://175.193.6.220:5000/bodysize/'
+var sizemine_url = 'https://sizemine.net/bodysize/'
 var dlabels = null
 
 var sizearr = null

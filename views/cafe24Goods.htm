@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport">
+</head>
+<style>
+body{background-color: #fff;min-width:1400px;}
+
+ul, li{list-style:none;}
+.container_wr{padding-bottom:70px;min-width: 1200px;}
+#wrap{width:100%;height:100%;}
+#wrap *{font-size:16px; font-family: 'Roboto', sans-serif;font-weight:500;}
+p,
+label {font-size: 16px;font-weight:500;}
+input ,select {cursor: pointer;}
+input[type=text],input[type=number],input[type=password]{cursor: text;}
+
+table {width: 100%;}
+table, th{font-weight:bold !important;}
+table, th, td { border: 1px solid #bcbcbc;text-align:center;}
+thead{background-color: #5374B5;color:#fff;}
+th{padding: 10px; }
+
+.pagination{width:100%;text-align:center;margin-top:20px;}
+.pagination ul{display:inline-block;font-size:20px;cursor: pointer;}
+.pagination ul li{display:inline-block;padding: 0 5px;}
+.pagination ul li span{font-weight:400 !important; color:#333 !important;}
+.pagination ul li.active span{font-weight:bold !important;color:#000 !important;}
+#sizeminePop{display: none; position: fixed;top: 0; left: 0;width: 400px; height: 800px; z-index: 99999;}
+#sizeminePop.on{display: block;}
+#sizeminePop .sizeBox{position: absolute; top: 40%;left: 38%;transform: translate(-50%, -50%);z-index: 100000;}
+#sizeminePop .sizeBox .btn{margin-top: 25px;}
+#sizeminePop .sizeBox .box{position: relative;top:0;left: 0;transform: translate(0,0);}
+#sizeminePop .sizedim{position: fixed;top: 0;left: 0;  display: block;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);}
+#sizeminePop .close{font-size: 20px;position: absolute;top: -30px;right: 0;cursor: pointer;}
+
+</style>
+<body>
+    <div class="sizeminePop" id="sizeminePop">
+      <div class="sizedim"></div>
+      <div class="sizeBox">
+          <div class="close" onclick="o_close()">x</div>
+          <div class="box">
+          </div>
+      </div>
+    </div>
+    <div class="wrap">
+        <div class="goods_list">
+          <form id="frmList" name="frmList" onsubmit="return sumbitCheck();">
+              <input type="hidden" name="state" value="<%= state %>">
+		         <div class="search_box">
+                <div>
+                    검색분류
+                    <select id="searchKey" name="key">
+                        <option value="">- 선택 -</option>
+                        <option value="product_name" <%= (key == 'product_name') ? 'selected' : '' %>>상품명</option>
+                        <option value="product_code" <%= (key == 'product_code') ? 'selected' : '' %>>상품코드</option>
+                    </select>
+                    <input type="text" id="searchForm" name="keyword" class="top_srarch_text" placeholder="','로 여러개 검색" value="<%= keyword %>" autocomplete="off">
+                    <input type="submit" id="btnSearchTop" class="btn_top_srarch" title="검색" value="검색" alt="검색">
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>상품 이미지</th>
+                        <th>상품 코드</th>
+                        <th>실측 치수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < data.length; i++) { %>
+                        <tr>
+                            <td><%= count-- %></td>
+                            <td>
+                              <% if(!data[i].detail_image){ %>
+                                <%= data[i].product_name %>
+                              <% }else{ %>
+                                <img src="<%= data[i].detail_image %>" width="50" height="50">
+                              <% } %>
+                            </td>
+                            <td><%= data[i].product_code %></td>
+                            <td><button type="button" onclick="o_popup('cafe24', '<%= data[i].product_code %>');">직접 입력</button></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <div class="pagination">
+            </div>
+          </form>
+        </div goods_list>
+    </div wrap>
+</body>
+<script>
+function sumbitCheck()
+{
+  var key = document.getElementById('searchKey').value;
+  var keyword = document.getElementById('searchForm').value;
+
+  if(keyword && !key){
+      alert('상품명 또는 상품 코드를 선택하신 후 검색해 주시기 바랍니다.');
+      return false;
+  }
+}
+
+function o_close()
+{
+  document.getElementById('sizeminePop').classList.remove('on')
+}
+
+function o_popup(vendor_id, gid)
+{
+
+  const xhr = new XMLHttpRequest();
+
+  const url = "//sizemine.co.kr/view/goodmine?vendor_id="+vendor_id+"&gid="+gid;
+
+  // 요청을 초기화 합니다.
+  xhr.open('GET', url);
+  xhr.send();
+
+  xhr.onload = function () {
+     if (xhr.status >= 200 && xhr.status < 300) {
+        // const datas = JSON.parse(xhr.responseText);
+
+        document.getElementById('sizeminePop').classList.add('on')
+        document.getElementsByClassName('sizedim')[0].innerHTML = xhr.responseText
+        // console.log(datas)
+     } else {
+        console.log('failed');
+     }
+  };
+}
+
+</script>
+<script type='module'>
+
+var page = '<%= page %>'
+var total = '<%= total %>'
+var key = '<%= key %>'
+var keyword = '<%= keyword %>'
+
+paging(total, page, key, keyword);
+
+function paging(total, page, key, keyword)
+{
+    total = parseInt(total)
+    page = parseInt(page)
+
+    var ab = (page-1)%10;
+    var startpage = page-ab;
+    var endpage = startpage+9;
+    var pagecount = total/10;
+    var nowpage = page;
+
+    var kk = `&key=${key}&keyword=${keyword}&state=admin`;
+
+    if(endpage>Math.ceil(pagecount)){endpage = Math.ceil(pagecount);}
+
+    var setPage = '';
+    setPage += '<ul>';
+    if(startpage != 1){
+
+        setPage += '<li">';
+        setPage += '<a aria-label="First" href="?page=1'+kk+'"><<</a>';
+        setPage += '</li>';
+        setPage += '<li>';
+        setPage += '	<a aria-label="Previous" href="?page='+(startpage-10)+kk+'"><</a>';
+        setPage += '</li>';
+    }
+
+
+    var act = '';
+    for(var i = startpage; i <= endpage; i++){
+
+        if(nowpage == i){act = "active";}else{act = "";}
+
+        setPage += '<li class="'+act+'">';
+        if(nowpage != i){
+            setPage += '<a href="?page='+(i)+kk+'">';
+        }
+        setPage += '<span> '+i+' </span>';
+        setPage += '</a>';
+        setPage += '</li>';
+    }
+
+    if(endpage < Math.ceil(pagecount)){
+
+        setPage += '<li class="front-page front-page-next">';
+        setPage += '<a aria-label="Next" href="?page='+(startpage+10)+kk+' ">></a>';
+        setPage += '</li>';
+        setPage += '<li class="front-page front-page-last">';
+        setPage += '<a aria-label="Last" href="?page='+Math.ceil(pagecount)+kk+'">>></a>';
+        setPage += '</li>';
+    }
+    setPage += '</ul>';
+
+    document.getElementsByClassName('pagination')[0].innerHTML = setPage
+
+}
+</script>
+</html>

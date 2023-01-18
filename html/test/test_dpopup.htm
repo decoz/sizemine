@@ -1,0 +1,35 @@
+
+<d-popup id = nakedpop
+  title = 'popup test'
+  showframe = false
+  css = '
+    width:400px;
+    height:800px;
+    background-color:#fff
+  '
+> </d-popup>
+
+<button id = btn_npop > open popup </button>
+
+
+<script type = 'module'>
+import dPopup from '//sizemine.co.kr/js/dpopup.js'
+customElements.define("d-popup", dPopup)
+
+screen.disabled = true
+nakedpop.open('https://sizemine.co.kr/view/matchmine')
+// btn_npop.onclick = e => {
+//   screen.disabled = true
+//   nakedpop.open('https://sizemine.co.kr/view/matchmine')
+// }
+
+
+
+</script>
+
+<style>
+#nakedpop {
+  background:#FFF;
+}
+
+</style>

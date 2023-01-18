@@ -1,0 +1,62 @@
+
+#page6 .content {
+  padding-left:5%;
+  padding-right:5%;
+  display:grid;
+  height:100%;
+  width:90%;
+  grid-template: 70% 30% / 1fr 1fr;
+  justify-content: center;
+  align-content: center;
+}
+
+.bolder {
+  font-weight:bolder;
+}
+
+#sizeview {
+  height:100%;
+  display : grid;
+  grid-template: 2fr repeat(7, 1fr) / 60% 40%;
+  justify-content: left;
+}
+
+#sizeview div {
+  justify-self:left;
+}
+
+#dv_info {
+  justify-self:center;
+  display:flex'
+}
+
+#dv_info img {
+  width:1.2em;
+  height:1.2em;
+  margin-right:1em;
+}
+
+
+.redbtn {
+  grid-column: 1/3;
+  align-self:center;
+  justify-self:center;
+  margin-top:5%;
+  width: 45%;
+  height: 2rem;
+  border-radius: 24px;
+  background: #d4145A;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.content img {
+  justify-self:center;
+  object-fit:contain;
+  height:100%;
+
+}

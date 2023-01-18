@@ -54,9 +54,9 @@
   font-size: 1rem;
 }
 
-#page4 .content img {
+#page4 #imgview img {
   justify-self:center;
   object-fit:cover;
-  height:100%;
+  height:40vh;
 
 }

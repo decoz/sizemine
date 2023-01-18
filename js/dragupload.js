@@ -179,17 +179,18 @@ export default class dragUpload extends HTMLElement {
     border: 2px dashed #ccc;
     border-radius: 20px;
     display: inline-block;
-    height: 200px;
   }
 
   #dv_main {
     position:relative;
     height:100%;
-    overflow:hidden;
+
   }
 
   img {
     max-width:100%;
+    max-height:100%;
+    object-fit: contain;
   }
   :host(.highlight){
     color:white;

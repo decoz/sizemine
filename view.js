@@ -11,6 +11,10 @@ let view_params = {
   'goodmine'  : {
     'gid':'IM000',
     'vendor_id':'00000'
+  },
+  'sizemine' : {
+    'uid':'decoz',
+    'vendor_id':'00000'
   }
 }
 

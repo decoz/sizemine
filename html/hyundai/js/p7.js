@@ -11,3 +11,11 @@ function minus_item(){
   console.log("plut item input:",input)
   input.value--
 }
+
+function on_next() {
+
+  adjust_sizeinput()
+  next()
+
+
+}

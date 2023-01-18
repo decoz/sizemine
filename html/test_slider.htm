@@ -1,0 +1,29 @@
+<input id = in_range type = range min = 160 max = 210 >
+<span id = range_out > </span>
+<script>
+in_range.ontouchmove = e => {
+  range_out.innerText = e.srcElement.value
+}
+
+</script>
+
+<style>
+input[type='range']{
+  width:80%;
+  -webkit-appearance: none;
+  color:black;
+  background-color: gray;
+  height:1rem;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: white;
+  color: white;
+  width: 4rem;
+  height: 4rem;
+  border-radius:2em;
+  box-shadow: 3px 3px 3px gray, 1px 1px 1px red;
+}
+
+</style>

@@ -25,7 +25,8 @@ body {
 #pageview {
   width:95vw;
   height:85vh;
-  position:sticky;
+  position:fixed;
+  -webkit-overflow-scrolling:auto;
   overflow-x:hidden;
   scroll-behavior: smooth;
 }
@@ -34,7 +35,7 @@ body {
   width:95vw;
   height:85vh;
   display:grid;
-  grid-template-rows: 20% 65% 10% 5%;
+  grid-template-rows: 15% 70% 10% 5%;
 }
 
 .slider {
