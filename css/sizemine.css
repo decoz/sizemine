@@ -1,0 +1,22 @@
+
+.container img{
+  width:45%;
+}
+
+.page {
+  width:95vw;
+  height:90vh;
+  display:grid;
+  grid-template-rows: 20% 70% 10%;
+}
+
+.slider {
+  display:grid;
+  grid-template-columns: repeat(6,1fr);
+  width:190vw;
+}
+
+.main {
+  font-size:5vh;
+  width:95vw;
+}

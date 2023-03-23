@@ -1,0 +1,61 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="/css/sm2.css" rel="stylesheet" />
+<link href="/css/sizemine2/pop.css" rel="stylesheet" />
+<link href="/css/sizemine2/pages.css" rel="stylesheet" />
+
+<link href="/css/sizemine/common.css" rel="stylesheet" />
+
+<div class = container>
+<div class = page id = page1> <%- include('sizemine2/page1.htm') %> </div>
+<div class = page id = page2> <%- include('sizemine2/page2.htm') %> </div>
+<div class = page id = page3> <%- include('sizemine2/page3.htm') %> </div>
+<div class = page id = page4> <%- include('sizemine2/page4.htm') %> </div>
+
+<div class = pop id = pop1 onclick = "popup()">
+  <%- include('sizemine2/pop1.htm') %> </div>
+<div class = 'pop pop2' id = pop2_1 onclick = "popup('pop2_2')">
+  <%- include('sizemine2/pop2_1.htm') %> </div>
+<div class = 'pop pop2' id = pop2_2 onclick = "popup('pop2_3')">
+   <%- include('sizemine2/pop2_2.htm') %> </div>
+<div class = 'pop pop2' id = pop2_3 onclick = "popup()">
+   <%- include('sizemine2/pop2_3.htm') %> </div>
+
+
+</div container>
+
+<script>
+let cur = page1
+let cur_pop = null
+
+page1.style.display = 'block'
+function popup(popid) {
+  console.log('popup')
+
+  if(cur) cur.style.display = 'none'
+  if(cur_pop) cur_pop.style.display = 'none'
+  cur_pop = document.getElementById(popid)
+  if( cur_pop )  cur_pop.style.display = 'grid'
+  else cur.style.display = 'block'
+
+}
+
+function move(pageid){
+  console.log('move')
+  cur.style.display = 'none'
+  cur = document.getElementById(pageid)
+  cur.style.display = 'block'
+}
+
+//popup('pop2_1')
+</script>
+<script type = 'module'>
+import imgMarker from '/js/imgmarker.js'
+import * as SM from '/js/sizemine.js'
+import dragUpload from '/js/dragupload.js'
+import dot from '/js/dot.js'
+
+customElements.define("img-marker", imgMarker)
+customElements.define("drag-upload", dragUpload)
+
+</script>

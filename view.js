@@ -15,12 +15,24 @@ let view_params = {
   'sizemine' : {
     'uid':'decoz',
     'vendor_id':'00000'
+  },
+  'sm2': {
+
+  },
+  'sizemine_demo': {
+
   }
 }
 
 router.get('/:view', (req, res) => {
   const view = req.params['view']
   const params = view_params[view]
+
+  if( !view_params[view] ) {
+    res.send('bad view request')
+    return
+  }
+
   for(const k in params)
     req.query[k] && ( params[k] = req.query )
 

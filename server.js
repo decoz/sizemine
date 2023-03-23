@@ -31,7 +31,7 @@ app.engine('htm', require('ejs').renderFile);
 for(k in statics) app.use(k, express.static( statics[k] ) )
 app.use('/api', require('./api'))
 app.use('/view', require('./view'))
-
+app.use('/admin', require('./admin'))
 
 /*
 app.use('/', express.static('html'))
@@ -45,7 +45,6 @@ app.use('/user', require('./user'))
 app.use('/template', require('./template'))
 app.use('/good', require('./good'))
 app.use('/cafe24', require('./cafe24'))
-
 
 app.use('/match', (req, res) => {
   res.render('matchmine.htm', {

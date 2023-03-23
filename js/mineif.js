@@ -12,8 +12,6 @@ export default function getData(url, func){
   xhr.send()
 }
 
-
-
 export function promiseGet(url){
   return new Promise((resolve, reject) =>{
     getData(url, data => {
@@ -23,7 +21,11 @@ export function promiseGet(url){
 }
 
 
+
+
+
 export async function postJson(url, jsobj){
+
   let res = await fetch(url, {
     method: "post",
     headers:{
@@ -31,8 +33,13 @@ export async function postJson(url, jsobj){
     },
     body : JSON.stringify(jsobj)
   })
-  return res.json()
+
+  const result = await res.json()
+  console.log('>>>> postJson response',result)
+  return result
+
 }
+
 
 export async function postForm(url, form){
 
@@ -43,7 +50,7 @@ export async function postForm(url, form){
     },
     body : JSON.stringify(jsobj)
   })
-  return res.json()
+  return await res.json()
 }
 
 

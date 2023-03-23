@@ -41,7 +41,7 @@
 
 //pageview.addEventListener('touchmove', function(e) {e.preventDefault()}, false);
 let hd
-let category
+let gcategory,gtype,gfit
 let gsizes
 let sizemode // size vs nosize
 let page = 1, pages = 9, lastpage = -1
@@ -160,14 +160,14 @@ sel_mode.onselect = function(mode){
 
 
 function set_gtype(type){
-
+  gtype = type
   const flabels = hd.Get('labels.fit.').Arr()
 
   console.log("selected gtype:",type, dv_typesize)
   document.getElementById("img_size1").src = `./images/typesize/sz_${type}.png`
   document.getElementById("img_size2").src = `./images/typesize/sz_${type}.png`
 
-  const slist = hd.Get(`category.${category}.${type}.`).Arr()
+  const slist = hd.Get(`category.${gcategory}.${type}.`).Arr()
   let html  = ''
 
   let r=1, c=1
@@ -176,7 +176,7 @@ function set_gtype(type){
     const fittype = fit.split('_')[1]
     console.log(fittype, flabels[fittype])
     html += `
-      <div opt value = 'muscle' class = 'dv_fit r${r} c${c}'>
+      <div opt value = '${fittype}' class = 'dv_fit r${r} c${c}'>
         <div> ${flabels[fittype]} <br>
           <img src = './images/fits/${fit}.svg'> </div> </div>
     `
@@ -228,8 +228,7 @@ function set_category(n) {
   sel_gtype.onselect = set_gtype
 
   set_sizes(gsizes, get_recsize(n))
-
-  category = n
+  gcategory = n
   //get_recsize(category)
 }
 
@@ -300,6 +299,7 @@ function setEvents(){
   }
 }
 
+/*
 function isAndroid(){
     var userAgent = window.navigator.userAgent.toLowerCase(),
       safari = /safari/.test( userAgent ),
@@ -322,9 +322,8 @@ function isAndroid(){
         return false;
       }
     };
-
-
 }
+*/
 
 mydrag.onFileDrop = e => {
   console.log("onfiledrop")
@@ -350,7 +349,7 @@ mydrag.onFileDrop = e => {
 
     //console.log("bodytype:",SM.getType())
     btn_save.onclick = function(e){
-
+      /*
       console.log("send result to android",sizearr)
 
       if( isAndroid() ){
@@ -359,16 +358,46 @@ mydrag.onFileDrop = e => {
       } else {
         console.log("can't find android function")
       }
+      */
+      const reclist = hd.Get(`recommend.type.${gcategory}.`).Arr()
+      const type_labels = hd.Get('labels.type.').Arr()
+      const size_labels = hd.Get('labels.sizes.').Arr()
+      const fit_labels = hd.Get('labels.fit.').Arr()
+      const ctg_labels = hd.Get('labels.category.').Arr()
+
+
+
+      let rec_size = {}
+      for(let sz in reclist){
+        const el = document.getElementById('rec_'+sz)
+        if( el ) rec_size[ size_labels[sz] ] = el.value
+      }
+
+      const rvalue = {
+        'cateogry':ctg_labels[gcategory],
+        'type':type_labels[gtype],
+        'fit':fit_labels[gfit],
+        'sizemode':sizemode,
+        'sizes':rec_size }
+
+      console.log('>>> result ', reclist, sizemode, gtype, gfit, rvalue)
+      console.log(JSON.stringify(rvalue))
+      callApp(JSON.stringify(rvalue))
     }
 
     next()
   })
+}
 
+function callApp(msg){
+  try {webToAppChange.postMessage(msg)} catch(err) {
+    console.log('can not find js channel to host app')
+  }
 }
 
 sel_fit.onselect = v => {
-
-
+  console.log('fit select:' + v)
+  gfit = v
 }
 
 

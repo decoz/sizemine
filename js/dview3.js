@@ -26,7 +26,7 @@ export default class dView extends HTMLElement {
 
     if( dval[0] == '$'){ // replace $$ as this value
       cd = d.Get(dval.substring(1))
-      let value = cd.c[0].v
+      let value = cd.c[0].V()
       obj.innerHTML = obj.innerHTML.replace(/\$\$/g,value)
     } else cd = d.Get(dval)
 
@@ -58,7 +58,7 @@ export default class dView extends HTMLElement {
 
       switch( obj.tagName ){
       case 'INPUT':
-        obj.value = dot.enc(value)
+        obj.value = dot.dec(value)
         break
       case 'IMG':
         obj.src =  dot.dec(value)
@@ -92,7 +92,7 @@ export default class dView extends HTMLElement {
 
     if( obj.hasAttribute('dot')  ){
       let ds =  obj.getAttribute('dot')
-      console.log('--',ds)
+
       if( ds == '#'){
           for(let c of obj.children) {
             let d = new dot("")
@@ -101,7 +101,7 @@ export default class dView extends HTMLElement {
           }
       } else {
         let d = new dot(ds)
-        if( obj.value != undefined ) d.Put("." + obj.value)
+        if( obj.value != undefined ) d.Put("." + dot.enc(obj.value))
         else for(let c of obj.children)
           this._get(c, d)
         pd.c.push(d)

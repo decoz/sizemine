@@ -63,6 +63,19 @@ export async function loadGood(gid, vid, withtpl = false){
 
 }
 
+
+export async function loadTags(){
+  const data = await MI.promiseGet('/api/tag/list')
+  let arr = JSON.parse(data)
+  let obj = []
+  for( let tag of arr ) {
+    if( !obj[tag.path] ) obj[tag.path] = []
+    obj[tag.path][tag.id] = tag.name
+  }
+
+  return obj
+}
+
 export async function loadTpl(tpl_name = tpl_name){
 
   let url = '/template/get'

@@ -1,3 +1,4 @@
+
 #container {
   z-index: 1000;
   position: absolute;
@@ -11,7 +12,8 @@
   transform: translate(-50%, -50%);
   box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
   display:grid;
-  grid-template:5vh auto 3rem/10rem auto;
+  grid-template:5vh auto 3rem/10em auto;
+  font-size:1.6vmin;
 }
 
 .top {
@@ -29,7 +31,7 @@
 
 
 t-select div {
-  font-size:0.8rem;
+  font-size:1.7vmin;
   line-height:2em;
 }
 
@@ -42,23 +44,40 @@ t-select div[selected] {
 }
 
 #sel_tpl {
-  width:30vw;
+  width:20vw;
 }
 
 #div_editgood {
   padding:3%;
   display:grid;
-  grid-gap:3rem;
-  grid-template:1fr 1fr / 35vw auto;
+  grid-gap:5vmin;
+  grid-template:1fr 1fr / 25vw auto;
   overflow-y:scroll
 }
 
 #img_tpl {
   margin-top:1em;
-  width:30vw;
+  width:25w;
   height:40vh;
   border:none
 }
+
+#tbl_tag {
+  width:100%;
+  font-size:1.6vmin;
+  border-spacing:0.5vw;
+}
+#tbl_tag td[selected] {
+  color:red;
+}
+
+#tbl_tag th {
+  padding:0.4em;
+  height:2em;
+  text-align: left;
+  background:#efefef;
+}
+
 
 #dv_size {
   width:100%;
@@ -69,22 +88,21 @@ t-select div[selected] {
   width:100%;
   border: 1px solid #e3e3e3;
   border-spacing: 0;
+  font-size:1.7vmin;
   line-height:2em;
 }
 
 #tbl_size th {
   background:#efefef;
-  font-size:0.8rem;
-
 }
 
 #tbl_size td {
-  font-size:0.8rem;
   border: 1px solid #e3e3e3;
 }
 
 #tbl_size input {
   text-align:center;
+  font-size:1.7vmin;
   height:2em;
   border:none;
   width:100%;

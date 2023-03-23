@@ -60,29 +60,29 @@ category
 recommend
   type
     0
-      seam.ta
+      outseam.ta/2
       shoulder.sh
       chest.ch
       sleeve.ar
     1
-      seam.ta
+      outseam.ta/2
       shoulder.sh
       chest.ch
       sleeve.ar
     2
-      seam.le
+      outseam.le
       waist.wa/2-1
       rise.le/3
       heap.he/2
       thigh.he/4
       legop.10
     3
-      seam.ta/2
+      outseam.ta/2
       shoulder.sh
       chest.ch
       heap.he/2
     4
-      seam.ta/2
+      outseam.ta/2
       waist.wa/2
       heap.he/2
       legop.he/4
@@ -115,6 +115,12 @@ gsizes
     legop
     heap
 labels
+  category
+    0.티셔츠/맨투맨
+    1.셔츠/블라우스
+    2.바지
+    3.원피스
+    4.치마
   sizes
     shoulder.어깨너비
     sleeve.소매길이
@@ -142,7 +148,7 @@ labels
     slim.슬림
     regular.레귤러핏
     sover.세미오버핏
-    over.세미오버핏
+    over.오버핏
     straight.스트레이트핏
     taper.테이퍼드핏
     swide.세미와이드핏

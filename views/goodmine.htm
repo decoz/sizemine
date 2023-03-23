@@ -14,22 +14,32 @@
     </div top>
   <div class = 'c1 r2'>
     <t-select id = sel_menu select >
-      <div opt > 사이즈마인 치수입력 </div>
-      <div opt > 통계 </div>
+      <div opt > 실측 치수 입력 </div>
+      <div opt > 사이즈마인 통계 </div>
     </t-select>
   </div>
 
   <div id = 'div_editgood' class = 'r2 c2'>
     <div id =  dv_select class = 'r1 c1' >
-
       <div class = dv_header>
-        <div class = headerbox> </div> 템플릿 선택  </div> <br>
-
+        <div class = headerbox> </div>
+        템플릿 선택
+      </div dv_header> <br>
       <t-dbselect selsize = 1 id = sel_tpl url = '/template/list?field=tpl_name' >
       </t-dbselect>
       <img-marker id = img_tpl> </img-marker>
+    </div dv_select>
 
-    </div>
+    <div id = dv_tag class = 'r1 c2' >
+      <div class = dv_header>
+        <div class = headerbox> </div>
+        상품태그
+      </div dv_header> <br>
+      <table id = tbl_tag >
+
+
+      </table>
+    </div dv_tag>
 
     <d-view id = dv_size class = 'r2 c12' >
       <div class = dv_header>
@@ -111,6 +121,11 @@ async function init(gid, vid){
   console.log(`matchmine - gid:${gid} , vid:${vid}`)
 
   let [garr]  = await Promise.all( [ SM.loadGood(gid, vid, true) ] )
+  let tagarr = await SM.loadTags()
+  setTags(tagarr)
+  console.log('----------------',tagarr)
+
+
   console.log("garr:",SM.dgsizes.Str())
   gsize_labels = SM.dlabels.Get('goodsize').Arr()
 
@@ -129,6 +144,40 @@ async function init(gid, vid){
 
 
 }
+
+function setTags(arr){
+
+  let first = true
+  for(const path in arr) {
+    let tr = document.createElement('tr')
+    if(first) first = false
+    else tr.style.visibility = 'hidden'
+
+    let html = `<th> ${path} </th> `
+    for(let name in arr[path]) {
+      html += `
+        <td tagid = ${arr[path][name]}>
+        ${name} </td>
+      `
+    }
+    tr.innerHTML = html
+    const tdarr = tr.querySelectorAll('td')
+
+    for(const td of tdarr){
+      td.onclick = e => {
+        const p = td.parentElement
+        const next = p.nextElementSibling
+        if(next) next.style.visibility = 'inherit'
+        for(const otd of p.children)
+          otd.removeAttribute('selected')
+        td.setAttribute('selected','')
+      }
+    }
+    tbl_tag.appendChild(tr)
+  }
+
+}
+
 
 btn_save.onclick = async function(e){
   console.log(dv_size.Get().Arr())

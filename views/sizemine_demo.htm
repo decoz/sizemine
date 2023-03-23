@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/common.css" rel="stylesheet" />
+<link href="/css/sizemine_demo.css" rel="stylesheet" />
+</head>
+
+<body>
+
+<d-popup id = popup
+  title = 'popup test'
+  showframe = false
+  css = '
+    width:500px;
+    height:900px;
+  '
+> </d-popup>
+
+<div class = container>
+<div class = title>
+  <span class = 'red'> 사이즈마인 </span>으로 사이즈 추천 받기
+</div>
+<div id = dv_show class = show_window>
+  <div class = div_good >
+    <img class = 'r1 c12 good_image' src = '/images/sizemine_demo/IMG6.png'>
+    <div class = 'r2 c1 good_info'>
+      라쿤홀가 니트 <br>
+      ₩ 49,000
+    </div>
+    <div class = 'size_info r2 c2'>
+      <div class = sizemarker> S </div>
+      <div class = sizemarker> M </div>
+      <div class = sizemarker> L </div>
+    </div>
+  </div div_good>
+  <div class = div_good >
+    <img class = 'r1 c12 good_image' src = '/images/sizemine_demo/IMG3.png'>
+    <div class = 'r2 c1 good_info'>
+      실켓 롤업 티셔츠 <br>
+      ₩ 14,000
+    </div>
+    <div class = 'size_info r2 c2'>
+      <div class = sizemarker> S </div>
+      <div class = sizemarker> M </div>
+      <div class = sizemarker> L </div>
+    </div>
+  </div div_good>
+  <div class = div_good >
+    <img class = 'r1 c12 good_image' src = '/images/sizemine_demo/IMG4.png'>
+    <div class = 'r2 c1 good_info'>
+      죠셉 레글런 블라우스 <br>
+      ₩ 132,000
+    </div>
+    <div class = 'size_info r2 c2'>
+      <div class = sizemarker> S </div>
+      <div class = sizemarker> M </div>
+      <div class = sizemarker> L </div>
+    </div>
+  </div div_good>
+  <div class = div_good >
+    <img class = 'r1 c12 good_image' src = '/images/sizemine_demo/IMG5.png'>
+    <div class = 'r2 c1 good_info'>
+      BEE 청바지 <br>
+      ₩ 31,000
+    </div>
+    <div class = 'size_info r2 c2'>
+      <div class = sizemarker> S </div>
+      <div class = sizemarker> M </div>
+      <div class = sizemarker> L </div>
+    </div>
+  </div div_good>
+  <div class = div_good >
+    <img class = 'r1 c12 good_image' src = '/images/sizemine_demo/IMG5.png'>
+    <div class = 'r2 c1 good_info'>
+      7090 팬츠 <br>
+      ₩ 32,000
+    </div>
+    <div class = 'size_info r2 c2'>
+      <div class = sizemarker> 25 </div>
+      <div class = sizemarker> 26 </div>
+      <div class = sizemarker> 27 </div>
+      <div class = sizemarker> 28 </div>
+
+    </div>
+  </div div_good>
+  <div class = div_good >
+    <img class = 'r1 c12 good_image' src = '/images/sizemine_demo/IMG5.png'>
+    <div class = 'r2 c1 good_info'>
+      빈티 보이프랜드 팬츠 <br>
+      ₩ 32,000
+    </div>
+    <div class = 'size_info r2 c2'>
+      <div class = sizemarker> 25 </div>
+      <div class = sizemarker> 26 </div>
+      <div class = sizemarker> 27 </div>
+      <div class = sizemarker> 28 </div>
+      <div class = sizemarker> 29 </div>
+    </div>
+  </div div_good>
+</div show_window>
+</div container>
+
+</body>
+<script type = 'module'>
+import dPopup from '/js/dpopup.js'
+customElements.define("d-popup", dPopup)
+
+items = [
+   '라쿤홀가 니트 <br> ₩ 49,000',
+   '실켓 롤업 티셔츠 <br> ₩ 14,000',
+   '죠셉 레글런 블라우스 <br> ₩ 132,000',
+   'BEE 청바지 <br> ₩ 31,000',
+   '7090 팬츠 <br>  ₩ 32,000',
+   '빈티 보이프랜드 팬츠 <br> ₩ 32,000'
+]
+sizeinfos = [6,3,4,5,2,1]
+
+dv_html =
+
+
+
+
+
+const divs =  document.querySelectorAll('.div_good')
+for(const dv of divs){
+  dv.addEventListener('click', e => {
+    popup.open('/view/sm2')
+  })
+}
+
+
+</script>

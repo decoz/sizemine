@@ -17,8 +17,11 @@ export default class dbSelet extends HTMLElement {
     if( typeof(this.filter) == 'function') data = this.filter(data)
     this.sel_db.innerHTML = ""
     let arr = JSON.parse(data)
-    for( let v of  arr )
-      this.addOption(v,v)
+
+    if( Array.isArray(arr) )
+      for(const v of arr) this.addOption(v,v)
+    else
+     for( let k in  arr ) this.addOption(k,arr[k])
   }
 
   addOption(value, text){

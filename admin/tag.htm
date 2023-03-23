@@ -1,0 +1,166 @@
+
+<div class = container>
+<header>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/tag.css" rel="stylesheet" />
+  <link href="/css/common.css" rel="stylesheet" />
+</header>
+
+<div class = title > 태그 편집기 </div>
+<d-view id = dv_tag >
+
+<div class = main >
+<div id = div_select class = 'r12 c1'>
+  <t-dbselect selsize = 18 id = sel_tag  url = '/api/tag/list'
+    css = '
+    #sel_db {
+      font-size:2vmin;
+    }
+    '
+  >
+  </t-dbselect>
+  <button id = btn_del class = btn_action > 삭제 </button>
+
+</div>
+<div id = input_tag class = 'r1 c2'>
+  <label for = in_tagname class = 'r1 c1' > 태그 이름 </label>
+  <input dot = name type = text id = in_tagname class= 'r1 c2' > </input>
+
+  <!-- label for = in_tagid class = 'r2 c1' > 태그 id </label -->
+  <input dot = id type = text id = in_tagid class = 'r2 c2'> </input>
+
+  <label for = in_tagpath class = 'r3 c1'> 태그 분류 </label>
+  <input dot = path type = text id = in_tagpath class = 'r3 c2' > </input>
+</div input_tag>
+
+<div id = 'input_mod' class = 'r2 c2'>
+  <span> 사이즈 변환 </span>
+  <t-select id = sel_mod select >
+  <table  >
+    <tbody id = tbl_mod dot = modifier >
+    <tr>
+      <th width = '30%'> 사이즈 </th>
+      <th> 보정 </th>
+      </tr>
+    <tr opt dot = ''>
+      <td> <input dot = size> </input> </td>
+      <td> <input dot = value> </input> </td>
+      </tr>
+    </tbody> </table> </t-select>
+
+
+    <div class = 'right'>
+      <button id = btn_madd > 추가 </button>
+      <button id = btn_mdel > 삭제 </button>
+    </div>
+</div input_mod>
+
+<div class = footer class = 'c12 r3'>
+  <button id = btn_save class = btn_action > 저장하기 </button>
+</div>
+
+</div main>
+</d-view>
+
+
+
+</div container>
+<script type = 'module'>
+import selector from '/js/selector.js'
+import dbSelect from '/js/dbselect.js'
+import dView from '/js/dview3.js'
+import dot from '/js/dot.js'
+import * as MI from '/js/mineif.js'
+
+customElements.define('d-view', dView)
+customElements.define('t-dbselect', dbSelect)
+customElements.define('t-select', selector)
+
+btn_madd.onclick = e => {
+  const tr = document.createElement('tr')
+  tr.setAttribute('opt','')
+  tr.setAttribute('dot','')
+  tr.innerHTML = `
+    <td> <input dot = size> </input> </td>
+    <td> <input dot = value> </input> </td>
+  `
+  tbl_mod.appendChild(tr)
+  sel_mod.init()
+}
+
+btn_mdel.onclick = e => {
+  if(sel_mod.selected) tbl_mod.removeChild(sel_mod.selected)
+}
+
+btn_del.onclick = async function(e){
+
+  const url = `/api/tag/del?id=${sel_tag.value}`
+  await MI.promiseGet(url)
+  console.log('removeed')
+  sel_tag.sync()
+
+}
+
+btn_save.onclick = async function(e){
+  const dtag = dv_tag.Get()
+  const mod = dot.enc( dtag.Get('modifier.').Str() )
+
+  let tags = dtag.Arr()
+  tags['id'] = tags.path + '.' + tags.name
+
+  tags['modifier'] = mod
+
+  console.log('save tag data:',dtag, dtag.Str(), tags)
+
+  //const res =
+  await MI.postJson('/api/tag/put', tags)
+  //console.log('res:',res)
+  sel_tag.sync()
+
+
+  /*
+  const res = await MI.postJson('/api/tag/put', tags)
+  console.log('res:',res)
+  sel_tag.sync()
+  */
+}
+
+
+
+
+sel_tag.filter = function(data) {
+  const arr = JSON.parse(data)
+  console.log('tag select filterring:',arr)
+  let obj = {}
+  for(const tag of arr ) {
+    console.log(tag)
+    obj[tag.id] = tag.name
+  }
+  return JSON.stringify(obj)
+
+  //return JSON.stringify( arr.map(d => d.name) )
+}
+
+
+sel_tag.onselect = async function(v) {
+
+  const url = `/api/tag/get?id=${v}`
+  const res = await MI.promiseGet(url)
+
+  let arr = JSON.parse(res)[0]
+  let dmod = dot.parse(dot.dec(arr.modifier))
+
+  let d = dot.fromObj(arr)
+  d.Get('modifier').c = [dmod]
+  dv_tag.Put(d)
+  console.log('get tag data:', arr, d, dmod)
+
+
+
+}
+
+
+sel_tag.sync()
+
+
+</script>

@@ -5,7 +5,8 @@ const api_path = './api/'
 const api_list = [
   'user',
   'template',
-  'good'
+  'good',
+  'tag'
 ]
 
 for(const api of api_list)

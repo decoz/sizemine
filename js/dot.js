@@ -159,6 +159,7 @@ export default class dot{
   	let cobj = root
     let obj = null
   	let val = ""
+    console.log('parse:',str)
   	for(let i=0;i < str.length; i++){
   		switch( str[i] ){
   			case ',' :

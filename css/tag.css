@@ -1,0 +1,136 @@
+.container {
+  border:1px solid #d4145A;
+  border-radius:3%;
+  width:90vw;
+  height:90vh;
+  overflow:hidden;
+  display:block;
+}
+.title {
+  padding:3vmin;
+  height:5vh;
+  background:#d4145A;
+  color:white;
+  font-size:3vh;
+  display:flex;
+  align-items: center;
+}
+
+.main {
+  height:85vh;
+  font-size:2.2vmin;
+  display:grid;
+  grid-template:  1fr 1fr 1fr / 20% auto;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+.footer {
+  display:flex;
+  padding:3vmin;
+  justify-content: center;
+  grid-column: 1/3;
+}
+
+#div_select {
+  width:100%;
+  display:grid;
+  justify-items: center;
+  align-items:center;
+}
+
+.btn_action {
+  align-self: center;
+  background:#d4145A;
+  color:white;
+  font-size:2.2vh;
+  width:50%;
+  padding:0.5em;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: none;
+}
+
+#btn_del {
+  margin-top:1em;
+  width:60^;
+}
+
+#input_tag {
+  padding:3vmin;
+  display:grid;
+  grid-template-columns: max-content auto;
+  grid-gap:2vmin;
+}
+
+#input_mod {
+  display:grid;
+  border:1px solid #AAA;
+  justify-self:center;
+  text-align: center;
+  width:95%;
+  padding:0.5em;
+  overflow-y: scroll
+}
+
+#input_mod span {
+  line-height: 2em;
+  justify-self: center;
+  margin-bottom:1em;
+}
+
+#input_mod table {
+  padding:1em;
+  text-align: center;
+  width:100%;
+  background:#f0f0f0;
+}
+
+#input_mod tr[selected] {
+  background:#555;
+}
+
+#input_mod button {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #555;
+  padding:0.4em;
+  background:#999;
+  color:#FFF;
+  outline-style: none;
+  font-size:2.3vh;
+  border-radius:5%;
+  margin:0.3em;
+
+}
+
+#input_mod input {
+}
+
+#in_tagid {
+  display:none;
+}
+
+t-dbselect {
+  margin-top:5em;
+  width:90%;
+  justify-self:center;
+}
+
+input {
+  width: 100%;
+  height: auto;
+  line-height : normal;
+  font-size:2.3vh;
+  padding: 0.3em;
+  font-family: inherit;
+  background:#fcfcfc;
+  border: 1px solid #999;
+  border-radius: 3%;
+  outline-style: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
