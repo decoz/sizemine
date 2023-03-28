@@ -16,13 +16,6 @@
   justify-content: center;
 }
 
-#page4 .main {
-  display:grid;
-  grid-template: 50% 50% / 50% 50% ;
-  justify-content: center;
-
-}
-
 
 
 
@@ -49,6 +42,10 @@
   align-self:center;
 }
 
+#sel_sex {
+  width:auto;
+}
+
 #mydrag {
   width:35vw;
   height:35vw;
@@ -58,6 +55,7 @@
 
 #btn_next {
   align-self:flex-end;
+  justify-self:flex-end;
   margin-top:2vh;
   width: 30vw;
 }

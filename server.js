@@ -46,20 +46,6 @@ app.use('/template', require('./template'))
 app.use('/good', require('./good'))
 app.use('/cafe24', require('./cafe24'))
 
-app.use('/match', (req, res) => {
-  res.render('matchmine.htm', {
-    vendor_id:req.vendor_id??'00000',
-    uid:req.uid??'decoz',
-    gid:req.gid??'IM000'
-  })
-})
-
-app.use('/goodmine', (req, res) => {
-  res.render('goodmine.htm', {
-    vendor_id:req.vendor_id??'00000',
-    gid:req.gid??'IM000'
-  })
-})
 
 app.use('/cafe24Goods', (req, res) => {
 

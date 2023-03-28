@@ -22,6 +22,11 @@
   height:100%
 }
 
+#dv_sizetype {
+  font-size:2vmax;
+  letter-spacing: -0.3;  
+}
+
 #sizeview {
   height:100%;
   display : grid;

@@ -327,7 +327,8 @@ function isAndroid(){
 
 mydrag.onFileDrop = e => {
   console.log("onfiledrop")
-  SM.upload(mydrag.files[0], sizearr => {
+  const profile = {'tall':input_height.value}
+  SM.upload(mydrag.files[0], profile, sizearr => {
     bodysize = sizearr
     bodysize['ta'] = input_height.value
 

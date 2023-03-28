@@ -13,19 +13,20 @@ const pool = mariadb.createPool({
   connectionLimit:5
 })
 
-router.route("/put").get( async function(req, res){
+router.route("/put").post( async function(req, res){
+  console.log('reqbody:',req.body)
 
-  const {uid, vendor_id, size} = req.query
-  console.log("put_template:",uid, vendor_id, size)
+  const {tpl_name, dot} = req.body
+  console.log("put_template:",tpl_name)
 
   let conn = await pool.getConnection()
   conn.query('use sizemine')
   let query =
     `
-      INSERT INTO itb_users(user_id, vendor_id, size)
-        VALUES("${uid}", "${vendor_id}", "${size}")
+      INSERT INTO itb_template(tpl_name, dot)
+        VALUES("${tpl_name}", "${dot}")
         ON DUPLICATE KEY UPDATE
-        size = '${size}'
+        dot = '${dot}'
     `
   let result = await conn.query(query)
 })
@@ -36,7 +37,7 @@ router.route("/list").get( async function(req, res){
   const {field} = req.query
   let conn = await pool.getConnection()
   conn.query('use sizemine')
-  let query =  ` SELECT ${field??'tpl_name, tpl_id'} from itb_template `
+  let query =  ` SELECT ${field??'tpl_name'} from itb_template `
   let rows = await conn.query(query)
   //console.log("get_template:",tpl_name,query)
 

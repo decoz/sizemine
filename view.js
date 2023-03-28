@@ -17,27 +17,29 @@ let view_params = {
     'vendor_id':'00000'
   },
   'sm2': {
-
+    'vid':'00000',
+    'gid':'IM000',
+    'uid':'decoz',
   },
   'sizemine_demo': {
-
   }
 }
 
-router.get('/:view', (req, res) => {
-  const view = req.params['view']
-  const params = view_params[view]
-
-  if( !view_params[view] ) {
-    res.send('bad view request')
-    return
-  }
-
-  for(const k in params)
-    req.query[k] && ( params[k] = req.query )
-
-  console.log(view, params)
-  res.render(view + '.htm', params)
+router.get('/', (req, res) => {
+  res.render('index.htm')
 })
+
+for(const view in view_params){
+  router.get(`/${view}`, (req, res) => {
+    const params = view_params[view]
+
+    for(const k in params)
+      req.query[k] && ( params[k] = req.query[k] )
+
+
+    console.log(view, params)
+    res.render(view + '.htm', params)
+  })
+}
 
 module.exports = router

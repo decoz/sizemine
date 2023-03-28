@@ -7,23 +7,24 @@ console.log('admin request')
 
 let _params = {
   'template' : {
-
+    'tpl_name' : ''
   },
   'tag'  : {
-
+    'tagid' : ''
   }
 }
 
-router.get('/:view', async function(req, res) {
-  const view = req.params['view']
-  if( !_params[view] ) {
-    res.send('bad admin request')
-    return
-  }
+for(const key in _params){
+  router.get(`/${key}`, async function(req, res) {
 
-  console.log('admin request',view)
-  const html = await ejs.renderFile(path + view + '.htm')
-  res.send( html )
-})
+    const params = _params[key]
+    for(const k in params)
+      req.query[k] && ( params[k] = req.query[k] )
+
+    console.log('admin request',key)
+    const html = await ejs.renderFile(path + key + '.htm', params)
+    res.send( html )
+  })
+}
 
 module.exports = router

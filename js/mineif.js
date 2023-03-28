@@ -80,7 +80,7 @@ export function promisePost(url, form){
 */
 
 export function postData(url, form, func){
-  console.log("postData to ",url)
+  console.log("postData to ",url,form.get('tpl_name'))
   var xhr = new XMLHttpRequest()
   xhr.open('POST', url, true)
   //xhr.setRequestHeader("Content-type", "multipart/form-data")

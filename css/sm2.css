@@ -19,7 +19,19 @@
   display:none;
 }
 
-.top {
+.page_type2 {
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  display:none;
+}
+
+.page_type2 > top {
+  height:30%;
+}
+
+
+.page > .top {
   background-color: rgba(250, 248, 248, 1);
   width: 100%;
   height: 43%;
@@ -27,7 +39,7 @@
   grid-template: 40% 60%/ 3fr 1fr;
 }
 
-.page .main {
+.page > .main {
   width:100%;
   height: 57%;
 
@@ -35,7 +47,7 @@
   color:rgba(46,46,46,1)
 }
 
-.main .c2 {
+.main > .c2 {
   display:flex;
   padding-right:6vw;
   flex-wrap: wrap;
@@ -43,7 +55,7 @@
   justify-content: flex-end;
 }
 
-.main .c1 {
+.main > .c1 {
   display:flex;
   padding-left:6vw;
   justify-content:flex-start;
@@ -61,17 +73,23 @@
   font-size: 0.8vh;
   letter-spacing: 0;
 }
-
 .dv_msg {
+  font-family: Noto Sans KR;
+  color:#2f2f2f;
+  font-size: 3vh;
+  font-weight: bold;
+}
+
+.page .dv_msg {
   position:relative;
   text-align: left;
   top: 2.5vh;
-  font-family: Noto Sans KR;
-  font-size: 3vh;
-  font-weight: bold;
-  margin-left:10vw;
   width:80%;
+  margin-left:10vw;
 }
+
+
+
 
 .dv_sub {
   text-align: left;
@@ -112,6 +130,7 @@
   color:white;
   background-color: rgba(208, 23, 67, 1);
   height:2em;
+  font-size: 2.3vh;
   border-radius:1.5vh;
 }
 
@@ -143,6 +162,11 @@
   left:20vw;
   width:20vw;
   position:fixed;
+}
+
+.dv_input[selected] {
+  background-color: rgba(240, 240, 240, 1);
+  color:rgb(50,50,50)
 }
 
 .dv_input {
@@ -189,17 +213,4 @@
   font-size:1.2vh;
   line-height: 2em;
   vertical-align:top;
-}
-
-.redsize  {
-  display:flex;
-  font-size:3rem;
-  color:white;
-  height:4rem;
-  width:4rem;
-  border-radius: 0.2em;
-  background: #d4145A;
-  justify-content: center;
-  align-content: center;
-  margin-bottom: 1rem;
 }

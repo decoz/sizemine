@@ -3,14 +3,18 @@
 <link href="/css/sm2.css" rel="stylesheet" />
 <link href="/css/sizemine2/pop.css" rel="stylesheet" />
 <link href="/css/sizemine2/pages.css" rel="stylesheet" />
-
+<link href="/css/sizemine2/match.css" rel="stylesheet" />
+<link href="/css/sizemine2/profile.css" rel="stylesheet" />
 <link href="/css/sizemine/common.css" rel="stylesheet" />
 
 <div class = container>
 <div class = page id = page1> <%- include('sizemine2/page1.htm') %> </div>
 <div class = page id = page2> <%- include('sizemine2/page2.htm') %> </div>
 <div class = page id = page3> <%- include('sizemine2/page3.htm') %> </div>
-<div class = page id = page4> <%- include('sizemine2/page4.htm') %> </div>
+<div class = page_type2 id = profile> <%- include('sizemine2/profile.htm') %> </div>
+<div class = page id = match> <%- include('sizemine2/match.htm') %> </div>
+<div class = page_type2 id = match1> <%- include('sizemine2/match1.htm') %> </div>
+
 
 <div class = pop id = pop1 onclick = "popup()">
   <%- include('sizemine2/pop1.htm') %> </div>
@@ -25,9 +29,20 @@
 </div container>
 
 <script>
+//let gid = '<%=gid%>'
+let gid = '<%=gid%>'
+let vid = '<%=vid%>'
+let uid = '<%=uid%>'
+
 let cur = page1
 let cur_pop = null
 
+let gsizes, //상품 사이즈
+    sorted, // 정렬된 매칭 스코어
+    sizelabel // 치수 명칭
+
+
+console.log('sm2 open for ',gid,vid,uid)
 page1.style.display = 'block'
 function popup(popid) {
   console.log('popup')
@@ -47,15 +62,196 @@ function move(pageid){
   cur.style.display = 'block'
 }
 
+//move('match')
 //popup('pop2_1')
 </script>
 <script type = 'module'>
 import imgMarker from '/js/imgmarker.js'
 import * as SM from '/js/sizemine.js'
 import dragUpload from '/js/dragupload.js'
+import selector from '/js/selector.js'
 import dot from '/js/dot.js'
 
 customElements.define("img-marker", imgMarker)
 customElements.define("drag-upload", dragUpload)
+customElements.define("t-select", selector)
+
+let marker_pos = '(outseam(0&d11,0&d305),chest(0&d705,0&d25),waist(0&d6875,0&d4925),sleeve(0&d1325,0&d475),shoulder(0&d6425,0&d115),rise(0&d71,0&d3775))'
+
+mydrag.onFileDrop = e => {
+  const profile = {
+    'sex':sel_sex.value,
+    'tall':input_tall.value,
+    'age':input_birth.value,
+    'weight':input_weight.value
+  }
+
+  console.log("onfiledrop profile:",profile)
+
+
+  SM.upload(mydrag.files[0], profile, sizearr => {
+    console.log(sizearr, SM.dsize)
+
+    let bodytype = SM.getType()
+    let sizelabels = SM.dlabels.Get('bodysize.').Arr()
+    let typelabels = SM.dlabels.Get('bodytype.').Arr()
+
+    span_bodytype.innerText = typelabels[bodytype]
+
+    for(let key in sizearr){
+      let id = "sz_" + key
+      let obj = document.getElementById(id)
+      if( obj ) obj.innerText = sizearr[key] + 'cm'
+    }
+
+
+    initMatch(uid, gid, vid, dot.fromObj(sizearr))
+    move('profile')
+
+  })
+}
+
+async function initMatch(uid, gid, vid, dsize){
+  console.log('initMatch:',uid,gid,vid)
+  await Promise.all([
+    SM.loadGood(gid, vid, true)
+  ])
+
+  const scorearr = SM.createMatchScores(SM.dgsizes, dsize, SM.dtpl)
+
+  sorted = SM.sortScores(scorearr)
+
+  const matchs = sorted[0]['sname']
+  if( matchs.length > 2 )  matchsize.style.fontSize = '2rem'
+  matchsize.innerText = matchs
+
+  sizelabel = SM.dlabels.Get("goodsize.").Arr()
+  let bestpos = sizelabel[bestPos(scorearr[0])]
+
+  span_bestpos.innerText = asSubject( bestpos )
+
+  dv_others.innerHTML = ''
+  for(let i=1;i<scorearr.length;i++){
+    let score = scorearr[i]
+    let wpos = bestPos(score, true)
+    if( sizelabel[wpos] ) wpos = sizelabel[wpos]
+
+    const desc = score[wpos] > 0 ? '가 너무 커요' : '가 너무 작아요'
+
+    let html = `
+      <div class = 'r${i} c1 graysize'> ${score['sname']} </div>
+      <div class = 'r${i} c2'> ${asSubject(wpos)} 작아요 </div>
+    `
+    dv_others.innerHTML += html
+  }
+
+
+  gsizes = SM.dgsizes.Get('gsize.').Arr()
+  if( !Array.isArray(gsizes) ) gsizes = [gsizes]
+
+  span_recsize.innerText = matchs
+  //setDetail(matchs, sorted)
+
+  let html = '<th> 사이즈 </th>'
+  for(let score of scorearr)
+    html += `<td> ${score.sname} </td> `
+  tr_sizes.innerHTML = html
+  tr_sizes.querySelectorAll('td').forEach( td => {
+    td.addEventListener('click', e => {
+      const td = e.srcElement
+      //console.log('add event listen:',td.innerText)
+      setDetail(td.innerText, scorearr)
+    })
+  })
+}
+
+function setDetail(sname, scorearr ){
+  console.log('setDetail:',sname, scorearr)
+
+  //dv_size.innerText = sname
+  let score, gsize
+  for(let s of scorearr)  if( s.sname == sname ) score = s
+  for(let g of gsizes)  if( g.sname == sname ) gsize = g
+
+  //console.log(score, gsize, sizelabel)
+  setAvatar(score, gsize, sizelabel)
+
+}
+
+
+
+function asSubject(word){ // 주격조사를 붙여줌
+  if( korBottom(word.at(-1)) ) return word + '이'
+  else return word + '가'
+}
+
+function korBottom(last) { // 받침여부 검사
+  var uni = last.charCodeAt(0);
+  if (uni < 44032 || uni > 55203) return null;
+  return (uni - 44032) % 28 != 0;
+}
+
+function bestPos(score, reverse = false){
+  let bpos, posbest = null
+  for(let k in score){
+    if( k == 'fit' || k == 'sname' ) continue
+    let v = Math.abs(score[k])
+    if( posbest == null ||
+        (!reverse && v < posbest ) ||
+        (reverse && v > posbest )){
+      bpos = k
+      posbest = v
+    }
+  }
+  return bpos
+}
+
+
+function setAvatar(score, gsize, sizelabel){
+  console.log("best_gsize:",gsize)
+  let color_fit = '#40dd77', color_small = '#3b6df7', color_big = '#ef2d71'
+  let markers = dot.parse(marker_pos).Arr()
+  let gmark = {}, gvalue = {}, colors = {}
+
+  for(let k in markers )
+    if(score[k]) {
+      let txt, txt1, txt2
+      gmark[k] = markers[k]
+      if( Math.abs(score[k]) < 2) {
+        txt = '잘 맞아요'
+        colors[k] = color_fit
+      } else if( score[k] > 0 ) {
+        txt = '커요'
+        colors[k] = color_big
+      } else {
+        txt = '작아요'
+        colors[k] = color_small
+      }
+
+      txt1 = ( sizelabel[k]?sizelabel[k]:k ) + ' ' + gsize[k] + 'cm'
+      txt2 = '내 사이즈보다' + score[k] + 'cm'
+      gvalue[k] = txt + '\n' + txt1 + '\n' + txt2
+    }
+
+  //console.log('avatar markers:',gmark)
+  match_avatar.setMarkers(gmark)
+  match_avatar.redrawMarkers()
+  match_avatar.setValues(gvalue)
+  if(match_avatar.pending)
+    match_avatar.onload = function(){
+      //console.log('now set colors')
+      for(let k in gmark){
+        let marker = match_avatar.getMarker(k)
+        marker.style.color = colors[k]
+      }
+    }
+  else for(let k in gmark){
+      let marker = match_avatar.getMarker(k)
+      marker.style.color = colors[k]
+    }
+
+}
+
+
 
 </script>

@@ -1,0 +1,43 @@
+<h3> sizemine view index </h3>
+<div class = dv_item onclick = "popup1.open('/view/sizemine')">
+  sizemine
+</div>
+<div class = dv_item onclick = "popup1.open('/view/matchmine')">
+  matchmine
+</div>
+<div class = dv_item onclick = "popup2.open('/view/goodmine')">
+  template
+</div>
+
+
+<d-popup id = popup1
+  title = 'popup test'
+  showframe = false
+  css = '
+    width:300px;
+    height:500px;
+    background:white;
+  '
+> </d-popup>
+
+<d-popup id = popup2
+  title = 'popup test'
+  showframe = true
+  css = '
+    width:1000px;
+    height:500px;
+  '
+> </d-popup>
+
+<script type = 'module'>
+import dPopup from '/js/dpopup.js'
+customElements.define("d-popup", dPopup)
+</script>
+
+<style>
+.dv_item {
+  font-size: 15pt;
+  font-weight: bold;
+}
+
+</style>

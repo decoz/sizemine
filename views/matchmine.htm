@@ -52,7 +52,6 @@ let gsizes, //상품 사이즈
 
 let marker_pos = '(outseam(0&d11,0&d305),chest(0&d705,0&d25),waist(0&d6875,0&d4925),sleeve(0&d1325,0&d475),shoulder(0&d6425,0&d115),rise(0&d71,0&d3775))'
 
-
 gid = 'IM001'
 console.log('matchmine:',vid, uid, gid)
 customElements.define("img-marker", imgMarker)
@@ -98,6 +97,8 @@ async function init(uid, gid, vid){
   }
 
   gsizes = SM.dgsizes.Arr()
+  if( !Array.isArray(gsizes) ) gsizes = [gsizes]
+
   span_recsize.innerText = matchs
   setDetail(matchs, sorted)
 
@@ -112,6 +113,9 @@ async function init(uid, gid, vid){
       setDetail(td.innerText, scorearr)
     })
   })
+
+  
+
 }
 
 function setBodysize(sizearr){
@@ -134,7 +138,7 @@ function setBodysize(sizearr){
 }
 
 function setDetail(sname, scorearr ){
-  //console.log('setDetail:',sname, scorearr)
+  console.log('setDetail:',sname, scorearr, gsizes)
 
   dv_size.innerText = sname
   let score, gsize

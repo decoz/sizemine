@@ -42,34 +42,35 @@
 #dv_buttons {
   width:100%;
   display:grid;
-  gap:1rem;
+  gap:1em;
   grid-template: 1fr 1fr / 1fr 1fr;
 }
 
 .redsize  {
   display:flex;
-  font-size:3rem;
+  font-size:5vmax;
   color:white;
-  height:4rem;
-  width:4rem;
+  height:1.8em;
+  width:1.8em;
   border-radius: 0.2em;
   background: #d4145A;
+  flex-wrap: wrap;
   justify-content: center;
   align-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 }
 
 .graysize {
   display:flex;
-  font-size:1.2rem;
+  font-size:3vmax;
   color:white;
-  height:2.5rem;
-  width:2.5rem;
+  height:2em;
+  width:2em;
   border-radius: 0.2em;
   background: #808080;
+  flex-wrap: wrap;
   justify-content: center;
   align-content: center;
-  margin-bottom: 0.2em;
 }
 
 
@@ -77,10 +78,10 @@
 #dv_buttons > div {
   display:grid;
   width:100%;
-  height: 2.5rem;
+  height: 2em;
   border-radius: 24px;
   background: #d4145A;
-  font-size: 1rem;
+  font-size: 2vh;
   justify-content: center;
   align-items: center;
 }

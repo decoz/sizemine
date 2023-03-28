@@ -15,18 +15,22 @@ var scorearr
 dlabels = dot.tabParse( await MI.promiseGet(label_url) )
 //console.log(dlabels.Str())
 
-export default async function upload(file, onupload){
+export default async function upload(file, profile, onupload){
   let upform = new FormData()
+
   upform.append("file",file)
+  for(const k in profile) upform.append(k, profile[k])   
   let res = await fetch(sizemine_url,{
     method:'POST',
     body: upform
   })
 
   let txt = await res.text()
-  sizearr = JSON.parse( "{" + txt + "}" )
-  dsize = dot.fromObj(sizearr)
+  console.log(txt)
+  //sizearr = JSON.parse( "{" + txt + "}" )
+  sizearr = JSON.parse(txt)
   //console.log(txt,sizearr)
+  dsize = dot.fromObj(sizearr)
 
   if(typeof(onupload) == 'function')
     onupload(sizearr)
@@ -55,8 +59,9 @@ export async function loadGood(gid, vid, withtpl = false){
   let rdot = dot.fromObj(JSON.parse(data))
 
   tpl_name = rdot.Get('tpl_name.').V()
+  //dgsizes = dot.parse(rdot.Get('sizes.').V()).Get('gsize.')
   dgsizes = dot.parse(rdot.Get('sizes.').V())
-
+  console.log(dgsizes.Str())
   console.log(rdot.Str(),tpl_name, dgsizes)
   if(withtpl) await loadTpl(tpl_name)
   return dgsizes
@@ -142,12 +147,13 @@ export function sortScores(scorearr){
 export function createMatchScores(dgsizes, dsize, dtpl){
 
     let ms = dsize.Arr()
-    //console.log(dgsizes)
-    let gsizes = dgsizes.c.length > 1? dgsizes.Arr() : [dgsizes.Arr()]
+    console.log(dgsizes)
+    dgsizes = dgsizes.Get('gsize.')
+    let gsizes = Array.isArray(dgsizes.Arr()) ? dgsizes.Arr() : [dgsizes.Arr()]
     let dmrs = dtpl.Get("measures.")
-    let mrs = dmrs.c.length > 1? dmrs.Arr() : [dmrs.Arr()]
+    let mrs = Array.isArray(dmrs.Arr()) ? dmrs.Arr() : [dmrs.Arr()]
 
-    //console.log(gsizes,ms,mrs)
+    console.log('createMatchScore:', gsizes,ms,mrs)
 
     let gs_scores = []
 
@@ -162,8 +168,9 @@ export function createMatchScores(dgsizes, dsize, dtpl){
       gs_score['sname'] = gs['sname']
       gs_score['fit'] = 0
 
-      //console.log(gs.snmae + ":")
+      console.log(gs.sname + ":")
       let errsum = 0
+
       for(let meas of mrs){
         let r1 = name2value(gs, meas['base'])
         let r2 = name2value(ms, meas['comp'])

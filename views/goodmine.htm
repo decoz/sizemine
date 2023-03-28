@@ -25,7 +25,13 @@
         <div class = headerbox> </div>
         템플릿 선택
       </div dv_header> <br>
-      <t-dbselect selsize = 1 id = sel_tpl url = '/template/list?field=tpl_name' >
+      <t-dbselect selsize = 1 id = sel_tpl url = '/template/list?field=tpl_name'
+        css = '
+        select {
+          font-size:1.2vmin;
+        }
+        '
+      >
       </t-dbselect>
       <img-marker id = img_tpl> </img-marker>
     </div dv_select>
@@ -114,7 +120,7 @@ customElements.define('d-view', dView)
 let vid = '<%=vendor_id%>'
 let gid = '<%=gid%>'
 let tpl_name
-gid = 'T0002'
+//gid = 'T0002'
 
 await init(gid, vid)
 async function init(gid, vid){
@@ -124,12 +130,10 @@ async function init(gid, vid){
   let tagarr = await SM.loadTags()
   setTags(tagarr)
   console.log('----------------',tagarr)
-
-
-  console.log("garr:",SM.dgsizes.Str())
   gsize_labels = SM.dlabels.Get('goodsize').Arr()
 
-
+  if( !SM.dgsizes ) return
+  console.log("garr:",SM.dgsizes.Str())
   tpl_name = SM.tpl_name
   //console.log( SM.dtpl.Get('name').V() )
 
@@ -139,6 +143,10 @@ async function init(gid, vid){
   img_tpl.setImg(SM.dtpl.Get("image.").V())
   setDview(sizes)
 
+  const dgsizes = new dot('.gsize')
+  dgsizes.c = SM.dgsizes.c
+
+  console.log(dgsizes.Str())
   dv_size.Put(SM.dgsizes)
   dv_size.style.visibility = 'visible'
 
@@ -148,6 +156,7 @@ async function init(gid, vid){
 function setTags(arr){
 
   let first = true
+  console.log('setTag:',arr)
   for(const path in arr) {
     let tr = document.createElement('tr')
     if(first) first = false
@@ -156,8 +165,8 @@ function setTags(arr){
     let html = `<th> ${path} </th> `
     for(let name in arr[path]) {
       html += `
-        <td tagid = ${arr[path][name]}>
-        ${name} </td>
+        <td tagid = ${name}>
+        ${arr[path][name]} </td>
       `
     }
     tr.innerHTML = html
@@ -190,6 +199,13 @@ btn_save.onclick = async function(e){
   }
 
   const res = await MI.postJson('/good/put', putarr)
+  if( parent != window ) frameElement.getRootNode().host.close()
+
+}
+
+btn_cancel.onclick = e => {
+  console.log(parent == window?'direct loading':'iframe window')
+  if( parent != window ) frameElement.getRootNode().host.close()
 }
 
 
@@ -211,7 +227,7 @@ sel_tpl.onselect = async function(v) {
   const sizes = SM.dtpl.Get("sizes.").Arr()
   img_tpl.setMarkers(sizes)
   img_tpl.setImg(SM.dtpl.Get("image.").V())
-
+  tpl_name = v
   setDview(sizes)
   sizearr = sizes
   dv_size.style.visibility = 'visible'

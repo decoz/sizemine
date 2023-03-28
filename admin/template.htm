@@ -1,0 +1,318 @@
+<html>
+<head>
+</head>
+<body>
+
+<center>
+<table id = main> <tr>
+<td id = col_left class = col style = "">
+  <t-dbselect id = 'sel_tpl' url = '/api/template/list?field=tpl_name'
+    selsize = 15
+    css = '
+      select {
+        width:200px;
+        heigth:400px;
+        margin-bottom:20px;
+        v-scroll:none;
+        border-color:#DDDDDD;
+      }
+
+      select:focus {
+        outline:none;
+      }
+
+    '> </t-dbselect>
+
+  <br> <button class = btnmini id = 'btn_new'> new </button>
+  <br> <button class = btnmini id = 'btn_save'> save </button>
+  <br> <button class = btnmini id = 'btn_delete'> delete </button>
+
+  <form id = upform method="post" action = "template.php" accept-charset="euc-kr"
+    style = "display:none" >
+  <input type = text name = json>
+  </form>
+</div></td>
+
+
+<td class = col id = col_right style = "width:auto">
+  <drag-upload id = drupload >
+  여기에 의류유형 이미지를 업로드 하세요
+  </drag-upload>
+  <div id = 'marker_edit' >
+    <div class = aleft >   <button class = medium id = btn_reimg> 이미지 변경 </button> </div>
+    <div id = 'img_area' onclick = "imgarea_click(e)" >
+    <img-marker  css = '
+      <style>
+      .marker {
+        font-size:11pt;
+       }
+      ' id = im>  </img-marker>
+    <table> <tr>
+      <td>
+        <input id = 'markername' type = text> </input>
+      </td>
+      <td id = posx width = '50px'> </td>
+      <td id = posy width = '50px'> </td>
+      <td>
+        <button id = btn_mkadd> add </button>
+      </td>
+      <td>
+        <button id = btn_mkdel> remove </button>
+      </td>
+    </tr></table>
+</div> </td>
+
+<td class = col>
+  <div id = tpl_input>
+  <d-input
+    id = 'di'
+    input = '(
+      name.text/width:200px,
+      stretch.text/width:50px,
+      measures.#(
+          base./width:100px,
+          comp./width:150px
+      )
+    )'
+  >
+  </d-input>
+  <p>
+  <button id = 'btn_json'> show json </button>
+  <pre id = 'jsontext'> </pre>
+  </div>
+</td></tr></table>
+
+
+</html>
+
+<script type = 'module'>
+import dragUpload from '/js/dragupload.js'
+import imgMarker from '/js/imgmarker.js'
+//import jsInput from '/imemine/js/jsinput.js'
+
+import dInput from '/js/dinput.js'
+import dbSelect from '/js/dbselect.js'
+//import jsList from '/imemine/js/jslist.js'
+import dot from '/js/dot.js'
+import * as SM from '/js/sizemine.js'
+import * as MI from '/js/mineif.js'
+
+//customElements.define('js-list', jsList)
+customElements.define('drag-upload', dragUpload)
+customElements.define('img-marker', imgMarker)
+customElements.define('t-dbselect', dbSelect)
+customElements.define('d-input', dInput)
+
+let markers = {}
+var imagedata = null
+
+sel_tpl.filter = function(data) {
+  let arr = JSON.parse(data)
+  return JSON.stringify( arr.map(d => d.tpl_name) )
+}
+sel_tpl.sync()
+
+drupload.onFileDrop = file => {
+  console.log("onFileDrop:" + file)
+  drupload.readFile( filedata=>{
+    im.setImg(filedata)
+    imagedata = filedata
+    marker_edit.style.display = 'block'
+    drupload.style.display = 'none'
+  })
+}
+
+img_area.onclick = e => {
+  //console.log("imgarea_click " + e.offsetX + "," + e.offsetY)
+  posx.innerText = e.offsetX
+  posy.innerText = e.offsetY
+}
+
+btn_mkadd.onclick = e => {
+  let name = markername.value
+  let x = parseInt(posx.innerText)
+  let y = parseInt(posy.innerText)
+
+  if(name.length > 0) {
+    im.addMarker(name, x, y)
+    //tplimage.refreshMarkers()
+    //im.redrawMarkers()
+  }
+}
+
+btn_mkdel.onclick = e => {
+  im.delMarker( markername.value )
+
+}
+
+btn_reimg.onclick = e => {
+  drupload.style.display = 'block'
+  marker_edit.style.display = 'none'
+
+
+}
+
+btn_json.onclick = e => {
+    //let json = ji.extractJson()
+    //json["sizes"] = markers
+    dot.fromObj(im.markers).Str()
+    jsontext.innerText = dot.fromObj(im.markers).Str()
+}
+
+btn_new.onclick = e => {
+  console.log("btn_new!")
+  marker_edit.style.display = 'none'
+
+  //im.clearMarkers()
+  im.resetMarkers()
+  drupload.style.display = 'block'
+  di.Put(dot.parse(".name."))
+}
+
+btn_save.onclick = async function(e){
+  // check image_name
+  let d = di.Get()
+
+  console.log( dot.fromObj(im.markers).Str() )
+
+  d.Put(".sizes"+dot.fromObj(im.markers).Str())
+  d.Put(".image."+dot.enc(imagedata))
+  let name = d.Get("name.").V()
+  d.Del("name")
+  console.log( name )
+
+  const data = {
+    'tpl_name':name,
+    'dot':d.Str()
+  }
+
+  /*
+  var upform = new FormData()
+  upform.append("tpl_name", name)
+  upform.append("dot", d.Str())
+
+
+  MI.postData('/api/template/put', upform, data => {
+    sel_tpl.sync()
+  })
+  */
+
+  await MI.postJson('/api/template/put', data)
+
+}
+
+sel_tpl.onselect = async function(tpl_name){
+  console.log('loading selected template')
+  //let data = await Promise.all( [SM.loadTpl(tpl_name)] )
+  let dtpl = await SM.loadTpl(tpl_name)
+
+  imagedata = dtpl.Get("image.").V()
+  im.setImg(dtpl.Get("image.").V() )
+
+  marker_edit.style.display = 'block'
+  drupload.style.display = 'none'
+
+  im.clearMarkers()
+  let dsize = dtpl.Get("sizes.")
+  if(dsize) im.setMarkers(dsize.Arr())
+
+  console.log(dtpl.Str())
+
+  dtpl.Put(".name."+tpl_name)
+  di.Put(dtpl)
+}
+
+btn_delete.onclick = e => {
+  var upform = new FormData()
+  upform.append("name", sel_tpl.value)
+  console.log("delte_name:",sel_tpl.value)
+
+  var xhr = new XMLHttpRequest()
+  xhr.open('POST', "template.php?action=delete", true)
+  xhr.addEventListener('readystatechange', function(e) {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      console.log("delete response:" + this.response)
+      sel_tpl.sync()
+    }
+  })
+  xhr.send(upform)
+}
+
+
+
+</script>
+
+
+<style>
+
+#main {
+  width:100%;
+  border-spacing: 0px;
+}
+#main .col {
+  padding:20px;
+  vertical-align:top;
+  text-align:center;
+  border-right:1px solid #DDDDDD
+}
+
+#col_left{
+  width:200px;
+}
+
+#sel_tpl {
+  width:100%;
+}
+
+
+#tpl_input {
+  width:450px;
+  padding:20px;
+  border:1px solid #DDDDDD;
+}
+#drupload {
+  font-size:12pt;
+  width:300px;
+  height:100px;
+}
+
+#marker_edit {
+  display: none;
+}
+
+div .aleft {
+  text-align: left;
+}
+
+#jsontext {
+  padding:10px;
+  text-align:left;
+  width:400px;
+  border:0;
+  background-color:lightgray;
+}
+
+
+#im {
+  width:100%;
+}
+
+#img_area {
+  border : 1px solid #DDDDDD;
+  width : 400px;
+  height : 600px;
+
+}
+
+button {
+  margin-bottom:10px;
+  width:80px;
+  color:white;
+  border: 1px solid #BBBBBB;
+  background-color:#AAAAAA;
+}
+
+button.medium {
+  width:100px;
+}
+</style>

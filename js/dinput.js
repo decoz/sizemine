@@ -14,7 +14,7 @@
   </js-input>
 */
 
-import dot from '/imemine/js/dot.js'
+import dot from '/js/dot.js'
 export default class dInput extends HTMLElement {
   constructor() {
     super()
