@@ -1,12 +1,13 @@
 .container {
   width:100%;
+  font-size:1.8vw;
 }
 
 .title {
   padding-top:2em;
   width:100%;
   height:5em;
-  font-size:2.5rem;
+  font-size:2.5em;
   font-weight:bold;
   text-align: center;
   letter-spacing: -0.5;
@@ -15,7 +16,6 @@
 .show_window {
   justify-items: center;
   grid-row-gap:50px;
-
   display:grid;
   grid-template: 1fr 1fr 1fr / 1fr 1fr;
 }
@@ -26,7 +26,7 @@
 }
 
 .good_image {
-  max-width:100%;
+  width:100%;
   max-height:100%;
   object-fit: cover;
   overflow: hidden;
@@ -34,14 +34,14 @@
 
 .div_good {
   width:35vw;
-  height:50vw;
+  height:45vw;
   display:grid;
-  grid-template: 80% 20% / 1fr 1fr;
+  grid-template: auto 8vh / 1fr 1fr;
 
 }
 
 .good_info {
-  font-size:1.3rem;
+  font-size:2.0vw;
   font-weight: bold;
 
 }
