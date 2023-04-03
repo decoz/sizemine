@@ -6,10 +6,10 @@ var label_url = '/labels.txt'
 var sizemine_url = 'https://sizemine.net/bodysize/'
 var dlabels = null
 
-var sizearr = null
+var sizearr = null, tagarr = null
 var dsize = null
-var gid, tpl_name
-var dtpl, dgsizes, dmeasures
+var gid, tpl_name, tagids
+var dtpl, dgsizes, dmeasures, dtags
 var scorearr
 
 dlabels = dot.tabParse( await MI.promiseGet(label_url) )
@@ -19,7 +19,7 @@ export default async function upload(file, profile, onupload){
   let upform = new FormData()
 
   upform.append("file",file)
-  for(const k in profile) upform.append(k, profile[k])   
+  for(const k in profile) upform.append(k, profile[k])
   let res = await fetch(sizemine_url,{
     method:'POST',
     body: upform
@@ -48,8 +48,8 @@ export async function loadUser(uid, vid){
   return dsize
 }
 
-export async function loadGood(gid, vid, withtpl = false){
-  let url = `/good/get?gid=${gid}&vid=${vid}`
+export async function loadGood(gid, vid, withtpl = false, withtag = false){
+  let url = `/api/good/get?gid=${gid}&vid=${vid}`
   let data = await MI.promiseGet(url)
 
 
@@ -57,19 +57,25 @@ export async function loadGood(gid, vid, withtpl = false){
   if( !data ) return ''
 
   let rdot = dot.fromObj(JSON.parse(data))
-
   tpl_name = rdot.Get('tpl_name.').V()
+
+  tagids = ''
+  if( rdot.Get('tags.') ) tagids = rdot.Get('tags.').V()
+  console.log('tagids:',tagids)
+  //if(tagids != '') console.log('tagids:',tagids)
+
   //dgsizes = dot.parse(rdot.Get('sizes.').V()).Get('gsize.')
   dgsizes = dot.parse(rdot.Get('sizes.').V())
   console.log(dgsizes.Str())
   console.log(rdot.Str(),tpl_name, dgsizes)
   if(withtpl) await loadTpl(tpl_name)
+  if(withtag && tagids != '') await loadTags(tagids)
   return dgsizes
 
 }
 
 
-export async function loadTags(){
+export async function loadTaglist(){
   const data = await MI.promiseGet('/api/tag/list')
   let arr = JSON.parse(data)
   let obj = []
@@ -95,6 +101,17 @@ export async function loadTpl(tpl_name = tpl_name){
   return dtpl
 }
 
+function estimate_e(fsize, gsize, strech){
+  if( fsize > gsize ) {
+    let e = (fsize - gsize) / fsize * 10
+    let v = 1 / ( 1 + Math.exp( -e * 10 + strech )) * Math.log(e + Math.E )
+    return v
+  } else {
+    let e = (gsize - fsize) / fsize * 10
+    let v = 1 / ( 1 + Math.exp( -e * 10 + 4 )) * Math.log(e + Math.E )
+    return v
+  }
+}
 
 function name2value(vmap, str){ // 변수를 vmap 에서 찾아 수치로 변환, 변수명은 알파벳만으로 이뤄져야함
 
@@ -144,65 +161,79 @@ export function sortScores(scorearr){
   return arr
 }
 
-export function createMatchScores(dgsizes, dsize, dtpl){
+export async function  loadTags(id){ // mrs
+  const data = await MI.promiseGet(`/api/tag/get?id=${id}`)
+  tagarr = JSON.parse(data)
+  dtags = dot.fromObj(tagarr)
+  console.log(dtags.Str())
 
-    let ms = dsize.Arr()
-    console.log(dgsizes)
-    dgsizes = dgsizes.Get('gsize.')
-    let gsizes = Array.isArray(dgsizes.Arr()) ? dgsizes.Arr() : [dgsizes.Arr()]
-    let dmrs = dtpl.Get("measures.")
-    let mrs = Array.isArray(dmrs.Arr()) ? dmrs.Arr() : [dmrs.Arr()]
+}
 
-    console.log('createMatchScore:', gsizes,ms,mrs)
+function adjustTags(mtable, tarr, bsize){
 
-    let gs_scores = []
+  const opers = ['+','-','/','*']
+  for(const tag of tarr){
+    console.log(tag)
+    let mods = dot.parse( dot.dec(tag.modifier) ).Arr()
+    if(!Array.isArray(mods)) mods = [mods]
+    console.log(mods)
 
-    let best_size = ''
-    let best_err = -1
+    for(const mod of mods) {
+      if( !mtable[ mod.size ] && mod.size != 'all' ) continue
+      const firstc = mod.value.trim()[0]
 
-    for(let gs of gsizes ){
+      const mval = name2value(bsize, mod.value)[0]
+      console.log(mod.size, mtable[mod.size])
 
-      let gs_score = []
-      let keys = Object.keys(gsizes[0])
+      if( opers.includes(firstc) )
+        mtable[mod.size] = eval(`${mtable[mod.size]} ${mval}`)
+      else mtable[mod.size] = eval(`${mval}`)
 
-      gs_score['sname'] = gs['sname']
-      gs_score['fit'] = 0
-
-      console.log(gs.sname + ":")
-      let errsum = 0
-
-      for(let meas of mrs){
-        let r1 = name2value(gs, meas['base'])
-        let r2 = name2value(ms, meas['comp'])
-        let base = r1[0], base_keys = r1[1]
-        let comp = r2[0]
-
-        //console.log("eq:",base," : ",comp)
-
-        let base_val = eval(base)
-        let comp_val = eval(comp)
-
-        let err = ( base_val - comp_val )
-        errsum += Math.abs(err) / (base_val + comp_val)
-
-        base_keys.forEach( k => {
-          if( gs_score[k] ) gs_score[k] += err
-          else gs_score[k] = err
-        })
-        gs_score['fit'] += errsum
-      }
-
-      gs_scores.push(gs_score)
-
-      if( best_err < 0 || errsum < best_err ) {
-        best_err = errsum
-        best_size = gs['sname']
-      }
+      console.log('-->', mtable[mod.size])
     }
+  }
 
-    scorearr = gs_scores
-    return gs_scores
-    //console.log(gs_scores)
+
+
+}
+
+export function createMatchScores(dgsizes, dsize, dtpl, dtags){
+  const bs = dsize.Arr()
+  let mrs = dtpl.Get("measures.").Arr()
+  if( !Array.isArray(mrs) ) mrs = [mrs]
+  const stretch = parseInt( dtpl.Get('stretch.').V() )
+
+  // mtable : expectation sizes , btable : used body sizes for expectation
+  let mtable = {}, btable = {}
+  for(let meas of mrs){
+    const base = meas['base']
+    const r = name2value(bs, meas['comp'])
+    const val = eval(r[0])
+    mtable[base] = val
+    btable[base] = r[1]
+  }
+
+  dgsizes = dgsizes.Get('gsize.')
+  let gsizes = Array.isArray(dgsizes.Arr()) ? dgsizes.Arr() : [dgsizes.Arr()]
+  adjustTags(mtable, tagarr, bs)
+
+  let gs_scores = [], best_size = '', best_err = -1
+  for(let gs of gsizes ){
+    let score = {'fit':0}
+    score['sname'] = gs['sname']
+    let err = 0
+    for(const base in mtable){
+      const e =  gs[base] - mtable[base]
+      //err +=  Math.abs(e) // ( gs[base] + mtable[base] )
+
+      score[base] = e.toFixed(2)
+      score['fit'] += estimate_e(mtable[base],gs[base],stretch)
+    }
+    gs_scores.push(score)
+  }
+
+  console.log('match table result:',mtable, btable, gs_scores)
+  return gs_scores
 }
 
 
@@ -220,4 +251,4 @@ export function getType(arr = sizearr){
 }
 
 
-export {upload, dlabels, dsize, dgsizes, dtpl, scorearr, tpl_name}
+export {upload, dlabels, dsize, dgsizes, dtpl, dtags, scorearr, tpl_name}

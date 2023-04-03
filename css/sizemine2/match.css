@@ -162,11 +162,6 @@
 #dv_othersizes div {
   text-align: right;
 }
-#dv_othersizes table {
-  justify-self:center;
-  background:#efefef;
-  width:100%;
-}
 
 #dv_othersizes td, th {
   text-align: center;
@@ -175,6 +170,41 @@
   width:25%;
   border:1px solid #e3e3e3;
 }
+
+#tbl_sizes {
+  justify-self:center;
+  width:100%;
+  font-size: 1.5vh;
+  border-spacing: 0;
+  border-color:#FAF8F8;
+}
+
+#tbl_sizes tr{
+  height:3em;
+}
+
+#tbl_sizes td{
+  background:white;
+  height:1.5em;
+  border-color:#FAF8F8;
+
+}
+
+#tbl_sizes .best{
+  background:white;
+  height:1.5em;
+  border-color:#FAF8F8;
+  color:red;
+
+}
+
+#tbl_sizes th{
+  border-color:white;
+  background:#FAF8F8;
+  font-size: 1.5vh;
+  height:1.5em;
+}
+
 
 
 .redbtn {

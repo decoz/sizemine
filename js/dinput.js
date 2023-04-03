@@ -112,8 +112,8 @@ export default class dInput extends HTMLElement {
         newd = new dot('')
         break
       case '?' :
-        if(obj.value != '') d.Put("." + obj.value)
-
+        if(obj.value != '') d.Put("." + dot.enc(obj.value))
+        console.log('-*-',obj.value)
         return
       default :
         newd = new dot( ds )

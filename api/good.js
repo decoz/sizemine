@@ -13,19 +13,20 @@ const pool = mariadb.createPool({
 })
 
 router.route("/put").post( async function(req, res){
-  console.log('reqbody:',req.body)
-  const {gid, vid, sizes, tpl_name} = req.body
-  console.log("put_good:",gid, vid, sizes)
+  //console.log('reqbody:',req.body)
+  const {gid, vid, sizes, tpl_name, tags} = req.body
+  console.log("put_good:",gid, vid, sizes, tags)
 
   let conn = await pool.getConnection()
   conn.query('use sizemine')
   let query =
     `
-      INSERT INTO itb_goods(good_id, vendor_id, sizes, tpl_name)
-        VALUES("${gid}", "${vid}", "${sizes}", "${tpl_name}")
+      INSERT INTO itb_goods(good_id, vendor_id, sizes, tpl_name, tags)
+        VALUES("${gid}", "${vid}", "${sizes}", "${tpl_name}", "${tags}")
         ON DUPLICATE KEY UPDATE
-        sizes = '${sizes}', tpl_name = '${tpl_name}'
+        sizes = '${sizes}', tpl_name = '${tpl_name}', tags = '${tags}'
     `
+  //console.log(query)
   let result = await conn.query(query)
 })
 

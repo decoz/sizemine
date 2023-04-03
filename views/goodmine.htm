@@ -127,7 +127,7 @@ async function init(gid, vid){
   console.log(`matchmine - gid:${gid} , vid:${vid}`)
 
   let [garr]  = await Promise.all( [ SM.loadGood(gid, vid, true) ] )
-  let tagarr = await SM.loadTags()
+  let tagarr = await SM.loadTaglist()
   setTags(tagarr)
   console.log('----------------',tagarr)
   gsize_labels = SM.dlabels.Get('goodsize').Arr()
@@ -152,6 +152,19 @@ async function init(gid, vid){
 
 
 }
+
+function getTags(){
+  const tdlist = tbl_tag.querySelectorAll('td[selected]')
+  let tags = ''
+  for(const td of tdlist){
+    if(tags != '') tags += ','
+    tags += td.getAttribute('tagid')
+  }
+  console.log('getTags:',tags)
+  return tags
+
+}
+
 
 function setTags(arr){
 
@@ -189,16 +202,18 @@ function setTags(arr){
 
 
 btn_save.onclick = async function(e){
+
   console.log(dv_size.Get().Arr())
   const d = dv_size.Get()
   const putarr = {
     'gid':gid,
     'vid':vid,
     'sizes':d.Str(),
+    'tags':getTags(),
     'tpl_name':tpl_name
   }
 
-  const res = await MI.postJson('/good/put', putarr)
+  const res = await MI.postJson('/api/good/put', putarr)
   if( parent != window ) frameElement.getRootNode().host.close()
 
 }

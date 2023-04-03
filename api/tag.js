@@ -52,7 +52,7 @@ router.route("/list").get( async function(req, res){
 
 
 router.route("/get").get( async function(req, res){
-  const {path,id} = req.query
+  const {id} = req.query
 
   const ids = id.split(',')
   console.log("get_tags:", ids)

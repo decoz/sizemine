@@ -60,20 +60,6 @@
   margin-bottom: 1em;
 }
 
-.graysize {
-  display:flex;
-  font-size:3vmax;
-  color:white;
-  height:2em;
-  width:2em;
-  border-radius: 0.2em;
-  background: #808080;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-}
-
-
 
 #dv_buttons > div {
   display:grid;

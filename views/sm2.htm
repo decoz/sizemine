@@ -82,7 +82,7 @@ mydrag.onFileDrop = e => {
   const profile = {
     'sex':sel_sex.value,
     'tall':input_tall.value,
-    'age':input_birth.value,
+    'age':2023 - parseInt(input_birth.value),
     'weight':input_weight.value
   }
 
@@ -111,10 +111,65 @@ mydrag.onFileDrop = e => {
   })
 }
 
+function setSizeTable(sizearr, scorearr){
+    tbl_sizes.innerHTML =''
+    const tr_sizes = document.createElement('tr')
+
+    let html = '<th> 사이즈 </th>'
+    for(let score of scorearr)
+      html += `<th class = th_sname > ${score.sname} </th> `
+
+    tr_sizes.innerHTML = html
+    tr_sizes.querySelectorAll('.th_sname').forEach( td => {
+      td.addEventListener('click', e => {
+        const td = e.srcElement
+        //console.log('add event listen:',td.innerText)
+        setDetail(td.innerText, scorearr)
+      })
+    })
+
+    tbl_sizes.appendChild(tr_sizes)
+
+    let stbl = [],sctbl = []
+    for(const sz of sizearr){
+      stbl[sz.sname] = structuredClone(sz)
+      delete stbl[sz.sname].sname
+    }
+
+    for(const pos in sizearr[0] ) {
+      if( pos == 'sname') continue
+
+      const tr = document.createElement('tr')
+      let html = `<th> ${sizelabel[pos]} </th>`
+
+      let min = 0, best = ''
+      for(const score of scorearr) {
+        const sname = score.sname
+
+        html += `
+          <td sz = '${sname}'> ${ stbl[sname][pos] } </td>
+        `
+        if( !score[pos] ) continue
+        if( best == '' || Math.abs( score[pos] ) < min  ) {
+          min = Math.abs( score[pos] )
+          best = sname
+        }
+      }
+      tr.innerHTML = html
+      if(best != '') tr.querySelector(`[sz=${best}]`).classList.add('best')
+      tbl_sizes.appendChild(tr)
+    }
+
+
+
+
+}
+
+
 async function initMatch(uid, gid, vid, dsize){
   console.log('initMatch:',uid,gid,vid)
   await Promise.all([
-    SM.loadGood(gid, vid, true)
+    SM.loadGood(gid, vid, true, true)
   ])
 
   const scorearr = SM.createMatchScores(SM.dgsizes, dsize, SM.dtpl)
@@ -145,24 +200,12 @@ async function initMatch(uid, gid, vid, dsize){
     dv_others.innerHTML += html
   }
 
-
   gsizes = SM.dgsizes.Get('gsize.').Arr()
   if( !Array.isArray(gsizes) ) gsizes = [gsizes]
-
   span_recsize.innerText = matchs
   //setDetail(matchs, sorted)
+  setSizeTable(gsizes, scorearr)
 
-  let html = '<th> 사이즈 </th>'
-  for(let score of scorearr)
-    html += `<td> ${score.sname} </td> `
-  tr_sizes.innerHTML = html
-  tr_sizes.querySelectorAll('td').forEach( td => {
-    td.addEventListener('click', e => {
-      const td = e.srcElement
-      //console.log('add event listen:',td.innerText)
-      setDetail(td.innerText, scorearr)
-    })
-  })
 }
 
 function setDetail(sname, scorearr ){
