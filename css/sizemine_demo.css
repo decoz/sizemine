@@ -20,21 +20,23 @@
   grid-template: 1fr 1fr 1fr / 1fr 1fr;
 }
 
+
 .red {
   color:#cf0a3b;
 }
 
 .good_image {
-  width:400px;
-  height:400px;
+  max-width:100%;
+  max-height:100%;
   object-fit: cover;
+  overflow: hidden;
 }
 
 .div_good {
-  width:400px;
-  height:500px;
+  width:35vw;
+  height:50vw;
   display:grid;
-  grid-column: 80% 20% / 1fr 1fr;
+  grid-template: 80% 20% / 1fr 1fr;
 
 }
 
