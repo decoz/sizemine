@@ -1,188 +1,238 @@
-<html>
-<head>
-</head>
+<header>
+  <link href="/css/template.css" rel="stylesheet" />
+  <link href="/css/common.css" rel="stylesheet" />
+
+</header>
 <body>
 
-<center>
-<table id = main> <tr>
-<td id = col_left class = col style = "">
-  <t-dbselect id = 'sel_tpl' url = '/api/template/list?field=tpl_name'
-    selsize = 15
-    css = '
-      select {
-        width:200px;
-        heigth:400px;
-        margin-bottom:20px;
-        v-scroll:none;
-        border-color:#DDDDDD;
-      }
-
-      select:focus {
-        outline:none;
-      }
-
-    '> </t-dbselect>
-
-  <br> <button class = btnmini id = 'btn_new'> new </button>
-  <br> <button class = btnmini id = 'btn_save'> save </button>
-  <br> <button class = btnmini id = 'btn_delete'> delete </button>
-
-  <form id = upform method="post" action = "template.php" accept-charset="euc-kr"
-    style = "display:none" >
-  <input type = text name = json>
-  </form>
-</div></td>
+<d-popup id = popup
+  title = 'help'
+  showframe = false
+  css = '
+    width:35vh;
+    height:80vh;
+    background:white;
+  '
+  onclick = 'this.close()'
+> </d-popup>
 
 
-<td class = col id = col_right style = "width:auto">
-  <drag-upload id = drupload >
-  여기에 의류유형 이미지를 업로드 하세요
-  </drag-upload>
-  <div id = 'marker_edit' >
-    <div class = aleft >   <button class = medium id = btn_reimg> 이미지 변경 </button> </div>
-    <div id = 'img_area' onclick = "imgarea_click(e)" >
-    <img-marker  css = '
-      <style>
-      .marker {
-        font-size:11pt;
-       }
-      ' id = im>  </img-marker>
-    <table> <tr>
-      <td>
-        <input id = 'markername' type = text> </input>
-      </td>
-      <td id = posx width = '50px'> </td>
-      <td id = posy width = '50px'> </td>
-      <td>
-        <button id = btn_mkadd> add </button>
-      </td>
-      <td>
-        <button id = btn_mkdel> remove </button>
-      </td>
-    </tr></table>
-</div> </td>
 
-<td class = col>
-  <div id = tpl_input>
-  <d-input
-    id = 'di'
-    input = '(
-      name.text/width:200px,
-      stretch.text/width:50px,
-      measures.#(
-          base./width:100px,
-          comp./width:150px
-      )
-    )'
-  >
-  </d-input>
-  <p>
-  <button id = 'btn_json'> show json </button>
-  <pre id = 'jsontext'> </pre>
-  </div>
-</td></tr></table>
+<div class = container>
+  <div class = section>
+    <div class = title onclick = 'toggle()'> 탬플릿 선택  </div>
+    <div id = cont_tpl class = content>
+      <div class = 'c1 r1'>
+      <t-dbselect id = 'sel_tpl' url = '/api/template/list?field=tpl_name'
+        selsize = 15
+        css = '
+          select {
+            width:80%;
+            heigth:400px;
+            margin-bottom:20px;
+            v-scroll:none;
+            font-size:1em;
+            border-color:#DDDDDD;
+          }
+
+          select:focus {
+            outline:none;
+          }
+
+        '> </t-dbselect>
+      </div>
+      <div class = 'c2 r1'>
+        템플릿명 <br>
+        <input id = input_name dot = name> </input> <br>
+        <br>
+        신축성  <input id = input_stretch type = number dot = stretch> </input> <br>
+        <br>
+        <button id = btn_tpldel> 템플릿 삭제 </button>
+
+        </div>
+    </div content>
+  </div section>
+
+  <div class = section>
+    <div class = title onclick = 'toggle()'> 사이즈 정보 </div>
+    <div class = content>
+      <div>
+        <div id = dv_help1 class = 'help small_font'
+          onclick = 'popup.open("/helps/tpl_sizereg.htm")'
+        >
+          <img src = '/images/sizemine/icons/info.png' >
+          사이즈 등록방법
+        </div>
+
+        <drag-upload id = drupload >
+        여기에 의류유형 이미지를 업로드 하세요
+        </drag-upload>
+
+        <div id = 'marker_edit' style = 'display:none' >
+
+          <div id = 'img_area' >
+          <div class = 'c1 r1' >
+              <button class = medium id = btn_reimg> 이미지 변경 </button> </div>
+
+          <img-marker class = 'c12 r2'
+           css = '
+            <style>
+            .marker {
+              font-size:11pt;
+             }
+            ' id = im>  </img-marker>
+
+          <div class = 'c1 r3'>
+            <label for = markername > 사이즈 이름 입력 </label> <br>
+            <input id = 'markername' type = text > </input>
+          </div>
+          <div class = 'c2 r3'>
+            <span  id = pos > </span>
+          </div>
+          <button class = 'c2 r4' id = btn_mkadd> add </button>
+          <button class = 'c1 r4'id = btn_mkdel> remove </button>
+          </div img_area>
+      </div marker_edit> </div>
+    </div content>
+  </div section>
+
+  <div class = section>
+    <div class = title onclick = 'toggle()'> 사이즈 매칭 규칙 </div>
+    <div class = content>
+        <div id = dv_mrs >
+
+        <div class = 'r3 c12'>
+        <d-view id = dv_tpl >
+        <t-select id = sel_mrs select >
+        <table id = tbl_mrs >
+          <tr>
+            <th width = '30%'> 의류사이즈 </th>
+            <th> 신체 사이즈 </th>
+            </tr>
+          <tbody id = tbd_mrs dot = measures iter = '#tr_mrs' replace >
+
+            <tr id = tr_mrs opt dot = ''>
+              <td> <input dot = base> </input> </td>
+              <td> <input dot = comp> </input> </td>
+              </tr>
+            </tbody>
+        </table>
+        </t-select>
+        </d-view>
+        </div>
+
+        <div id = dv_help1 class = 'help c1 r4 small_font'
+          onclick = 'popup.open("/helps/tpl_measure.htm")'
+        >
+          <img src = '/images/sizemine/icons/info.png' >
+          매칭규칙 작성방법
+        </div>
+        <div class = 'r4 c2'>
+          <button class = right id = 'btn_del'> 매칭 삭제 </button>
+          <button class = right id = 'btn_add'> 매칭 추가 </button> </div>
+
+      </div dv_mrs>
+
+    </div content>
+  </div section>
+</div container>
+<button id = btn_tplsave> 템플릿 저장 </button>
+
+</body>
+
+<script>
+function toggle(){
+  const parent = event.srcElement.parentElement
+  const dv_cont = parent.querySelector('.content')
+  console.log(dv_cont)
+  if( !dv_cont ) return
+  if( dv_cont.classList.contains('close') )
+    dv_cont.classList.remove('close')
+  else dv_cont.classList.add('close')
 
 
-</html>
+}
+
+
+
+
+</script>
 
 <script type = 'module'>
+import selector from '/js/selector.js'
+import dbSelect from '/js/dbselect.js'
 import dragUpload from '/js/dragupload.js'
 import imgMarker from '/js/imgmarker.js'
-//import jsInput from '/imemine/js/jsinput.js'
+import dPopup from '/js/dpopup.js'
 
-import dInput from '/js/dinput.js'
-import dbSelect from '/js/dbselect.js'
-//import jsList from '/imemine/js/jslist.js'
+import dView from '/js/dview3.js'
 import dot from '/js/dot.js'
-import * as SM from '/js/sizemine.js'
 import * as MI from '/js/mineif.js'
+import * as SM from '/js/sizemine.js'
 
-//customElements.define('js-list', jsList)
+customElements.define('d-view', dView)
 customElements.define('drag-upload', dragUpload)
 customElements.define('img-marker', imgMarker)
 customElements.define('t-dbselect', dbSelect)
-customElements.define('d-input', dInput)
+customElements.define('t-select', selector)
+customElements.define('d-popup', dPopup)
 
-let markers = {}
+
 var imagedata = null
+let posx,posy
 
 sel_tpl.filter = function(data) {
   let arr = JSON.parse(data)
   return JSON.stringify( arr.map(d => d.tpl_name) )
 }
-sel_tpl.sync()
 
-drupload.onFileDrop = file => {
-  console.log("onFileDrop:" + file)
-  drupload.readFile( filedata=>{
-    im.setImg(filedata)
-    imagedata = filedata
-    marker_edit.style.display = 'block'
-    drupload.style.display = 'none'
-  })
-}
+sel_tpl.onselect = async function(tpl_name){
+  console.log('loading selected template')
+  //let data = await Promise.all( [SM.loadTpl(tpl_name)] )
+  let dtpl = await SM.loadTpl(tpl_name)
+  input_name.value = tpl_name
+  input_stretch.value = dtpl.Get('stretch.').V()
 
-img_area.onclick = e => {
-  //console.log("imgarea_click " + e.offsetX + "," + e.offsetY)
-  posx.innerText = e.offsetX
-  posy.innerText = e.offsetY
-}
 
-btn_mkadd.onclick = e => {
-  let name = markername.value
-  let x = parseInt(posx.innerText)
-  let y = parseInt(posy.innerText)
+  imagedata = dtpl.Get("image.").V()
+  im.setImg(dtpl.Get("image.").V() )
 
-  if(name.length > 0) {
-    im.addMarker(name, x, y)
-    //tplimage.refreshMarkers()
-    //im.redrawMarkers()
-  }
-}
+  marker_edit.style.display = 'block'
+  drupload.style.display = 'none'
 
-btn_mkdel.onclick = e => {
-  im.delMarker( markername.value )
+  im.clearMarkers()
+  let dsize = dtpl.Get("sizes.")
+  if(dsize) im.setMarkers(dsize.Arr())
+
+  console.log(dtpl.Str())
+
+  dv_tpl.Put(dtpl)
+  sel_mrs.init()
 
 }
 
-btn_reimg.onclick = e => {
-  drupload.style.display = 'block'
-  marker_edit.style.display = 'none'
 
-
-}
-
-btn_json.onclick = e => {
-    //let json = ji.extractJson()
-    //json["sizes"] = markers
-    dot.fromObj(im.markers).Str()
-    jsontext.innerText = dot.fromObj(im.markers).Str()
-}
-
-btn_new.onclick = e => {
-  console.log("btn_new!")
-  marker_edit.style.display = 'none'
-
-  //im.clearMarkers()
-  im.resetMarkers()
-  drupload.style.display = 'block'
-  di.Put(dot.parse(".name."))
-}
-
-btn_save.onclick = async function(e){
+btn_tplsave.onclick = async function(e){
   // check image_name
-  let d = di.Get()
+  let d = dv_tpl.Get()
 
-  console.log( dot.fromObj(im.markers).Str() )
+  //console.log( dot.fromObj(im.markers).Str() )
 
   d.Put(".sizes"+dot.fromObj(im.markers).Str())
+  d.Put(".stretch." + dot.enc(input_stretch.value))
+  console.log(d.Str())
+
+
   d.Put(".image."+dot.enc(imagedata))
+
+  /*
   let name = d.Get("name.").V()
   d.Del("name")
   console.log( name )
+  */
 
   const data = {
-    'tpl_name':name,
+    'tpl_name':input_name.value,
     'dot':d.Str()
   }
 
@@ -201,118 +251,61 @@ btn_save.onclick = async function(e){
 
 }
 
-sel_tpl.onselect = async function(tpl_name){
-  console.log('loading selected template')
-  //let data = await Promise.all( [SM.loadTpl(tpl_name)] )
-  let dtpl = await SM.loadTpl(tpl_name)
-
-  imagedata = dtpl.Get("image.").V()
-  im.setImg(dtpl.Get("image.").V() )
-
-  marker_edit.style.display = 'block'
-  drupload.style.display = 'none'
-
-  im.clearMarkers()
-  let dsize = dtpl.Get("sizes.")
-  if(dsize) im.setMarkers(dsize.Arr())
-
-  console.log(dtpl.Str())
-
-  dtpl.Put(".name."+tpl_name)
-  di.Put(dtpl)
+btn_reimg.onclick = e => {
+  drupload.style.display = 'block'
+  marker_edit.style.display = 'none'
 }
 
-btn_delete.onclick = e => {
-  var upform = new FormData()
-  upform.append("name", sel_tpl.value)
-  console.log("delte_name:",sel_tpl.value)
 
-  var xhr = new XMLHttpRequest()
-  xhr.open('POST', "template.php?action=delete", true)
-  xhr.addEventListener('readystatechange', function(e) {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      console.log("delete response:" + this.response)
-      sel_tpl.sync()
-    }
+im.onclick = e => {
+  //console.log("imgarea_click " + e.offsetX + "," + e.offsetY)
+  pos.innerText = `X 좌표:${e.offsetX} Y 좌표:${e.offsetY}`
+  posx = e.offsetX
+  posy = e.offsetY
+}
+
+
+sel_tpl .sync()
+
+btn_add.onclick = e => {
+  const tr = document.createElement('tr')
+  tr.setAttribute('opt','')
+  tr.setAttribute('dot','')
+  tr.innerHTML = `
+    <td> <input dot = base> </input> </td>
+    <td> <input dot = comp> </input> </td>
+  `
+  tbd_mrs.appendChild(tr)
+  sel_mrs.init()
+}
+
+btn_del.onclick = async function(e){
+
+  if(sel_mrs.selected) tbd_mrs.removeChild(sel_mrs.selected)
+
+}
+
+drupload.onFileDrop = file => {
+  console.log("onFileDrop:" + file)
+  drupload.readFile( filedata=>{
+    im.setImg(filedata)
+    imagedata = filedata
+    marker_edit.style.display = 'block'
+    drupload.style.display = 'none'
   })
-  xhr.send(upform)
 }
 
+btn_mkadd.onclick = e => {
+  let name = markername.value
 
+  if(name.length > 0)
+    im.addMarker(name, posx, posy)
+
+}
+
+btn_mkdel.onclick = e => {
+  im.delMarker( markername.value )
+
+}
 
 </script>
-
-
-<style>
-
-#main {
-  width:100%;
-  border-spacing: 0px;
-}
-#main .col {
-  padding:20px;
-  vertical-align:top;
-  text-align:center;
-  border-right:1px solid #DDDDDD
-}
-
-#col_left{
-  width:200px;
-}
-
-#sel_tpl {
-  width:100%;
-}
-
-
-#tpl_input {
-  width:450px;
-  padding:20px;
-  border:1px solid #DDDDDD;
-}
-#drupload {
-  font-size:12pt;
-  width:300px;
-  height:100px;
-}
-
-#marker_edit {
-  display: none;
-}
-
-div .aleft {
-  text-align: left;
-}
-
-#jsontext {
-  padding:10px;
-  text-align:left;
-  width:400px;
-  border:0;
-  background-color:lightgray;
-}
-
-
-#im {
-  width:100%;
-}
-
-#img_area {
-  border : 1px solid #DDDDDD;
-  width : 400px;
-  height : 600px;
-
-}
-
-button {
-  margin-bottom:10px;
-  width:80px;
-  color:white;
-  border: 1px solid #BBBBBB;
-  background-color:#AAAAAA;
-}
-
-button.medium {
-  width:100px;
-}
-</style>

@@ -1,0 +1,35 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="/css/helps.css" rel="stylesheet" />
+<body>
+<h1> 템플릿 사이즈 등록 </h1>
+
+<h2> 사이즈 등록 순서 </h2>
+<img src = '/images/helps/tpl_sizereg.png'>
+
+<h2> 사이즈 변수명 </h2>
+<table id = tbl_gsize >
+<tr> <th width = 50% > 사이즈 </th> <th> 변수명 </th> </tr>
+</table>
+
+</body>
+
+<script type = 'module'>
+import * as MI from '/js/mineif.js'
+import dot from '/js/dot.js'
+var label_url = '/labels.txt'
+const dlabels = dot.tabParse( await MI.promiseGet(label_url) )
+
+
+const gslabels = dlabels.Get('goodsize.').Arr()
+console.log(dlabels.Str(), gslabels)
+
+let label_html = ''
+for(const k in gslabels) {
+  if( k == 'sname') continue
+  label_html += `
+    <tr> <td> ${gslabels[k]} </td> <td> ${k} </td> </tr>
+  `
+}
+tbl_gsize.innerHTML += label_html
+</script>

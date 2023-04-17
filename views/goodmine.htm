@@ -256,6 +256,8 @@ function setHeader(tbody, sizearr = sizearr){
   for(let k in sizearr)
     cols += `<th> ${ gsize_labels[k]? gsize_labels[k] : k} </th> \n`
   tbody.innerHTML = `<tr> ${cols} <tr>`
+
+
 }
 
 
@@ -265,6 +267,8 @@ function setDview(sizearr){
   const tbl = tbl_size
   setHeader(tbody_size, sizearr)
   addRow(sizearr)
+  dv_size._buildTpl()
+
   console.log(tbl, sizearr)
 
 

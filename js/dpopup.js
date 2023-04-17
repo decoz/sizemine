@@ -117,6 +117,7 @@ export default class dPopup extends HTMLElement {
     display:none;
     text-align:center;
     veritical-align:middle;
+    z-index:2;
   }
   #popup {
     position: absolute;

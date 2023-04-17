@@ -1,11 +1,12 @@
 
-<div class = container>
-<header>
+
+<head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="/css/tag.css" rel="stylesheet" />
   <link href="/css/common.css" rel="stylesheet" />
-</header>
-
+</head>
+<body>
+<div class = container>
 <div class = title > 태그 편집기 </div>
 <d-view id = dv_tag >
 
@@ -48,6 +49,12 @@
       </tr>
     </tbody> </table> </t-select>
 
+    <div class = 'left help'
+      onclick = "popup.open('/helps/tag_mod.htm')"
+    >
+      <img src = '/images/sizemine/icons/info.png' >
+      사이즈 변환 규칙 작성방법
+    </div>
 
     <div class = 'right'>
       <button id = btn_madd > 추가 </button>
@@ -61,20 +68,34 @@
 
 </div main>
 </d-view>
-
-
-
 </div container>
+
+<d-popup id = popup
+  title = 'help'
+  showframe = false
+  css = '
+    width:70vw;
+    height:40vw;
+    background:white;
+  '
+  onclick = 'this.close()'
+> </d-popup>
+
+</body>
+
+
 <script type = 'module'>
 import selector from '/js/selector.js'
 import dbSelect from '/js/dbselect.js'
 import dView from '/js/dview3.js'
 import dot from '/js/dot.js'
 import * as MI from '/js/mineif.js'
+import dPopup from '/js/dpopup.js'
 
 customElements.define('d-view', dView)
 customElements.define('t-dbselect', dbSelect)
 customElements.define('t-select', selector)
+customElements.define('d-popup', dPopup)
 
 btn_madd.onclick = e => {
   const tr = document.createElement('tr')

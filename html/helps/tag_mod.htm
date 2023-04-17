@@ -1,0 +1,57 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/helps.css" rel="stylesheet" />
+<body>
+<h1> 사이즈 매칭 등록 </h1>
+<div class = desc>
+템플릿에서 매칭된 값에 추가로 수치를 변경할 수 있습니다. 예를 들어
+  <pre>
+    shoulder : +2
+  </pre>
+로 사용시 어깨 치수의 최적 매칭 수치에 +2 를 더해서 비교함을 의미합니다.
+</div>
+
+<img src = '/images/helps/tag_mod.png'>
+
+
+<div id = dv_tables>
+  <table id = tbl_gsize class = 'r2 c1' >
+  <tr> <th> 의류사이즈 </th> <th> 영문명 </th> </tr>
+  </table>
+
+  <table id = tbl_bsize class = 'r2 c2' >
+  <tr> <th> 신체사이즈 </th> <th> 영문명 </th> </tr>
+  </table>
+</div dv_tables>
+
+</body>
+<script type = 'module'>
+import * as MI from '/js/mineif.js'
+import dot from '/js/dot.js'
+var label_url = '/labels.txt'
+const dlabels = dot.tabParse( await MI.promiseGet(label_url) )
+
+const gslabels = dlabels.Get('goodsize.').Arr()
+const bslabels = dlabels.Get('bodysize.').Arr()
+
+
+let label_html = ''
+for(const k in gslabels) {
+  if( k == 'sname') continue
+  label_html += `
+    <tr> <td> ${gslabels[k]} </td> <td> ${k} </td> </tr>
+  `
+}
+tbl_gsize.innerHTML += label_html
+
+label_html = ''
+for(const k in bslabels)
+  label_html += `
+    <tr> <td> ${bslabels[k]} </td> <td> ${k} </td> </tr>
+  `
+tbl_bsize.innerHTML += label_html
+
+
+
+
+
+</script>

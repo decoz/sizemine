@@ -3,11 +3,18 @@ import dot from '/js/dot.js'
 
 export default class dView extends HTMLElement {
 
-  _buildTpl(obj){
+  _buildTpl(obj = this){/*
     if(obj.hasAttribute('dot') && obj.getAttribute('dot') == '#'){
       let tpl = document.createElement('template')
       tpl.innerHTML = obj.innerHTML
       obj.tpl = tpl
+    }
+
+    */
+    if(obj.hasAttribute('dot') && obj.hasAttribute('iter')) {
+      const iter = obj.getAttribute('iter')
+      const iterobj = obj.querySelector(iter)
+      if(iterobj) obj.iterobj = iterobj.cloneNode(true)
     }
     for(let c of obj.children) this._buildTpl(c)
   }
@@ -33,10 +40,19 @@ export default class dView extends HTMLElement {
     if( !cd ) return
 
     if(obj.hasAttribute('iter')){
-      //console.log('iter on')
 
-      const iter = obj.getAttribute('iter')
-      let iterobj = obj.querySelector(iter)
+      let iterobj = obj.iterobj
+      obj.innerHTML = ''
+      if( !cd.c.length ) obj.appendChild(iterobj.cloneNode(true))
+
+      for(const c of cd.c) {
+        const clone = iterobj.cloneNode(true)
+        this._put(clone, c)
+        obj.appendChild(clone)
+      }
+      return
+
+      /*
 
       if( obj.hasAttribute('replace') ) {
         for(const c of cd.c ){
@@ -48,6 +64,7 @@ export default class dView extends HTMLElement {
         iterobj.parentElement.removeChild(iterobj)
         return
       }
+    */
     }
 
     if( cd.c.length == 1 && cd.c[0].c.length == 0 ){
