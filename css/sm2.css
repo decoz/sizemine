@@ -8,7 +8,7 @@
   position:sticky;
   scroll-behavior: smooth;
   background-color: white;
-  font-family: Noto Sans KR;
+  line-height: 2.5vh;
 
 }
 
@@ -34,14 +34,14 @@
 .page > .top {
   background-color: rgba(250, 248, 248, 1);
   width: 100%;
-  height: 43%;
+  height: 35%;
   display:grid;
   grid-template: 40% 60%/ 3fr 1fr;
 }
 
 .page > .main {
   width:100%;
-  height: 57%;
+  height: 55%;
 
   font-size:2.3vh;
   color:rgba(46,46,46,1)
@@ -67,16 +67,18 @@
 
 .span_lang {
   color: rgba(0, 0, 0, 1);
-  height: 0.8vh;
-  left: 15vw;
+  height: 1.3vh;
+  left: 13vw;
   position:fixed;
-  font-size: 0.8vh;
+  font-size: 1.5vh;
   letter-spacing: 0;
+  color:#999;
 }
 .dv_msg {
   font-family: Noto Sans KR;
   color:#2f2f2f;
-  font-size: 3vh;
+  font-size: 3.3vh;
+  line-height: 4.2vh;
   font-weight: bold;
 }
 
@@ -93,11 +95,12 @@
 
 .dv_sub {
   text-align: left;
-  top: 5vh;
+  top: 3vh;
   margin-left:10vw;
   position:relative;
-  font-size: 1.5vh;
-  width:70%;
+  font-size: 2vh;
+  font-weight: 300;
+  width:85%;
 }
 
 .dv_step {
@@ -106,17 +109,19 @@
 }
 
 .dv_step span {
-  font-size: 1.3vh;
+  font-size: 1.6vh;
   font-weight:bold;
-  margin-right:1.5vh;
+  margin-right:1vh;
   color:rgba(156,156,156,1);
   letter-spacing: -0.5;
+  width:6vh;
 }
 
 
 .dv_step[selected] span {
   color:rgba(208, 23, 67, 1);
   letter-spacing: -0.5;
+  font-size: 2vh;        
 }
 
 .dv_step[selected] .circle {
@@ -129,9 +134,9 @@
   align-items: center;
   color:white;
   background-color: rgba(208, 23, 67, 1);
-  height:2em;
+  height:5vh;
   font-size: 2.3vh;
-  border-radius:1.5vh;
+  border-radius:3vh;
 }
 
 #btn_unit {
@@ -143,7 +148,7 @@
 #page1 #btn_next {
   justify-self:center;
   margin-top:2vh;
-  width: 80%;
+  width: 87%;
 }
 
 
@@ -159,24 +164,26 @@
 
 .logo_small {
   top:7vh;
-  left:20vw;
-  width:20vw;
+  left:13vw;
+  width:30vw;
   position:fixed;
 }
 
 .dv_input[selected] {
-  background-color: rgba(240, 240, 240, 1);
-  color:rgb(50,50,50)
+  background-color: rgba(208, 23, 67, 1);
+  color:rgb(255,255,255, 1);
+  border-color: rgba(208, 23, 67, 1);
 }
 
 .dv_input {
-  color:rgba(156,156,156,0.5);
+  color:rgba(50,50,50,0.5);
   font-weight: bold;
   display:flex;
   align-items: center;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border:0.1vh solid #666;
+  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
   background-color: rgba(255, 255, 255, 1);
-  border-radius: 2vh;
+  border-radius: 3vh;
   height:2.5em;
 }
 
@@ -187,9 +194,13 @@
 
 }
 
+.dv_info {
+   margin-left:3vw;
+}
+
 .dv_btn {
   width:15vw;
-  margin-left:2vw;
+  /* margin-left:2vw;*/
 }
 
 .bg_white {
@@ -206,11 +217,12 @@
 }
 
 .tiny_msg {
-  font-size:0.8vh;
+  font-size:1.6vh;
 }
 
 .info_msg {
-  font-size:1.2vh;
+  font-size:1.5vh;
   line-height: 2em;
   vertical-align:top;
 }
+

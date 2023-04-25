@@ -6,7 +6,6 @@
   <div class = 'c1 r2'>
     <span class = span_lang > 한국어/KO </span>
     <div class = dv_msg > 더욱 디테일한 <br> 추천을 위한 질문! </div>
-    <div class = dv_sub > 태어난 해와 성별을 알려주시면 더욱 정확한 추천을 진행할 수 있어요:)  </div>
   </div>
   <div class = 'c2 r2'>
     <div class = dv_step >
@@ -19,15 +18,18 @@
       <span> 3단계 </span> <div class = circle> </div>
     </div>
   </div>
+
+        
 </div top>
 
-<div class = main>
-  <div class = 'r1 c2 right'>
-    <div class = 'dv_btn ' id = btn_unit> kg/cm </div>  </div>
-  <div class = 'dv_info r2 c1'> 성별 </div>
+
+  <div class = 'dv_sub' > 태어난 해와 성별을 알려주시면 더욱 정확한 추천을 진행할 수 있어요 </div>    
+
+<div class = main>   
+    <div class = 'dv_info r2 c1'> 성별 </div>
 
   <t-select class = 'r2 c2' id = sel_sex select = sex>
-    <div class = 'dv_input dv_btn' opt = sex value = 0> 여성 </div>
+    <div class = 'dv_input dv_btn' opt = sex value = 0> 여성 </div> &nbsp; &nbsp;
     <div class = 'dv_input dv_btn' opt = sex value = 1> 남성 </div>
   </t-select>
   <div class = 'dv_info r3 c1'> 태어난 해 </div>
@@ -36,9 +38,9 @@
     </div>
 
   <div class = 'r4 c1'>
-    <div onclick = "move('page1')" class = 'dv_btn bg_white' id = btn_prev > < &nbsp 이전 </div>
+    <div onclick = "move('page1')" class = 'dv_btn bg_white' id = btn_prev >이전 </div>
   </div>
   <div class = 'r4 c2'>
-    <div onclick = "move('page3')" class = 'dv_btn ' id = btn_next> 다음 &nbsp > </div>
+    <div onclick = "move('page3')" class = 'dv_btn ' id = btn_next> 다음</div>
   </div>
 </div main>

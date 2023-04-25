@@ -30,7 +30,7 @@
   padding-right:5%;
   display:grid;
   width:90%;
-  grid-template: 60vh 20vh auto / 1fr;
+  grid-template: 60vh 15vh auto / 1fr;
   justify-content: center;
   align-content: center;
 }
@@ -69,6 +69,8 @@
 
 #dv_others > * {
   height:5vh;
+  display:flex;
+  align-items: center;
 }
 
 #dv_others > .c1 {
@@ -159,8 +161,17 @@
   background: #d4145A;
 }
 
+#dv_othersizes {
+    height:auto;
+}
+
 #dv_othersizes div {
   text-align: right;
+}
+
+#dv_othersizes .footer {
+  height:4em;
+  padding-bottom: 3em
 }
 
 #dv_othersizes td, th {
