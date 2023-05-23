@@ -22,6 +22,11 @@ let view_params = {
     'uid':'decoz',
   },
   'sizemine_demo': {
+  },
+  'sizeminedev':{
+    'vid':'00000',
+    'gid':'IM000',
+    'uid':'decoz',
   }
 }
 

@@ -4,6 +4,7 @@ goodsize
   sleeve.소매길이
   chest.가슴둘레
   outseam.총장
+  inseam.인심
   waist.허리단면
   rise.밑위
   thigh.허벅지단면
@@ -17,6 +18,9 @@ bodysize
   ch.가슴둘레
   he.골반
   le.다리길이
+  ht.키
+  th.허벅지둘레
+  we.몸무게
 bodytype
   0.삼각형
   1.모래시계형
