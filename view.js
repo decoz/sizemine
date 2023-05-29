@@ -14,7 +14,8 @@ let view_params = {
   },
   'sizemine' : {
     'uid':'decoz',
-    'vendor_id':'00000'
+    'gid':'IM000',
+    'vid':'00000'
   },
   'sm2': {
     'vid':'00000',
