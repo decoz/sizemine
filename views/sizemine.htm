@@ -41,6 +41,14 @@ let gsizes, //상품 사이즈
 
 console.log('smdev open for ',gid,vid,uid)
 step1.style.display = 'block'
+
+for(const closebtn of document.querySelectorAll('.pop_close')){
+	console.log(closebtn)
+	closebtn.onclick = e => {
+		if( parent != window ) frameElement.getRootNode().host.close()
+	}
+}
+
 function popup(popid) {
   console.log('popup')
 
@@ -58,6 +66,8 @@ function move(pageid){
   cur = document.getElementById(pageid)
   cur.style.display = 'block'
 }
+
+
 </script>
 
 

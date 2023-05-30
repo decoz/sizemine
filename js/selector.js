@@ -8,6 +8,10 @@ export default class selector extends HTMLElement {
     console.log(this.selectname)
     this.querySelectorAll(`[opt='${this.selectname}']`).forEach( elm => {
       console.log(elm)
+      if(elm.hasAttribute('selected'))
+        this.value = elm.hasAttribute('value') ?
+          elm.getAttribute('value') : elm.innerText
+      
       if(!elm.eventAttached)
         elm.addEventListener('click', e => {
           console.log(this, elm)

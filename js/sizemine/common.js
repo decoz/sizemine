@@ -19,19 +19,12 @@ document.addEventListener("DOMContentLoaded", function(){
 		passwordBtn()
 	}
 
-	// popup close
-	function popClose () {
-		var pop_close = document.querySelector('.js_pop_close'),
-			pop_wrap = pop_close.parentNode.parentNode;
-
-		pop_close.onclick = function(){
-			pop_wrap.classList.add('unactive');
+	for(const btn of document.querySelectorAll('.js_pop_close')){
+		btn.onclick = function(){
+			if( parent != window ) frameElement.getRootNode().host.close()
 		}
 	}
-	if(document.getElementsByClassName('js_pop_close').length){
-		popClose()
-	}
-
+	
 	//swiper 슬라이드
 	function slideUi (){
 		const slide = new Swiper('.slide_wrap', {
