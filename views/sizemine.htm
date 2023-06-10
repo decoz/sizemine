@@ -86,7 +86,8 @@ customElements.define("t-select", selector)
 
 const fileInput = document.getElementById("pt_apply");
 console.log(fileInput)
-fileInput.addEventListener("change", function (e) {
+//fileInput.addEventListener("change", function (e) {
+mydrag.onFileDrop = e => {
   const profile = {
     'sex':sel_sex.value,
     'tall':input_tall.value,
@@ -119,7 +120,7 @@ fileInput.addEventListener("change", function (e) {
     initMatch(uid, gid, vid, dot.fromObj(sizearr))
     move('size1')
   })
-});
+};
 
 
 function setSizeTable(sizearr, scorearr){

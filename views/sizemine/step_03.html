@@ -39,13 +39,16 @@
 		<!-- 사진등록 -->
 		<div class="pt_wrap">
 			<label for="pt_apply">
-				<input type="file" id="pt_apply">
+				<drag-upload id = mydrag showupimg = true >
+				<!--<input type="file" id="pt_apply">-->
 				<img src="/images/sizeminedev/bg_step.png">
+				</drag-upload>
+				<a onclick="move('guide1')" class="btn_guide">
+					<span>촬영 가이드 확인하기</span>
+				</a>
 			</label>
 
-			<a onclick="move('guide1')" class="btn_guide">
-				<span>촬영 가이드 확인하기</span>
-			</a>
+
 
 			<!-- <img src="/images/sizeminedev/slide_01.jpg" alt=""> --><!-- 등록한 이미지 -->
 		</div>
