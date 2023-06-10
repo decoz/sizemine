@@ -103,6 +103,8 @@ fileInput.addEventListener("change", function (e) {
     let typelabels = SM.dlabels.Get('bodytype.').Arr()
 
     span_bodytype.innerText = typelabels[bodytype]
+		img_profile.src  = `/images/sizeminedev/bg_${profile.sex == 0?'wm':'m'}_${bodytype}.png`
+		//console.log('profile image name:',profile_name)
 
     sz_ht.innerText = profile['tall'] + 'cm'
     sz_we.innerText = profile['weight'] + 'kg'

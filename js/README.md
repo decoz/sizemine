@@ -27,7 +27,9 @@ dpopup, dview, dtable
 
 
 # 주요 모듈 정보
+
 ---
+
 ## sizemine
 
 ### functions
@@ -42,15 +44,65 @@ dpopup, dview, dtable
     age : 연령
     ```
   - onupload 업로드 완료 이벤트함수   
+
 - loadUser(uid, vid)
   - uid : 사용자 id
   - vid : 벤더 id
+
 - loadGood(gid, vid, withtpl = false, withtag = false) : 상품정보를 읽어들인다
   - gid : 상품 id
   - vid : 벤더 id
   - withtpl : 상품 템플릿 정보를 함께 로드
   - withtag : 상품 태그정보를 함께 로드
-- loadTaglist()
-- loadTpl(tpl_name = tpl_name)
-- estimate_e
-- sortScores(scorearr)
+
+- loadTaglist() : 태그의 전체 리스트를 읽어온다.
+
+- loadTpl(tpl_name = tpl_name) : 탬플릿을 읽어온다.
+
+- loadTags(id) : 태그정보를 읽어온다
+
+- createMatchScores(dgsizes, dsize, dtpl, dtags) : 상품사이즈, 신체사이즈, 템플릿, 태그를 조합해 매칭 정보를 생성
+  - dgsizes : 상품 사이즈 dot
+  - dsize : 신체사이즈 dot
+  - dtpl : 템플릿 정보 dot
+  - dtags : 태그들 정보 dot
+
+- getType(arr = sizearr) : 신체사이즈로부터 신체 유형정보를 얻어온다.
+  - arr : 신체 사이즈 array   
+  ```
+  0 : 삼각형
+  1 : 모래시계형
+  2 : 역삼각형
+  3 : 직사각형
+  4 : 둥근형
+  5 : 마른체형
+  [-1] : unknown
+  ```
+
+### variables
+
+dlabels: labels.txt 에 저장된 신체치수, 옷치수, 체형의 설명 한글명을 포함한 dot  
+- dgsizes : 상품 사이즈 dot
+- dsize : 신체사이즈 dot
+- dtpl : 템플릿 정보 dot
+- dtags : 태그들 정보 dot
+- scorearr : createMatchScore 함수로 생성된 의류 사이즈별 적합도 테이블
+- tpl_name : 현재 읽어들인 상품의 템플릿명
+
+---
+
+## mineif
+
+ajax 대체용 라이브러리, 페이지 로딩 없이 url 에 정보를 보내고 받기 함수를 지원
+
+### functions
+- getData(url, func) : url 로부터 데이터를 가져옴, 수신핸들러 지정가능
+- promiseGet(url) : 데이터 수신의 promise 버젼
+- postJson(url, jsobj) : json 정보를 POST 메소드로 전송 결과값을 리턴
+- postForm(url, form) : form 정보를 POST 메소드로 전송 결과값을 리턴
+- postData(url, form, func) : form 정보를 보내되 수신 핸들러를 지정
+
+---
+
+## [dot](:doc:dot.md)
+json 을 좀 더 간결하게 사용하기 위해서 개발된 라이브러리
