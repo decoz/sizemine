@@ -1,0 +1,17 @@
+<h2> Cafe24 script management </h2>
+<div id = dv_msg>
+
+</div>
+
+<div>
+  <label for = in_location> location </label> <input id = in_location type = text> </input>
+  <label for = in_src > src </label> <input id = in_src type = text> </input>
+
+
+
+<script>
+const str = '<%- scripts %>'
+const scripts = JSON.parse(str)
+console.log(scripts)
+dv_msg.innerText = str
+</script>

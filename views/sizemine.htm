@@ -12,6 +12,7 @@
 </head>
 
 <div class = container>
+	!!!
   <div class = page id = step1 > <%- include('sizemine/step_01.html') %> </div>
   <div class = page id = step2 > <%- include('sizemine/step_02.html') %> </div>
   <div class = page id = step3 > <%- include('sizemine/step_03.html') %> </div>
@@ -41,14 +42,15 @@ let gsizes, //상품 사이즈
 
 console.log('smdev open for ',gid,vid,uid)
 step1.style.display = 'block'
-
+/*
 for(const closebtn of document.querySelectorAll('.pop_close')){
 	console.log(closebtn)
 	closebtn.onclick = e => {
-		if( parent != window ) frameElement.getRootNode().host.close()
+		//if( parent != window ) frameElement.getRootNode().host.close()
+		if( parent != window ) window.frameElement.getRootNode().host.style.display = 'none'
 	}
 }
-
+*/
 function popup(popid) {
   console.log('popup')
 

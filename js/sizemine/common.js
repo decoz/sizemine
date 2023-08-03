@@ -1,3 +1,5 @@
+const forceClose = null
+
 document.addEventListener("DOMContentLoaded", function(){
 	// password
 	function passwordBtn() {
@@ -21,10 +23,10 @@ document.addEventListener("DOMContentLoaded", function(){
 
 	for(const btn of document.querySelectorAll('.js_pop_close')){
 		btn.onclick = function(){
-			if( parent != window ) frameElement.getRootNode().host.close()
+			if( parent != window ) window.frameElement.getRootNode().host.close()
 		}
 	}
-	
+
 	//swiper 슬라이드
 	function slideUi (){
 		const slide = new Swiper('.slide_wrap', {

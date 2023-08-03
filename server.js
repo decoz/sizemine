@@ -6,32 +6,31 @@ const pool = require('./smdb')
 const cors = require('cors')
 
 
-statics = {
+const statics = { // static file 서비스 폴더
   '/'       : 'html',
   '/js'     : 'js',
   '/css'    : 'css',
   '/images' : 'images'
 }
 
+const sub_routes = [
+  'api',
+  'view',
+  'admin',
+  'app',
+]
 
-
-/*
-async function handleUser(res){
-  let conn = await pool.getConnection();
-  conn.query('use sizemine')
-  let rows = await conn.query('select name from itb_template')
-  console.log(rows)
-  res.send(rows)
-}
-*/
 app.use(cors())
 app.set('views', 'views')
 app.engine('htm', require('ejs').renderFile);
 
-for(k in statics) app.use(k, express.static( statics[k] ) )
+for(const path in statics) app.use(path, express.static( statics[path] ) )
+for(const route of sub_routes) app.use('/' + route , require('./route_' + route) )
+/*
 app.use('/api', require('./api'))
 app.use('/view', require('./view'))
 app.use('/admin', require('./admin'))
+*/
 
 /*
 app.use('/', express.static('html'))
@@ -40,12 +39,10 @@ app.use('/css', express.static('css'))
 app.use('/images', express.static('images'))
 */
 
-
 app.use('/user', require('./user'))
 app.use('/template', require('./template'))
 app.use('/good', require('./good'))
 app.use('/cafe24', require('./cafe24'))
-
 
 app.use('/cafe24Goods', (req, res) => {
 

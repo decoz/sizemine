@@ -39,6 +39,7 @@ router.route("/get").get( async function(req, res){
   conn.query('use sizemine')
   let query =  ` SELECT * from itb_goods
         where good_id = '${gid}' and vendor_id = '${vid}' `
+  console.log(query)
   rows = await conn.query(query)
   res.json(rows[0])
   console.log(rows)

@@ -32,6 +32,8 @@ dpopup, dview, dtable
 
 ## sizemine
 
+사이즈 마인 서비스의 핵심모듈, ai서버와의 통신 및 sizmein 처리를 위한 의류, 사용자, 템플릿등 각종 정보를 입출력하고 처리하는 핵심 루틴을 제공
+
 ### functions
 
 -  upload(file, profile, onupload) : 신체 이미지를 업로드
