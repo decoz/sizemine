@@ -39,7 +39,7 @@ export default async function upload(file, profile, onupload){
 }
 
 export async function loadUser(uid, vid){
-  let url = `/user/get?uid=${uid}&vid=${vid}`
+  let url = `/api/user/get?uid=${uid}&vid=${vid}`
   let data = await MI.promiseGet(url)
 
   dsize = dot.parse( JSON.parse(data).size )
@@ -89,7 +89,7 @@ export async function loadTaglist(){
 
 export async function loadTpl(tpl_name = tpl_name){
 
-  let url = '/template/get'
+  let url = '/api/template/get'
   console.log("try to get tpl:",tpl_name)
   let jsobj = {'tpl_name':tpl_name}
   let data = await MI.postJson(url, jsobj)
