@@ -51,6 +51,7 @@ for(const closebtn of document.querySelectorAll('.pop_close')){
 	}
 }
 */
+
 function popup(popid) {
   console.log('popup')
 
@@ -89,6 +90,12 @@ customElements.define("t-select", selector)
 const fileInput = document.getElementById("pt_apply");
 console.log(fileInput)
 //fileInput.addEventListener("change", function (e) {
+
+btn_save.onclick = e => {
+	SM.saveUser()
+
+}
+
 mydrag.onFileDrop = e => {
   const profile = {
     'sex':sel_sex.value,
@@ -99,8 +106,9 @@ mydrag.onFileDrop = e => {
 
   console.log("onfiledrop profile:",profile)
   SM.upload(event.target.files[0], profile, sizearr => {
-    console.log(sizearr, SM.dsize)
-
+		setBodySize(sizearr, profile)
+    //console.log(sizearr, SM.dsize)
+		/*
     let bodytype = SM.getType()
     let sizelabels = SM.dlabels.Get('bodysize.').Arr()
     let typelabels = SM.dlabels.Get('bodytype.').Arr()
@@ -120,12 +128,37 @@ mydrag.onFileDrop = e => {
     }
 
     initMatch(uid, gid, vid, dot.fromObj(sizearr))
+		*/
     move('size1')
   })
 };
 
+function setBodySize(sizearr, profile){
+	let bodytype = SM.getType(sizearr)
+	let sizelabels = SM.dlabels.Get('bodysize.').Arr()
+	let typelabels = SM.dlabels.Get('bodytype.').Arr()
 
-function setSizeTable(sizearr, scorearr){
+	span_bodytype.innerText = typelabels[bodytype]
+	img_profile.src  = `/images/sizeminedev/bg_${profile.sex == 0?'wm':'m'}_${bodytype}.png`
+	//console.log('profile image name:',profile_name)
+
+	sz_ht.innerText = profile['tall'] + 'cm'
+	sz_we.innerText = profile['weight'] + 'kg'
+
+
+	for(let key in sizearr){
+		let id = "sz_" + key
+		let obj = document.getElementById(id)
+		if( obj ) obj.innerText = sizearr[key] + 'cm'
+	}
+
+	initMatch(uid, gid, vid, dot.fromObj(sizearr))
+
+
+}
+
+
+function setGSizeTable(sizearr, scorearr){
     tbl_sizes.innerHTML =''
 
     const tr_sizes = document.createElement('tr')
@@ -219,7 +252,7 @@ async function initMatch(uid, gid, vid, dsize){
   if( !Array.isArray(gsizes) ) gsizes = [gsizes]
   span_recsize.innerText = matchs + '사이즈'
   setDetail(matchs, sorted)
-  setSizeTable(gsizes, scorearr)
+  setGSizeTable(gsizes, scorearr)
 
 }
 
@@ -284,8 +317,29 @@ function setAvatar(score, gsize, sizelabel){
     box.querySelector('.recsize').innerText = (parseFloat(gsize[pos]) + parseFloat(err)).toString() + 'cm'
     box.querySelector('.gsize').innerText = gsize[pos] + `cm (${gsize['sname']})`
   }
+}
+
+function setProfile(profile) {
+	sel_sex.value = profile.sex
+	input_tall.value = profile.tall
+	input_birth.value = 2023 -profile.age
+	input_weight.value = profile.weight
+}
 
 
+console.log('uid:',uid)
+if( uid.split('@')[0] != 'null' ){
+	console.log('load user needed', uid)
+	const res = await SM.loadUser(uid, vid)
+	console.log('respond:',res)
+	if( res != null ) {
+		console.log('set profile:', SM.dprofile.Str(), 'set size:',  SM.dsize.Arr())
+		const profile = SM.dprofile.Arr()
+		setProfile(profile)
+		setBodySize(SM.dsize.Arr(), profile)
+		move('size1')
+
+	}
 }
 
 

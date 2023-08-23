@@ -91,8 +91,8 @@ for(const dv of divs){
   dv.addEventListener('click', e => {
     const gid = dv.getAttribute('gid')
 
-    if(e.ctrlKey) popup2.open(`/view/goodmine?gid=${gid}`)
-    else popup.open(`/view/sizemine?gid=${gid}`)
+    if(e.ctrlKey) popup2.open(`/view/goodmine?gid=${gid}&vid=00000`)
+    else popup.open(`/view/sizemine?gid=${gid}&vid=00000&uid=test`)
   })
 }
 

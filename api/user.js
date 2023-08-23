@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+
+router.use(express.json())
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
   host:'54.180.149.190',
@@ -10,21 +12,25 @@ const pool = mariadb.createPool({
 })
 
 router.route("/put").post( async function(req, res){
+  //console.log('reqbody:',req.body)
 
-  const {uid, vendor_id, size} = req.query
-  console.log("put_user:",uid, vendor_id, size)
+  const {uid, vid, size, profile} = req.body
+  //console.log("put_user:",uid, vid, size, profile)
 
   let conn = await pool.getConnection()
   conn.query('use sizemine')
   let query =
-    `
-      INSERT INTO itb_users(user_id, vendor_id, size)
-        VALUES("${uid}", "${vendor_id}", "${size}")
+   `
+      INSERT INTO itb_users(user_id, vendor_id, size, profile)
+        VALUES("${uid}", "${vid}", "${size}", "${profile}")
         ON DUPLICATE KEY UPDATE
-        size = '${size}'
+        size = '${size}',
+        profile = '${profile}'
     `
+  
   let result = await conn.query(query)
   conn.close()
+
 })
 
 router.route("/get").get( async function(req, res){

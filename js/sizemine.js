@@ -9,7 +9,7 @@ var dlabels = null
 var sizearr = null, tagarr = null
 var dsize = null
 var gid, tpl_name, tagids
-var dtpl, dgsizes, dmeasures, dtags
+var dtpl, dgsizes, dmeasures, dtags, dprofile
 var scorearr
 
 dlabels = dot.tabParse( await MI.promiseGet(label_url) )
@@ -17,7 +17,7 @@ dlabels = dot.tabParse( await MI.promiseGet(label_url) )
 
 export default async function upload(file, profile, onupload){
   let upform = new FormData()
-
+  dprofile = dot.fromObj(profile)
   upform.append("file",file)
   for(const k in profile) upform.append(k, profile[k])
   let res = await fetch(sizemine_url,{
@@ -38,12 +38,28 @@ export default async function upload(file, profile, onupload){
   return txt
 }
 
+export async function saveUser(){
+  console.log('saveUser:', vid, uid, dprofile, dsize)
+  const data = {
+    'vid' : vid,
+    'uid' : uid,
+    'profile' : dprofile.Str(),
+    'size' : dsize.Str()
+  }
+  await MI.postJson('/api/user/put', data)
+
+}
+
+
 export async function loadUser(uid, vid){
   let url = `/api/user/get?uid=${uid}&vid=${vid}`
   let data = await MI.promiseGet(url)
+  console.log('user data:',data)
+  if( data == '' )  return null
 
   dsize = dot.parse( JSON.parse(data).size )
-  console.log('dsize',dsize)
+  dprofile = dot.parse( JSON.parse(data).profile )
+  //console.log('dsize:',dsize, 'dprofile:',dprofile)
   //console.log('userdata:',res.json())
   return dsize
 }
@@ -51,7 +67,6 @@ export async function loadUser(uid, vid){
 export async function loadGood(gid, vid, withtpl = false, withtag = false){
   let url = `/api/good/get?gid=${gid}&vid=${vid}`
   let data = await MI.promiseGet(url)
-
 
   console.log('load_good:',data)
   if( !data ) return ''
@@ -251,4 +266,4 @@ export function getType(arr = sizearr){
 }
 
 
-export {upload, dlabels, dsize, dgsizes, dtpl, dtags, scorearr, tpl_name}
+export {upload, dlabels, dsize, dgsizes, dtpl, dtags, dprofile, scorearr, tpl_name}
