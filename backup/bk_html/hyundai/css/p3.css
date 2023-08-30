@@ -1,0 +1,28 @@
+#page3 .content {
+  padding-left:5%;
+  padding-right:5%;
+  display:grid;
+  grid-template:  50% 50% / 1fr;
+  gap:5%;
+  height:100%;
+  width:90%;
+  justify-content: center;
+  align-content: center;
+}
+
+#mydrag {
+  width:40vw;
+  justify-self:center;
+  align-self:end;
+  border:none;
+}
+
+
+#btn_measure {
+  font-size:3rem;
+  align-self:start;
+}
+
+#page3 .content img {
+  justify-self:center;
+}

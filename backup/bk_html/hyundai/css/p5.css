@@ -1,0 +1,52 @@
+
+#page5 .content {
+  display:grid;
+  height:100%;
+  width:90vw;  
+  gap:3%;
+  justify-self: center;
+  align-content: center;
+}
+
+#page5 .top {
+  padding-left:10%;
+  text-align: left;
+}
+
+#page5 .main {
+  display:grid;
+}
+
+.sel_c {
+  justify-self:center;
+  background:#F5F5F5;
+  border-radius:5%;
+  font-size:2rem;
+  font-weight:bold;
+  height:2.5em;
+  width:80vw;
+  display:grid;
+}
+
+#page5 .category {
+  align-self:center;
+  display:grid;
+  grid-template-columns: 15% 65% 20%;
+}
+
+#page5 .content img{
+  height:1em;
+}
+
+#dv_caution {
+  height:4em;
+  padding-left:10%;
+  display:inline-block;
+  background:none;
+  text-align:left;
+}
+
+#dv_caution li{
+  font-size:1.5rem;
+
+}

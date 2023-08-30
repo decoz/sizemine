@@ -3,7 +3,8 @@ const router = express()
 const app_path = './apps/'
 
 const app_list = [
-  'cafe24'
+  'cafe24',
+  'hyundai'
 ]
 
 for(const app of app_list)

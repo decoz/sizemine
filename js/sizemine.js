@@ -1,7 +1,7 @@
 
 import dot from '/js/dot.js'
 import * as MI from '/js/mineif.js'
-var label_url = '/labels.txt'
+var label_url = '/js/labels.txt'
 
 var sizemine_url = 'https://sizemine.net/bodysize/'
 var dlabels = null

@@ -26,6 +26,14 @@
   '
 > </d-popup>
 
+<hr>
+<div id = dv_profile>
+  user
+  <input type = text id = input_user value = 'test'>
+  vendor
+  <input type = text id = input_vendor value = '00000'>
+</div>
+
 <div class = container>
 <div class = title>
   <span class = 'red'> 사이즈마인 </span>으로 사이즈 추천 받기
@@ -90,11 +98,18 @@ const divs =  document.querySelectorAll('.div_good')
 for(const dv of divs){
   dv.addEventListener('click', e => {
     const gid = dv.getAttribute('gid')
+    const vid = input_vendor.value
+    const uid = input_user.value
 
-    if(e.ctrlKey) popup2.open(`/view/goodmine?gid=${gid}&vid=00000`)
-    else popup.open(`/view/sizemine?gid=${gid}&vid=00000&uid=test`)
+    if(e.ctrlKey) popup2.open(`/view/goodmine?gid=${gid}&vid=${vid}`)
+    else popup.open(`/view/sizemine?gid=${gid}&vid=${vid}&uid=${uid}`)
   })
 }
 
+document.body.onkeydown = e => {
+  if(e.key == 'u')
+    if( dv_profile.style.display == 'block') dv_profile.style.display = 'none'
+    else dv_profile.style.display = 'block'
 
+}
 </script>

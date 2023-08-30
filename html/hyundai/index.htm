@@ -144,7 +144,7 @@ customElements.define("img-marker", imgMarker)
 customElements.define("drag-upload", dragUpload)
 customElements.define('t-select', selector)
 
-const hdtxt = await MI.promiseGet('/hyundai/hyundai.txt')
+const hdtxt = await MI.promiseGet('/app/hyundai/hyundai.txt')
 hd = dot.tabParse(hdtxt)
 setEvents()
 console.log('test module body event handler', dv_selcategory)

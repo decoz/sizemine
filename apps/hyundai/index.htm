@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+<!--<script src="https://www.w3schools.com/lib/w3.js"></script>-->
+<link href="./css/common.css" rel="stylesheet" />
+<link href="./css/p1.css" rel="stylesheet" />
+<link href="./css/p2.css" rel="stylesheet" />
+<link href="./css/p3.css" rel="stylesheet" />
+<link href="./css/p4.css" rel="stylesheet" />
+<link href="./css/p5.css" rel="stylesheet" />
+<link href="./css/p6.css" rel="stylesheet" />
+<link href="./css/p7.css" rel="stylesheet" />
+<link href="./css/p8.css" rel="stylesheet" />
+<link href="./css/p9.css" rel="stylesheet" />
+
+
+
+<div class = container>
+  <div class = 'top r1' >
+    <img src = './images/back.svg' onclick = 'prev()'>
+  </div>
+  <div id = pageview >
+      <div id = page1  class = 'page c1'> <%- include('p1.htm') %> </div>
+      <div id = page2  class = 'page c2'> <%- include('p2.htm') %> </div>
+      <div id = page3  class = 'page c3'> <%- include('p3.htm') %> </div>
+      <div id = page4  class = 'page c4'> <%- include('p4.htm') %> </div>
+      <div id = page5  class = 'page c5'> <%- include('p5.htm') %> </div>
+      <div id = page6  class = 'page c6'> <%- include('p6.htm') %> </div>
+      <div id = page7  class = 'page c7'> <%- include('p7.htm') %> </div>
+      <div id = page8  class = 'page c8'> <%- include('p8.htm') %> </div>
+      <div id = page9  class = 'page c9'> <%- include('p9.htm') %> </div>
+  </div pageview>
+</div container>
+</body>
+</html>
+<script>
+
+//pageview.addEventListener('touchmove', function(e) {e.preventDefault()}, false);
+let hd
+let gcategory,gtype,gfit
+let gsizes
+let sizemode // size vs nosize
+let page = 1, pages = 9, lastpage = -1
+let height = 170
+let bodysize = { //default body size
+      "ne": 33,
+      "sh": 43,
+      "ar": 57,
+      "ch": 88,
+      "wa": 75,
+      "he": 97,
+      "le": 91,
+      "ta": 160
+  }
+
+function gopage(n) {
+
+  if(n < 0 ) n = 0
+  if(n > pages ) n = pages
+
+  console.log('page' + String(n))
+
+  for(let i=1; i<=pages; i++){
+    const el = document.getElementById('page' + String(i))
+
+    if( i == n ) {
+      console.log(el)
+      el.style.display = 'grid'
+    } else el.style.display = 'none'
+  }
+
+  page = n
+}
+
+function next(){
+  //document.location.href = url
+  page++
+  gopage(page)
+}
+
+function prev(){
+
+  if( page == 8 && sizemode == 'nosize' ) page = 6
+  else page--
+
+  gopage(page)
+
+  //pageview.scrollLeft = -1 * pageview.clientWidth
+  //pageview.scrollLeft -= pageview.clientWidth
+  //console.log( pageslide.style.left )
+  //alert(String(page) + "/" + String(pageview.scrollLeft))
+  //lb_msg.innerText = String(page) + "/" + String(pageview.scrollLeft + "/" + String(parseInt(pageview.clientWidth) * page))
+
+}
+
+function click_sex(sex){
+  let parent = event.srcElement.parentElement
+  for(let c of parent.children ) c.classList.remove('focusing')
+  event.srcElement.classList.add('focusing')
+}
+
+function adjust_sizeinput(){
+
+  dv_modemsg.innerText = '다음 사이즈만큼 줄이는 걸 추천드려요'
+
+  for(const sz of gsizes) {
+    const input = document.getElementById('input_'+sz)
+    const rec = document.getElementById('rec_'+sz)
+    console.log(input, rec)
+    let iv = parseInt( input.value )
+    let rv = parseInt( rec.value )
+
+    if( iv < rv ) rec.value = rv - iv
+    else rec.value = 0
+
+  }
+
+
+}
+
+
+
+//next()
+document.body.onload = function(e){
+  console.log('++',hd)
+  gopage(1)
+}
+</script>
+
+<script  type = 'module'>
+import * as MI from '/js/mineif.js'
+import imgMarker from '/js/imgmarker.js'
+import * as SM from '/js/sizemine.js'
+import dragUpload from '/js/dragupload.js'
+import dot from '/js/dot.js'
+import selector from '/js/selector.js'
+
+
+customElements.define("img-marker", imgMarker)
+customElements.define("drag-upload", dragUpload)
+customElements.define('t-select', selector)
+
+const hdtxt = await MI.promiseGet('/app/hyundai/hyundai.txt')
+hd = dot.tabParse(hdtxt)
+setEvents()
+console.log('test module body event handler', dv_selcategory)
+
+sel_mode.onselect = function(mode){
+  sizemode = mode
+  if( mode == 'size' ) gopage(7)
+  else gopage(8)
+
+  dv_mode.style.display = 'none'
+
+}
+
+
+function set_gtype(type){
+  gtype = type
+  const flabels = hd.Get('labels.fit.').Arr()
+
+  console.log("selected gtype:",type, dv_typesize)
+  document.getElementById("img_size1").src = `./images/typesize/sz_${type}.png`
+  document.getElementById("img_size2").src = `./images/typesize/sz_${type}.png`
+
+  const slist = hd.Get(`category.${gcategory}.${type}.`).Arr()
+  let html  = ''
+
+  let r=1, c=1
+
+  for(const fit of slist){
+    const fittype = fit.split('_')[1]
+    console.log(fittype, flabels[fittype])
+    html += `
+      <div opt value = '${fittype}' class = 'dv_fit r${r} c${c}'>
+        <div> ${flabels[fittype]} <br>
+          <img src = './images/fits/${fit}.svg'> </div> </div>
+    `
+    if(c++ > 1) {
+      c=1
+      r++
+    }
+  }
+
+  sel_fit.innerHTML = html
+  sel_fit.init()
+  dv_mode.style.display = 'grid'
+
+
+
+}
+
+function set_category(n) {
+
+  const ctgnames = ['티셔츠/맨투맨', '셔츠/블라우스', '바지', '원피스', '치마']
+  const ctg = ctgnames[n]
+  console.log('selected type:',ctg, span_type)
+
+  span_type.innerText = ctg
+  const gtypes = hd.Get(`category.${n}.`).Arr()
+  gsizes = hd.Get(`gsizes.${n}.`).Arr()
+  const labels = hd.Get('labels.type.').Arr()
+
+  //let html = '<t-select id = sel_gtype select >'
+  let html = ''
+  let r=1, c=1
+  for(const type in gtypes){
+    //console.log('>>',type,labels[type])
+    html +=  `
+      <div opt value = '${type}' class = 'img_gtype r${r} c${c}' >
+      ${labels[type]}<br>
+      <img src = './images/category/${type}.svg'> </img>
+      </div>
+    `
+    if( c++ > 1 ){
+      r++
+      c = 1
+    }
+  }
+  //html += '</t-select>'
+  //dv_selector.innerHTML = html
+  sel_gtype.innerHTML = html
+  sel_gtype.init()
+  sel_gtype.onselect = set_gtype
+
+  set_sizes(gsizes, get_recsize(n))
+  gcategory = n
+  //get_recsize(category)
+}
+
+function get_recsize(category){
+
+  const reclist = hd.Get(`recommend.type.${category}.`).Arr()
+  let recsize = {}
+  for(const v in reclist){
+    console.log("rec size:", v, reclist[v])
+    let eq = reclist[v]
+    for(const p in bodysize){
+      eq = eq.replace(p, bodysize[p])
+    }
+    console.log('=>',eq,eval(eq))
+    recsize[v] = Math.round( eval(eq) )
+  }
+  return recsize
+}
+
+function set_sizes(gsizes, recsize){
+  const slabels = hd.Get('labels.sizes.').Arr()
+
+  let sz_html = ''
+  let r = 1
+  for(const sz of gsizes){
+    sz_html += `
+      <div class = 'r${r} c1'> ${slabels[sz]} </div>
+      <div class = 'r${r} c2'>
+        <img src = './images/marker/mn.png' class = 'right'
+          onclick = 'minus_item()'
+        >
+        <input type = number id = input_${sz} value = 0 > </input>
+        <img src = './images/marker/pl.png' class = 'left'
+          onclick = 'plus_item()'
+        > </div>
+    `
+    r++
+  }
+  dv_inputgsize.innerHTML = sz_html
+
+  let dv_html = '', input_html = ''
+  let cmx = 4
+  let c=1
+  if( gsizes.length > 4 )  cmx = 3
+
+  r = 1
+  for(const sz of gsizes) {
+    dv_html += ` <div class = 'r${r} c${c}' > ${slabels[sz]} </div> \n`
+    input_html += `<input id = rec_${sz} type = number class = 'r${r + 1} c${c}' value = '${recsize[sz]}'>\n`
+    if( c++ == cmx ) {
+      c = 1
+      r += 2
+    }
+  }
+
+  dv_recsize.innerHTML = dv_html + input_html
+}
+
+
+function setEvents(){
+  const dvlist = dv_selcategory.querySelectorAll('.sel_c')
+  for(let i=0; i<dvlist.length; i++){
+    const dv = dvlist[i]
+    dv.addEventListener("click",  e => {
+       set_category(i)
+       next()
+    })
+  }
+}
+
+/*
+function isAndroid(){
+    var userAgent = window.navigator.userAgent.toLowerCase(),
+      safari = /safari/.test( userAgent ),
+      ios = /iphone|ipod|ipad/.test( userAgent );
+
+    if (ios) {
+      if (!standalone && safari) {
+        // Safari
+        return false;
+      } else if (!standalone && !safari) {
+        // iOS webview
+        return false;
+      };
+    } else {
+      if (userAgent.includes('wv')) {
+        // Android webview
+        return true;
+      } else {
+        // Chrome
+        return false;
+      }
+    };
+}
+*/
+
+mydrag.onFileDrop = e => {
+  console.log("onfiledrop")
+  const profile = {'tall':input_height.value}
+  SM.upload(mydrag.files[0], profile, sizearr => {
+    bodysize = sizearr
+    bodysize['ta'] = input_height.value
+
+    console.log(sizearr, SM.dsize)
+    let bodytype = SM.getType()
+    let sizelabels = SM.dlabels.Get('bodysize.').Arr()
+    let typelabels = SM.dlabels.Get('bodytype.').Arr()
+
+    span_bodytype.innerText = typelabels[bodytype]
+    /*
+    sizetable.innerHTML = ''
+    */
+
+    for(let key in sizearr){
+      let id = "sz_" + key
+      let obj = document.getElementById(id)
+      if( obj ) obj.innerText = sizearr[key] + 'cm'
+    }
+
+    //console.log("bodytype:",SM.getType())
+    btn_save.onclick = function(e){
+      /*
+      console.log("send result to android",sizearr)
+
+      if( isAndroid() ){
+        Android.retsizes(JSON.stringify(sizearr))
+        console.log('success',SM.sizes)
+      } else {
+        console.log("can't find android function")
+      }
+      */
+      const reclist = hd.Get(`recommend.type.${gcategory}.`).Arr()
+      const type_labels = hd.Get('labels.type.').Arr()
+      const size_labels = hd.Get('labels.sizes.').Arr()
+      const fit_labels = hd.Get('labels.fit.').Arr()
+      const ctg_labels = hd.Get('labels.category.').Arr()
+
+
+
+      let rec_size = {}
+      for(let sz in reclist){
+        const el = document.getElementById('rec_'+sz)
+        if( el ) rec_size[ size_labels[sz] ] = el.value
+      }
+
+      const rvalue = {
+        'cateogry':ctg_labels[gcategory],
+        'type':type_labels[gtype],
+        'fit':fit_labels[gfit],
+        'sizemode':sizemode,
+        'sizes':rec_size }
+
+      console.log('>>> result ', reclist, sizemode, gtype, gfit, rvalue)
+      console.log(JSON.stringify(rvalue))
+      callApp(JSON.stringify(rvalue))
+    }
+
+    next()
+  })
+}
+
+function callApp(msg){
+  try {webToAppChange.postMessage(msg)} catch(err) {
+    console.log('can not find js channel to host app')
+  }
+}
+
+sel_fit.onselect = v => {
+  console.log('fit select:' + v)
+  gfit = v
+}
+
+
+console.log('finish module script')
+</script>
+<style>
+
+
+</style>

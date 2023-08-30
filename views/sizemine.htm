@@ -106,29 +106,7 @@ mydrag.onFileDrop = e => {
 
   console.log("onfiledrop profile:",profile)
   SM.upload(event.target.files[0], profile, sizearr => {
-		setBodySize(sizearr, profile)
-    //console.log(sizearr, SM.dsize)
-		/*
-    let bodytype = SM.getType()
-    let sizelabels = SM.dlabels.Get('bodysize.').Arr()
-    let typelabels = SM.dlabels.Get('bodytype.').Arr()
-
-    span_bodytype.innerText = typelabels[bodytype]
-		img_profile.src  = `/images/sizeminedev/bg_${profile.sex == 0?'wm':'m'}_${bodytype}.png`
-		//console.log('profile image name:',profile_name)
-
-    sz_ht.innerText = profile['tall'] + 'cm'
-    sz_we.innerText = profile['weight'] + 'kg'
-
-
-    for(let key in sizearr){
-      let id = "sz_" + key
-      let obj = document.getElementById(id)
-      if( obj ) obj.innerText = sizearr[key] + 'cm'
-    }
-
-    initMatch(uid, gid, vid, dot.fromObj(sizearr))
-		*/
+		setBodySize(sizearr, profile)    
     move('size1')
   })
 };
@@ -332,14 +310,15 @@ if( uid.split('@')[0] != 'null' ){
 	console.log('load user needed', uid)
 	const res = await SM.loadUser(uid, vid)
 	console.log('respond:',res)
+
 	if( res != null ) {
 		console.log('set profile:', SM.dprofile.Str(), 'set size:',  SM.dsize.Arr())
 		const profile = SM.dprofile.Arr()
 		setProfile(profile)
 		setBodySize(SM.dsize.Arr(), profile)
 		move('size1')
-
 	}
+
 }
 
 
