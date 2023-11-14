@@ -1,0 +1,62 @@
+<div class = content>
+  <h1> 사이즈마인 </h3>
+  <img src = 'img/1.jpg' class = 'info_image'>
+  <img src = 'img/2.jpg' class = 'info_image'>
+  <img src = 'img/3.jpg' class = 'info_image'>
+  <img src = 'img/4.jpg' class = 'info_image'>
+  <img src = 'img/5.jpg' class = 'info_image'>
+  <img src = 'img/6.jpg' class = 'info_image'>
+</div>
+<div class = footer>
+  <a href = 'https://<%=mallid%>.cafe24.com'>
+  <div class = btn id = btn_rediret >
+    쇼핑몰로 이동하기
+  </div>
+  </a>
+</div>
+<script>
+btn_rediret.onlcick = e=>{
+    document.location = ''
+}
+</script>
+<style>
+h1 {
+  font-weight: bolder;
+}
+body {
+  display:grid;
+  justify-content:center;
+}
+div.content{
+  height:80vh;
+  width:80vw;
+  display:grid;
+  justify-items: center;
+  justify-content: center;
+  overflow-y: auto;
+}
+div.footer{
+  padding:20px;
+  display:flex;
+  justify-items: center;
+  justify-content: center;
+}
+
+div.btn {
+  background-color: #D01743;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 21px 10px;
+  border-radius: 12px;
+  width: 30vw;
+  height: 4em;
+  text-align: center;
+  box-sizing: border-box;
+}
+img.info_image {
+  width:50vw;
+}
+
+
+</style>

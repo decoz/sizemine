@@ -6,8 +6,8 @@ class cafe24 {
   server = `https://sizemine.co.kr/app/cafe24`
   path = './apps/cafe24/'
   mallid =  'parkisoo'
-  cid =     'Ir0bFLB4ApvivVsEgDjenB'
-  ckey =    'AN7313qWLdxsfuetq12XkM'
+  cid =     'TCYH6aIoJtAgdorhgmwCsB'
+  ckey =    'ZGdWtReJRagIzqNynEfDUJ'
   auth_id = Buffer.from( this.cid + ':' + this.ckey).toString("base64")
   api_version = '2023-06-01'
   code = ''
@@ -65,6 +65,21 @@ class cafe24 {
     this.token = token_info.access_token
     this.refresh_token = token_info.refresh_token
 
+  }
+
+  async send_order() {
+    var req_options = {
+      method: 'GET',
+      url: `https://${this.mallid}.cafe24api.com/api/v2/admin/appstore/orders/cafe24-20180704-100000000`,
+      headers: {
+        'Authorization': "Bearer " + this.token,
+        'Content-Type': "application/json",
+        'X-Cafe24-Api-Version': `${this.api_version}`
+      }
+    }
+    console.log('sended order for ')
+    const result = await req(req_options)
+    console.log(result)
   }
 
   async getScriptList(){ // 쇼핑몰에 설치된 script 들을 가져옴
@@ -159,7 +174,7 @@ class cafe24 {
 
   }
 
-  async refreshToken() { // 토큰이 만료된 경우 새로운 토큰을 새로 받아옴 
+  async refreshToken() { // 토큰이 만료된 경우 새로운 토큰을 새로 받아옴
     var payload = `grant_type=refresh_token&code=${this.code}`
                   + `&refresh_token=${this.refresh_token}`
     var req_options = {
@@ -201,6 +216,7 @@ class cafe24 {
     }
 
     const result = await req(req_options)
+    console.log('token:', result)
     this.store_token(result)
 
     return result
