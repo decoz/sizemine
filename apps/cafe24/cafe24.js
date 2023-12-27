@@ -40,10 +40,7 @@ class cafe24 {
 
       console.log(JSON.stringify(this.scripts))
     })
-
-
   }
-
 
 
   initHtml(mall_id){ // 앱이 등록될때 노출되는 페이지 cafe24 에 redirect url 을 건네주고 redirect url ㅇ에서 token 을 받아 처리하도록 해줌
@@ -99,6 +96,42 @@ class cafe24 {
 
   }
 
+
+  async page_shop(){ // 상품 정보리스트를 받아서 상품 관리 페이지에 토스
+    var options = {
+      method: 'GET',
+      url: `https://${this.mallid}.cafe24api.com/api/v2/admin/products`,
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type': "application/json",
+        'X-Cafe24-Api-Version': this.api_version
+      }
+    };
+
+    const plist = await req(options)
+    console.log("list_product result:", plist)
+
+    var p_options = {
+      method: 'POST',
+      url: `https://sizemine.co.kr/view/shopmine`,
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type': "application/json",
+        'X-Cafe24-Api-Version': this.api_version
+      },
+      body: {
+        "vid"   : "cafe24." + this.mallid,
+        "plist" : plist
+      },
+      json: true
+    }
+
+    const result = await req(p_options)
+    return result
+
+  }
+
+
   async install_script(f) { // cafe24 에 스크립트를 설치요청을 전송
     const location = f.split('.')[0].toUpperCase()
     const src = 'https://sizemine.co.kr/app/cafe24/remote/' + f
@@ -150,6 +183,21 @@ class cafe24 {
     const result = await req(options)
   }
 
+  async list_product() {
+    var options = {
+      method: 'GET',
+      url: `https://${this.mallid}.cafe24api.com/api/v2/admin/products`,
+      headers: {
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type': "application/json",
+        'X-Cafe24-Api-Version': this.api_version
+      }
+    };
+
+    const result = await req(options)
+    console.log("list_product result:", result)
+    return result
+  }
 
   async install() {
       const result = await this.getScriptList()

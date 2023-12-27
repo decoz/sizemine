@@ -1,0 +1,25 @@
+<h1> sizemine 상품 관리 </h1>
+<H2> <%=vid%> <h2>
+<h3> plist <h3>
+<table class = tbl_p >
+<tbody id = tb_plist>
+
+
+</tbody>
+</table>
+
+
+
+
+<script>
+var plist = <%-plist%>
+var htm = ''
+for(const p of plist.products)
+  htm += `
+    <tr>
+      <td> <img src = '${p.tiny_image}'>  </td>
+      <td> ${p.product_name}\n </td>
+    </tr>
+  `
+tb_plist.innerHTML += htm
+</script>
