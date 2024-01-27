@@ -1,25 +1,148 @@
-<h1> sizemine 상품 관리 </h1>
-<H2> <%=vid%> <h2>
-<h3> plist <h3>
-<table class = tbl_p >
-<tbody id = tb_plist>
+<html>
+<header>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/shopmine.css" rel="stylesheet" />
+  <link href="/css/common.css" rel="stylesheet" />
+
+</header>
 
 
-</tbody>
-</table>
+<div class = dv_logo>
+  <img src = '/images/sizemine_logov1.png' >
+  <div id = btn_mall > </div>
+</div>
+<div class = dv_screen>
+<div class = dv_left>
+<t-select id = sel_menu select>
+  <div class = dv_menu opt value = about selected> 사이즈마인 소개 </div>
+  <div class = dv_menu opt value = help > 등록 방법 </div>
+  <div class = dv_menu opt value = product > 상품 등록 </div>
+</t-select>
+</div dv_left>
+<div class = dv_main id = main_section>
+  <div id = dv_section_about  >
+    <img src = '/images/shopmine/1.jpg' >
+    <img src = '/images/shopmine/2.jpg' >
+    <img src = '/images/shopmine/3.jpg' >
+    <img src = '/images/shopmine/4.jpg' >
+    <img src = '/images/shopmine/5.jpg' >
+    <img src = '/images/shopmine/6.jpg' >
+  </div dv_section_about>
+  <div id = dv_section_help style = 'display:None' >
+    <div class = dv_imgabout>
+      <img src = '/images/shopmine/help_1.png' >
+      1. 상품을 선택합니다.
+    </div>
 
+    <div class = dv_imgabout>
+      <img src = '/images/shopmine/help_2.png' >
+      2. 템플릿을 선택합니다.
+    </div>
 
+    <div class = dv_imgabout>
+      <img src = '/images/shopmine/help_3.png' >
+      3. 삼품태그에서 속성을 선택합니다.
+    </div>
+    <div class = dv_imgabout>
+      <img src = '/images/shopmine/help_4.png' >
+      4. 사이즈를 입력하고 저장을 누릅니다.
+    </div>
+  </div dv_section_about>
+  <div id = dv_section_product style = 'display:None'>
+    <div class = dv_tblinfo>
+      상품들 중에서 등록을 원하시는 상품을 클릭하세요
+    </div>
+    <table class = tb_p >
+      <thead>
+        <th>  </th>
+        <th> 상품명 </th>
+        <th> 가격 </th>
+        <th> 공급 가격 </th>
+        <th> 사이즈마인 </th>
+      </thead>
+      <tbody id = tb_plist>
+      </tbody>
+    </table>
+  </div  dv_section_product>
+</div dv_main>
+</div dv_screen>
 
+<d-popup id = popup
+  title = 'popup test'
+  showframe = false
+  css = '
+  width:1200px;
+  height:800px;
+  '
+> </d-popup>
 
-<script>
+<script type = module >
+import * as MI from '/js/mineif.js'
+import dPopup from '/js/dpopup.js'
+import selector from '/js/selector.js'
+
+customElements.define("d-popup", dPopup)
+customElements.define('t-select', selector)
+
 var plist = <%-plist%>
+var vid = '<%-vid%>'
+var platform = '쇼핑몰'
+var mall = vid
+let arr = vid.split('.')
+
+if( arr.length == 2 ) {
+    platform = arr[0]
+    mall = arr[1]
+}
+
+let mallurl = ''
+switch(platform) {
+  case 'cafe24': mallurl = `http://${mall}.cafe24.com`
+}
+btn_mall.innerText = `${platform}로 이동`
+btn_mall.onclick = e => {
+  document.location = mallurl
+}
+
+
+
+let url = `/api/good/get?vid=${vid}`
+let smgoods = await MI.promiseGet(url)
+let sm_gids = []
+
+for(const g of JSON.parse(smgoods)) {
+  sm_gids.push(parseInt(g.good_id))
+}
+
+
 var htm = ''
 for(const p of plist.products)
   htm += `
-    <tr>
+    <tr id = tr_${p.product_no}>
       <td> <img src = '${p.tiny_image}'>  </td>
       <td> ${p.product_name}\n </td>
+      <td> ${p.retail_price} </td>
+      <td> ${p.supply_price} </td>
+      <td> ${sm_gids.includes(p.product_no)? '등록' : '미등록'} </td>
     </tr>
   `
 tb_plist.innerHTML += htm
+
+for(const tr of tb_plist.children) {
+  tr.addEventListener('click', e => {
+    const tr = e.srcElement.parentElement
+    const p_no = tr.id.split('_')[1]
+    //console.log(`-----------------gid=${p_no}&vid=${vid}`)
+    popup.open(`/view/goodmine?gid=${p_no}&vid=${vid}`)
+  })
+}
+
+sel_menu.onselect = v => {
+  for(const section of main_section.children){
+    if(section.id == 'dv_section_' + v )
+      section.style.display = 'Block'
+    else section.style.display = 'None'
+  }
+}
+
 </script>

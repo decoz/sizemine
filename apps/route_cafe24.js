@@ -49,22 +49,38 @@ router.use('/install', async (req, res)=>{
 })
 
 
-router.use('/redirect', async (req, res)=>{
 
+router.use('/redirect', async (req, res)=>{
   const {code} = req.query
   cafe24.code = code
-
-  console.log(`get cafe24 redirect request :${cafe24.mallid} : ${cafe24.code}`)
+  //console.log(`get cafe24 redirect request :${cafe24.mallid} : ${cafe24.code}`)
   const result = await cafe24.getToken()
+
   await cafe24.load_scripts()
   await cafe24.send_order()
-
   const install_result = await cafe24.install()
+
+
+  const redirect_script = `
+    <script type = 'module'>
+      location.href = 'https://sizemine.co.kr/app/cafe24/'
+    </script>
+  `
+
+
+  res.send(redirect_script)
+
+  //const html = await cafe24.page_shop()
+  //res.send(html)
+
+})
+
+
+router.use('/', async (req, res)=>{
   const html = await cafe24.page_shop()
   res.send(html)
 
 })
-
 
 //require('./cafe24/redirect.js') )
 module.exports = router

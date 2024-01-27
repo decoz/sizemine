@@ -26,13 +26,43 @@ router.route("/put").post( async function(req, res){
         ON DUPLICATE KEY UPDATE
         sizes = '${sizes}', tpl_name = '${tpl_name}', tags = '${tags}'
     `
-  //console.log(query)
+  console.log(query)
   let result = await conn.query(query)
 })
 
 router.route("/get").get( async function(req, res){
 
   const {gid, vid} = req.query
+  console.log("get_good:",gid, vid)
+
+  let conn = await pool.getConnection()
+  conn.query('use sizemine')
+  console.log('typeof gid:',typeof gid)
+  if( typeof vid == undefined ) return
+  if( typeof gid == 'undefined') {
+    let query =  ` SELECT good_id from itb_goods where  vendor_id = '${vid}' `
+    rows = await conn.query(query)
+    res.json(rows)
+    console.log(rows)
+    conn.close()
+    return
+  }
+
+
+
+  let query =  ` SELECT * from itb_goods
+        where good_id = '${gid}' and vendor_id = '${vid}' `
+  console.log(query)
+  rows = await conn.query(query)
+  res.json(rows[0])
+  console.log(rows)
+  conn.close()
+
+})
+
+router.route("/getlist").get( async function(req, res){
+
+  const {vid} = req.query
   console.log("get_good:",gid, vid)
 
   let conn = await pool.getConnection()

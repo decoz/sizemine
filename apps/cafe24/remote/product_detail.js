@@ -112,7 +112,7 @@
       }
       </style>
     `
-    const res = await fetch(`https://sizemine.co.kr/api/good/get?vid=cafe24&gid=${product_no}@${mall_id}`)
+    const res = await fetch(`https://sizemine.co.kr/api/good/get?vid=cafe24.${mall_id}&gid=${product_no}`)
     const data = await res.text()
 
     var is_registered = false
@@ -153,13 +153,13 @@
       //console.log('??:',sm_url)
       if(is_registered)
         btn_sizemine.addEventListener('click', e => {
-          const sm_url = `https://sizemine.co.kr/view/sizemine?gid=${product_no}@${mall_id}&uid=${member_id}@${mall_id}&vid=cafe24`
+          const sm_url = `https://sizemine.co.kr/view/sizemine?gid=${product_no}&uid=cafe24.${member_id}&vid=cafe24.${mall_id}`
           dv_sizemine.style.width = '40vh'
           popup(sm_url)
         })
       if(admin_id == member_id)
         btn_sizemine_admin.addEventListener('click', e => {
-          const admin_url = `https://sizemine.co.kr/view/goodmine?gid=${product_no}@${mall_id}&uid=${member_id}@${mall_id}&vid=cafe24`
+          const admin_url = `https://sizemine.co.kr/view/goodmine?gid=gid=${product_no}&uid=cafe24.${member_id}&vid=cafe24.${mall_id}`
           dv_sizemine.style.width = '80vh'
           popup(admin_url)
         })

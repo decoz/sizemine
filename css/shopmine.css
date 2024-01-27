@@ -1,0 +1,122 @@
+.dv_logo {
+  height:2em;
+  background:#FFF;
+  padding:1em;
+  border-bottom:0.5em solid #D01243
+}
+
+
+.dv_screen {
+  display:grid;
+  grid-column-gap: 3em;
+  grid-template-columns: 10em 1fr;
+}
+
+#btn_mall{
+  width:100%;
+  font-size:0.8em;
+  font-weight:bold;
+  color:#D01243;
+  text-align: right;
+}
+
+.dv_left {
+  grid-column: 1/2;
+  width:100%;
+  height:100vh;
+  background-color:#white;
+  border-right:0.5em solid white;
+  text-align: center;
+}
+
+
+.dv_menu[selected] {
+  font-size:0.9em;
+  font-weight:bold;
+  width:80%;
+  background-color:#D01243;
+  color:#FFF;
+  padding:0.5em;
+  border-bottom:0.1em solid white;
+}
+
+.dv_menu {
+  cursor:hand;
+  font-size:0.9em;
+  font-weight:bold;
+  width:80%;
+  background-color:rgba(208, 23, 67, 0.08);
+  color:#D01243;
+  padding:0.5em;
+  border-bottom:0.1em solid white;
+}
+
+
+.dv_main {
+  grid-column: 2/3;
+  text-align: left;
+  width:100%;
+  max-width:90em;
+}
+
+.dv_tblinfo {
+  font-size:1rem;
+  text-align: left;
+  margin:1em;
+
+}
+
+.dv_logo img {
+  height:100%;
+}
+
+.dv_imgabout{
+  font-size:0.9em;
+  font-weight:bold;
+  color:#333;
+  display:flex;
+  padding-top:0.5em;
+  width:80%;
+  border: 0.1em solid gray;
+  margin-bottom:1em;
+}
+
+.dv_imgabout img{
+  width:60em;
+  margin-right:1em;
+
+}
+
+.tb_p {
+  width:100%;
+  max-width:80em;
+
+}
+
+.tb_p td {
+  cursor:hand;
+  font-size:0.8em;
+  padding-left:2em;
+  padding-right:2em;
+}
+
+.tb_p td {
+  padding-left:2em;
+  padding-right:2em;
+}
+
+.tb_p th {
+  background-color:#D01243;
+  color:white;
+  padding:0.5em;
+}
+
+.tb_p img{
+  height:3em;
+}
+
+.tb_p tr:nth-child(even) td {
+  background-color:rgba(208, 23, 67, 0.08);
+}
+
+.

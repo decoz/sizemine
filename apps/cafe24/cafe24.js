@@ -98,6 +98,9 @@ class cafe24 {
 
 
   async page_shop(){ // 상품 정보리스트를 받아서 상품 관리 페이지에 토스
+    let rtoken = await this.refreshToken()
+    //console.log('aceess token result:',rtoken)
+
     var options = {
       method: 'GET',
       url: `https://${this.mallid}.cafe24api.com/api/v2/admin/products`,
@@ -109,7 +112,7 @@ class cafe24 {
     };
 
     const plist = await req(options)
-    console.log("list_product result:", plist)
+    //console.log("list_product result:", plist)
 
     var p_options = {
       method: 'POST',
@@ -133,6 +136,7 @@ class cafe24 {
 
 
   async install_script(f) { // cafe24 에 스크립트를 설치요청을 전송
+
     const location = f.split('.')[0].toUpperCase()
     const src = 'https://sizemine.co.kr/app/cafe24/remote/' + f
     const hash = this.scripts[f]
@@ -184,6 +188,8 @@ class cafe24 {
   }
 
   async list_product() {
+    const result = await cafe24.getToken()
+    console.log('aceess token result:',result)
     var options = {
       method: 'GET',
       url: `https://${this.mallid}.cafe24api.com/api/v2/admin/products`,
@@ -194,7 +200,7 @@ class cafe24 {
       }
     };
 
-    const result = await req(options)
+    result = await req(options)
     console.log("list_product result:", result)
     return result
   }
@@ -209,6 +215,8 @@ class cafe24 {
     const list = installed.scripttags
 
     var exist = []
+    if(!Array.isArray(list)) return
+
     for(const s of list){
       console.log(s.script_no, s.src, s.integrity)
       const f = s.src.split('/').at(-1)
