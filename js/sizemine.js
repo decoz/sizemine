@@ -2,18 +2,33 @@
 import dot from '/js/dot.js'
 import * as MI from '/js/mineif.js'
 var label_url = '/js/labels.txt'
-
+var lang_url = '/js/sizemine.lang'
 var sizemine_url = 'https://sizemine.net/bodysize/'
 var dlabels = null
+var dlang = null
 
 var sizearr = null, tagarr = null
 var dsize = null
 var gid, tpl_name, tagids
 var dtpl, dgsizes, dmeasures, dtags, dprofile
 var scorearr
+var lang = 'kr'
 
 dlabels = dot.tabParse( await MI.promiseGet(label_url) )
+dlang = dot.tabParse( await MI.promiseGet(lang_url) )
+const arrlang = dlang.Arr()
+console.log('dlang:' , dlang)
 //console.log(dlabels.Str())
+
+export function to_lang(lang, word) {
+
+  if(!arrlang[lang]) return word
+  const dic = arrlang[lang]
+
+  if( dic[word] ) return dic[word]
+  else return word
+}
+
 
 export default async function upload(file, profile, onupload){
   let upform = new FormData()
@@ -266,4 +281,4 @@ export function getType(arr = sizearr){
 }
 
 
-export {upload, dlabels, dsize, dgsizes, dtpl, dtags, dprofile, scorearr, tpl_name}
+export {upload, dlabels, dsize, dgsizes, dtpl, dtags, dprofile, scorearr, tpl_name, lang}

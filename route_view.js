@@ -44,6 +44,8 @@ router.get('/', (req, res) => {
 for(const view in view_params){
   router.get(`/${view}`, (req, res) => {
     const params = view_params[view]
+    params['lang'] = 'kr'
+
     for(const k in params)
       req.query[k] && ( params[k] = req.query[k] )
     console.log(view, params)

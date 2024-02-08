@@ -1,0 +1,77 @@
+<div class="pop_wrap step_01_fix"><!-- step1단계 class="step_01_fix" 추가 -->
+	<!-- 헤더영역 -->
+	<header class="head_wrap">
+		<!-- 로고 -->
+		<h1 class="logo">
+			<a href="/"><img src="/images/sizeminedev/logo.png" alt="size mine"></a>
+		</h1>
+		<!--// 로고 -->
+
+		<!-- 닫기버튼 -->
+		<button type="button" class="pop_close js_pop_close">
+			<span class="blind">솔루션 닫기</span>
+		</button>
+		<!--// 닫기버튼 -->
+
+	</header>
+	<!--// 헤더영역 -->
+
+	<!-- 컨텐츠영역 -->
+	<div class="contents">
+		<!-- 진행 단계 -->
+		<div class="pro_bar">
+			<span class="tot"></span>
+			<span class="crt" style="width:33.33%;"></span>
+		</div>
+		<!--// 진행 단계 -->
+
+		<!-- 언어선택 -->
+		<div class="lang">
+			<select id = sel_lang>
+				<option value = 'kr'>한국어/KR</option>
+				<option value = 'en'>영어/ENG</option>
+				<option value = 'jp'>日本語/JP</option>
+			</select>
+		</div>
+		<!--// 언어선택 -->
+
+		<!-- 타이틀영역 -->
+		<div class="tit_area">
+			<h2 class="tit">
+				簡単な方法で<br>私のサイズを探す
+			</h2>
+		</div>
+		<!--// 타이틀영역 -->
+
+		<!-- 정보입력 -->
+		<div class="inpt_area">
+			<div class="inpt_wrap inpt_select">
+				<input id = input_tall type="text" placeholder="身長を入力してください">
+				<select>
+					<option>cm</option>
+					<option>inch</option>
+				</select>
+			</div>
+			<div class="inpt_wrap inpt_select">
+				<input id = input_weight type="text" placeholder="体重を入力してください">
+				<select>
+					<option>kg</option>
+					<option>lb</option>
+				</select>
+			</div>
+		</div>
+		<!--// 정보입력 -->
+	</div>
+	<!--// 컨텐츠영역 -->
+
+	<!-- 하단고정영역 -->
+	<div class="btm_fixed">
+		<p class="pv_txt">
+			SizeMineの<a href="privacy.html">個人データおよび個人情報収集方針</a>に同意します
+		</p>
+		<div class="btn_wrap">
+			<a onclick = "move('step2')" class="btn btn_main_01">同意して進む</a><!-- 비활성화시 class="inactv" -->
+		</div>
+	</div>
+	<!--// 하단고정영역 -->
+</div>
