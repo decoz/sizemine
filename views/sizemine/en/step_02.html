@@ -1,0 +1,73 @@
+
+<div class="pop_wrap fixed"><!-- 하단고정 영역 class="fixed" 추가 -->
+	<!-- 헤더영역 -->
+	<header class="head_wrap">
+		<!-- 로고 -->
+		<h1 class="logo">
+			<a href="/"><img src="/images/sizeminedev/logo.png" alt="size mine"></a>
+		</h1>
+		<!--// 로고 -->
+
+		<!-- 닫기버튼 -->
+		<button type="button" class="pop_close js_pop_close">
+			<span class="blind">솔루션 닫기</span>
+		</button>
+		<!--// 닫기버튼 -->
+
+	</header>
+	<!--// 헤더영역 -->
+
+	<!-- 컨텐츠영역 -->
+	<div class="contents">
+		<!-- 진행 단계 -->
+		<div class="pro_bar">
+			<span class="tot"></span>
+			<span class="crt" style="width:66.66%;"></span>
+		</div>
+		<!--// 진행 단계 -->
+
+		<!-- 타이틀영역 -->
+		<div class="tit_area">
+			<h2 class="tit">
+				Questions for more <br> detailed recommendations
+			</h2>
+			<p class="desc">If you tell us your birth year and gender, <br> we can make a more accurate recommendation.</p>
+		</div>
+		<!--// 타이틀영역 -->
+
+		<!-- 정보입력 -->
+		<div class="inpt_area">
+			<div class="inpt_wrap">
+				<span class="inpt_tit">gender</span>
+				<t-select id = sel_sex select = sex>
+
+				<div class="rdo_set">
+					<label for="rdo_01">
+						<input type="radio" name="rdo" id="rdo_01" checked>
+						<span opt = sex value = 1 selected>male</span>
+					</label>
+					<label for="rdo_02">
+						<input type="radio" name="rdo" id="rdo_02">
+						<span opt = sex value = 0 >female</span>
+					</label>
+				</div>
+				</t-select>
+			</div>
+			<div class="inpt_wrap">
+				<input id = input_birth type="text" placeholder="Please enter your year of birth">
+				<span class="year">년</span>
+			</div>
+		</div>
+		<!--// 정보입력 -->
+	</div>
+	<!--// 컨텐츠영역 -->
+
+	<!-- 하단고정영역 -->
+	<div class="btm_fixed">
+		<div class="btn_wrap">
+			<a onclick = "move('step1')" class="btn btn_sub">Prev</a>
+			<a onclick = "move('step3')" class="btn btn_main_01">Next</a><!-- 비활성화시 class="inactv" -->
+		</div>
+	</div>
+	<!--// 하단고정영역 -->
+</div>

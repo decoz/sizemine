@@ -1,0 +1,67 @@
+
+<div class="pop_wrap fixed"><!-- 하단고정 영역 class="fixed" 추가 -->
+	<!-- 헤더영역 -->
+	<header class="head_wrap">
+		<!-- 로고 -->
+		<h1 class="logo">
+			<a href="/"><img src="/images/sizeminedev/logo.png" alt="size mine"></a>
+		</h1>
+		<!--// 로고 -->
+
+		<!-- 닫기버튼 -->
+		<button type="button" class="pop_close js_pop_close">
+			<span class="blind">솔루션 닫기</span>
+		</button>
+		<!--// 닫기버튼 -->
+
+	</header>
+	<!--// 헤더영역 -->
+
+	<!-- 컨텐츠영역 -->
+	<div class="contents">
+		<!-- 진행 단계 -->
+		<div class="pro_bar">
+			<span class="tot"></span>
+			<span class="crt" style="width:93%;"></span>
+		</div>
+		<!--// 진행 단계 -->
+
+		<!-- 타이틀영역 -->
+		<div class="tit_area">
+			<p class="sub_txt">options</p>
+			<h2 class="tit">
+				Increase your accuracy <br> with just one full-body photo!
+			</h2>
+			<p class="desc">Don't worry about your photo data!<br>It will be automatically deleted as soon as the measurement is finished.</p>
+		</div>
+		<!--// 타이틀영역 -->
+
+		<!-- 사진등록 -->
+		<div class="pt_wrap">
+			<label for="pt_apply">
+				<drag-upload id = mydrag showupimg = true >
+				<!--<input type="file" id="pt_apply">-->
+				<img src="/images/sizeminedev/bg_step.png">
+				</drag-upload>
+				<a onclick="move('guide1')" class="btn_guide">
+					<span>Check the shooting guide</span>
+				</a>
+			</label>
+
+
+
+			<!-- <img src="/images/sizeminedev/slide_01.jpg" alt=""> --><!-- 등록한 이미지 -->
+		</div>
+		<!--// 사진등록 -->
+	</div>
+	<!--// 컨텐츠영역 -->
+
+	<!-- 하단고정영역 -->
+	<div class="btm_fixed">
+		<div class="btn_wrap">
+			<a onclick = "move('step2')" class="btn btn_sub">Prev</a>
+			<a onclick = "move('size1')" class="btn btn_main_02">Done</a><!-- 비활성화시 class="inactv" -->
+		</div>
+	</div>
+	<!--// 하단고정영역 -->
+</div>

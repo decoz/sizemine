@@ -229,6 +229,7 @@ async function initMatch(uid, gid, vid, dsize){
     let desc
 		if(lang == 'kr') desc = score[wpos] > 0 ? '클 수 있어요' : '작을 수 있어요'
 		if(lang == 'jp') desc = score[wpos] > 0 ? '大きいかもしれません。' : 'サイズが小さいかもしれません。'
+		if(lang == 'en') desc = score[wpos] > 0 ? 'can be big' : 'may be small'
 
 
     let html = `
@@ -269,6 +270,7 @@ function setDetail(sname, scorearr ){
 function asSubject(word){ // 주격조사를 붙여줌
 
 	if(lang == 'jp') return l(word) + 'が'
+	if(lang == 'en') return l(word)
 
   if( korBottom(word.at(-1)) ) return word + '이'
   else return word + '가'
