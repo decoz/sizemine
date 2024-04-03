@@ -12,6 +12,15 @@ export default class dbSelet extends HTMLElement {
   filter = null // filter is function for handle url result
   value = null
 
+  labels = {}
+
+  setLabels(labels){
+    this.labels = labels
+    for(const opt of this.sel_db.children)
+      if(labels[opt.value]) opt.innerText = labels[opt.value]
+
+  }
+
   reloadList(data){
     console.log('dbsel filter', typeof(this.filter), this.filter)
     if( typeof(this.filter) == 'function') data = this.filter(data)

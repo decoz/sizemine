@@ -9,7 +9,7 @@ export default class imgMarker extends HTMLElement {
   fsize = 9
   markers = {}
   me = this
-  labels = null
+  labels = {}
   values = null
   pending = false
   onready = null
@@ -33,6 +33,8 @@ export default class imgMarker extends HTMLElement {
   setValue(name, value) {
 
     var marker = this.shadowRoot.getElementById(name)
+
+    if(this.labels[name]) value = this.labels[name]
     if( marker ) marker.innerText = this.mixedlabel? marker.innerText + "\n" + value : value
   };
 
@@ -46,11 +48,13 @@ export default class imgMarker extends HTMLElement {
     }
   };
 
-  valuesWithLabel() {
-    for(let k in this.markers){
-
-    }
-
+  setLabels(labels) {
+    this.labels = labels
+    for(let k in this.markers)
+        if(labels[k]) {
+            const marker = this.shadowRoot.getElementById(k)
+            if(marker) marker.innerText = labels[k]
+        }
   }
 
   resetMarkers() {
@@ -199,7 +203,7 @@ export default class imgMarker extends HTMLElement {
       width:auto;
       max-height:100%;
       display: grid;
-      overflow-y:hidden;      
+      overflow-y:hidden;
     }
     img {
       object-fit:contain;

@@ -30,6 +30,13 @@ export function to_lang(lang, word) {
 }
 
 
+export async function set_lang(lang){
+
+
+
+  
+}
+
 export default async function upload(file, profile, onupload){
   let upform = new FormData()
   dprofile = dot.fromObj(profile)

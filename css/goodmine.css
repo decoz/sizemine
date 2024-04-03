@@ -21,10 +21,29 @@
   max-height:7vh;
   overflow-y:hidden;
   display:inline-block;
+  display:grid;
+  grid-template:1fr / auto 15em;
+}
+
+.top .dv_lang {
+  justify-self:flex-end;
+  padding-right:1rem;
+  font-size:0.7rem;
+  color:#222;
+}
+
+#sel_lang {
+  height:2em;
+  font-size:0.7rem
+}
+
+.top img {
+  width:10vw;
 }
 
 #container > .c1 {
-  padding:3%;
+  padding:0.5rem;
+  padding-top:1rem;
   display:grid;
   justify-items:center;
 }
@@ -39,9 +58,7 @@ t-select div[selected] {
   background:#EEE;
 }
 
-.top img {
-  height:100%;
-}
+
 
 #sel_tpl {
   width:20vw;

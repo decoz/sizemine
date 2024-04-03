@@ -10,7 +10,8 @@ const statics = { // static file 서비스 폴더
   '/'       : 'html',
   '/js'     : 'js',
   '/css'    : 'css',
-  '/images' : 'images'
+  '/images' : 'images',
+  '/lang'   : 'lang'
 }
 
 const sub_routes = [

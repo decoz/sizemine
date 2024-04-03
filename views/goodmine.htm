@@ -9,13 +9,21 @@
 <body>
 <div id = container >
   <div class = 'top r1 c12'>
-    <img src = '/images/sizemine_logov1.png'>
-
+    <img class = 'c1' src = '/images/sizemine_logov1.png'>
+    <div class = 'dv_lang c2'>
+      <span class = lmsg >언어설정</span>
+      <select id = sel_lang>
+        <option value = ko > 한국어</option>
+        <option value = jp > 日本語 </option>
+        <option value = en > english </option>
+      </select>
+    </div>
     </div top>
-  <div class = 'c1 r2'>
+  <div class = 'left c1 r2'>
+
     <t-select id = sel_menu select >
-      <div opt > 실측 치수 입력 </div>
-      <div opt > 사이즈마인 통계 </div>
+      <div opt class = lmsg >실측 치수 입력</div>
+      <div opt class = lmsg >사이즈마인 통계</div>
     </t-select>
   </div>
 
@@ -23,12 +31,12 @@
     <div id =  dv_select class = 'r1 c1' >
       <div class = dv_header>
         <div class = headerbox> </div>
-        템플릿 선택
+        <span class = lmsg >템플릿 선택</span>
       </div dv_header> <br>
       <t-dbselect selsize = 1 id = sel_tpl url = '/api/template/list?field=tpl_name'
         css = '
         select {
-          font-size:1.2vmin;
+          font-size:1rem;
         }
         '
       >
@@ -39,7 +47,7 @@
     <div id = dv_tag class = 'r1 c2' >
       <div class = dv_header>
         <div class = headerbox> </div>
-        상품태그
+        <span class = lmsg> 상품태그 </span>
       </div dv_header> <br>
       <table id = tbl_tag >
 
@@ -49,22 +57,25 @@
 
     <d-view id = dv_size class = 'r2 c12' >
       <div class = dv_header>
-        <div class = headerbox> </div> 사이즈 입력  </div> <br>
+        <div class = headerbox> </div> <span class = lmsg> 사이즈 입력 </span>  </div> <br>
       <table id = tbl_size >
-        <tbody id = tbody_size dot = 'gsize' iter = 'tr[dot]' replace>
+        <thead id = thead_size >
+
+        </thead>
+        <tbody id = tbody_size dot = 'gsize' iter = 'tr[dot]' >
 
         </tbody>
       </table>
       <div class = flex>
-        <button onclick = 'addRow(sizearr)'> 사이즈 추가 </button>
-        <button onclick = 'removeRow()'> 사이즈 삭제 </button>
+        <button onclick = 'addRow(sizearr)' class = lmsg>사이즈 추가</button>
+        <button onclick = 'removeRow()' class = lmsg>사이즈 삭제</button>
       </div>
     </d-view>
   </div edit_good>
 
   <div id = dv_save class = 'r3 c12' >
-    <button id = btn_cancel> 취소 </button>
-    <button id = btn_save> 저장하기 </button>
+    <button id = btn_cancel class = lmsg >취소</button>
+    <button id = btn_save class = lmsg>저장하기</button>
 
   </div>
 </div container>
@@ -74,9 +85,8 @@
 <script>
 let gsize_labels, sizearr
 
-
 function addRow(sizearr = sizearr) {
-  const tbody = tbl_size.children[0]
+  const tbody = tbody_size
   const tr = document.createElement('tr')
   tr.setAttribute('dot','')
   let rows = `<th class = 'headcolumn'> <input dot = 'sname'> </th>`
@@ -94,8 +104,6 @@ function removeRow() {
   if(arr.length > 1) tbody.removeChild( arr[arr.length-1 ] )
 
 }
-
-
 
 </script>
 
@@ -120,11 +128,50 @@ customElements.define('d-view', dView)
 let vid = '<%=vid%>'
 let gid = '<%=gid%>'
 let tpl_name
+var lang = '<%=lang%>'
+
+
 //gid = 'T0002'
 
+const tlang_url = '/lang/template.lang'
+const lang_url = '/lang/goodmine.lang'
+const gslang_url = '/lang/goodsize.lang'
+
+var dlang = null
+var dlang_tpl = null
+var dlang_gs = null
+
 await init(gid, vid)
+
+function set_lang(lang){
+  const l = dlang.Arr()
+  console.log('------',l)
+  for(const el of document.querySelectorAll('.lmsg')){
+    const msg = el.innerText.replace(/\s/g, '')
+    if(l[lang] && l[lang][msg]) el.innerText = l[lang][msg]
+  }
+
+  const tl  = dlang_tpl.Arr()
+  if(tl[lang]) sel_tpl.setLabels(tl[lang])
+
+  const gsl = dlang_gs.Arr()
+  if(gsl[lang]) img_tpl.setLabels(gsl[lang])
+  for(const th of document.querySelectorAll('.th_size')){
+    const sname = th.getAttribute('sname')
+    if(gsl[lang][sname] ) th.innerText = gsl[lang][sname]
+  }
+
+
+}
+
 async function init(gid, vid){
   console.log(`matchmine - gid:${gid} , vid:${vid}`)
+
+  dlang_tpl = dot.tabParse( await MI.promiseGet(tlang_url) )
+  dlang = dot.tabParse( await MI.promiseGet(lang_url) )
+  dlang_gs = dot.tabParse( await MI.promiseGet(gslang_url) )
+
+  console.log('template.lang:',dlang, dlang_tpl)
 
   let [garr]  = await Promise.all( [ SM.loadGood(gid, vid, true) ] )
   let tagarr = await SM.loadTaglist()
@@ -149,7 +196,9 @@ async function init(gid, vid){
   console.log(dgsizes.Str())
   dv_size.Put(SM.dgsizes)
   dv_size.style.visibility = 'visible'
+  //setHeader( thead_size, SM.dgsizes.Arr() )
 
+  if(lang != 'kr') set_lang(lang)
 
 }
 
@@ -175,10 +224,10 @@ function setTags(arr){
     if(first) first = false
     else tr.style.visibility = 'hidden'
 
-    let html = `<th> ${path} </th> `
+    let html = `<th class = lmsg> ${path} </th> `
     for(let name in arr[path]) {
       html += `
-        <td tagid = ${name}>
+        <td tagid = ${name} class = lmsg >
         ${arr[path][name]} </td>
       `
     }
@@ -228,6 +277,12 @@ sel_menu.onselect = (value) => {
   console.log(value)
 }
 
+sel_lang.onchange = (v) => {
+  lang = sel_lang.value
+  set_lang(lang)
+
+}
+
 sel_tpl.filter = function(data) {
   let arr = JSON.parse(data)
   return JSON.stringify( arr.map(d => d.tpl_name) )
@@ -251,11 +306,13 @@ sel_tpl.onselect = async function(v) {
 }
 
 
-function setHeader(tbody, sizearr = sizearr){
-  let cols = '<th> 사이즈 </th>'
+function setHeader( sizearr = sizearr){
+  const gsl = dlang_gs.Arr()
+
+  let cols = '<th class = lmsg > 사이즈 </th>'
   for(let k in sizearr)
-    cols += `<th> ${ gsize_labels[k]? gsize_labels[k] : k} </th> \n`
-  tbody.innerHTML = `<tr> ${cols} <tr>`
+    cols += `<th sname = ${k} class = th_size > ${ gsl[k]? gsl[k] : k} </th> \n`
+  thead_size.innerHTML = `<tr> ${cols} <tr>`
 
 
 }
@@ -265,7 +322,7 @@ function setDview(sizearr){
 
   console.log('setTable:',sizearr)
   const tbl = tbl_size
-  setHeader(tbody_size, sizearr)
+  setHeader( sizearr)
   addRow(sizearr)
   dv_size._buildTpl()
 
