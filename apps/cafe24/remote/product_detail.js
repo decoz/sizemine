@@ -159,7 +159,7 @@
         })
       if(admin_id == member_id)
         btn_sizemine_admin.addEventListener('click', e => {
-          const admin_url = `https://sizemine.co.kr/view/goodmine?gid=gid=${product_no}&uid=cafe24.${member_id}&vid=cafe24.${mall_id}`
+          const admin_url = `https://sizemine.co.kr/view/goodmine?gid=${product_no}&uid=cafe24.${member_id}&vid=cafe24.${mall_id}`
           dv_sizemine.style.width = '80vh'
           popup(admin_url)
         })

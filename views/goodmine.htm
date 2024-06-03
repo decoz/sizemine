@@ -11,7 +11,7 @@
   <div class = 'top r1 c12'>
     <img class = 'c1' src = '/images/sizemine_logov1.png'>
     <div class = 'dv_lang c2'>
-      <span class = lmsg >언어설정</span>
+      <span class = lmsg word = '언어설정'>언어설정</span>
       <select id = sel_lang>
         <option value = ko > 한국어</option>
         <option value = jp > 日本語 </option>
@@ -22,8 +22,8 @@
   <div class = 'left c1 r2'>
 
     <t-select id = sel_menu select >
-      <div opt class = lmsg >실측 치수 입력</div>
-      <div opt class = lmsg >사이즈마인 통계</div>
+      <div opt class = lmsg word = '실측 치수 입력'>실측 치수 입력</div>
+      <div opt class = lmsg word = '사이즈마인 통계' >사이즈마인 통계</div>
     </t-select>
   </div>
 
@@ -31,7 +31,7 @@
     <div id =  dv_select class = 'r1 c1' >
       <div class = dv_header>
         <div class = headerbox> </div>
-        <span class = lmsg >템플릿 선택</span>
+        <span class = lmsg word = '템플릿 선택' >템플릿 선택</span>
       </div dv_header> <br>
       <t-dbselect selsize = 1 id = sel_tpl url = '/api/template/list?field=tpl_name'
         css = '
@@ -47,7 +47,7 @@
     <div id = dv_tag class = 'r1 c2' >
       <div class = dv_header>
         <div class = headerbox> </div>
-        <span class = lmsg> 상품태그 </span>
+        <span class = lmsg word = '상품태그'> 상품태그 </span>
       </div dv_header> <br>
       <table id = tbl_tag >
 
@@ -57,7 +57,7 @@
 
     <d-view id = dv_size class = 'r2 c12' >
       <div class = dv_header>
-        <div class = headerbox> </div> <span class = lmsg> 사이즈 입력 </span>  </div> <br>
+        <div class = headerbox> </div> <span class = lmsg word = '사이즈 입력'> 사이즈 입력 </span>  </div> <br>
       <table id = tbl_size >
         <thead id = thead_size >
 
@@ -67,15 +67,15 @@
         </tbody>
       </table>
       <div class = flex>
-        <button onclick = 'addRow(sizearr)' class = lmsg>사이즈 추가</button>
-        <button onclick = 'removeRow()' class = lmsg>사이즈 삭제</button>
+        <button onclick = 'addRow(sizearr)' class = lmsg word = '사이즈 추가'>사이즈 추가</button>
+        <button onclick = 'removeRow()' class = lmsg word = '사이즈 삭제'>사이즈 삭제</button>
       </div>
     </d-view>
   </div edit_good>
 
   <div id = dv_save class = 'r3 c12' >
-    <button id = btn_cancel class = lmsg >취소</button>
-    <button id = btn_save class = lmsg>저장하기</button>
+    <button id = btn_cancel class = lmsg word = '취소'>취소</button>
+    <button id = btn_save class = lmsg word = '저장하기'>저장하기</button>
 
   </div>
 </div container>
@@ -149,13 +149,16 @@ function set_lang(lang){
   for(const el of document.querySelectorAll('.lmsg')){
     const msg = el.innerText.replace(/\s/g, '')
     if(l[lang] && l[lang][msg]) el.innerText = l[lang][msg]
+    else el.innerText = el.getAttribute('word')
   }
 
   const tl  = dlang_tpl.Arr()
   if(tl[lang]) sel_tpl.setLabels(tl[lang])
+  else sel_tpl.setLabels({})
 
   const gsl = dlang_gs.Arr()
   if(gsl[lang]) img_tpl.setLabels(gsl[lang])
+
   for(const th of document.querySelectorAll('.th_size')){
     const sname = th.getAttribute('sname')
     if(gsl[lang][sname] ) th.innerText = gsl[lang][sname]
@@ -224,10 +227,10 @@ function setTags(arr){
     if(first) first = false
     else tr.style.visibility = 'hidden'
 
-    let html = `<th class = lmsg> ${path} </th> `
+    let html = `<th class = lmsg word = '${path}'> ${path} </th> `
     for(let name in arr[path]) {
       html += `
-        <td tagid = ${name} class = lmsg >
+        <td tagid = ${name} class = lmsg word = '${arr[path][name]}'>
         ${arr[path][name]} </td>
       `
     }
@@ -309,7 +312,7 @@ sel_tpl.onselect = async function(v) {
 function setHeader( sizearr = sizearr){
   const gsl = dlang_gs.Arr()
 
-  let cols = '<th class = lmsg > 사이즈 </th>'
+  let cols = `<th class = lmsg word = '사이즈'> 사이즈 </th>`
   for(let k in sizearr)
     cols += `<th sname = ${k} class = th_size > ${ gsl[k]? gsl[k] : k} </th> \n`
   thead_size.innerHTML = `<tr> ${cols} <tr>`

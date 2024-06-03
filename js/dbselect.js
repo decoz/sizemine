@@ -18,6 +18,7 @@ export default class dbSelet extends HTMLElement {
     this.labels = labels
     for(const opt of this.sel_db.children)
       if(labels[opt.value]) opt.innerText = labels[opt.value]
+      else opt.innerText = opt.value
 
   }
 
