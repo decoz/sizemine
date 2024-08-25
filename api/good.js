@@ -3,14 +3,7 @@ const router = express()
 router.use(express.json())
 router.use(express.urlencoded())
 
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({
-  host:'54.180.149.190',
-  port:3306,
-  user:'decoz',
-  password:'wkdghehd',
-  connectionLimit:5
-})
+const pool = require('./../smdb')
 
 router.route("/put").post( async function(req, res){
   //console.log('reqbody:',req.body)
